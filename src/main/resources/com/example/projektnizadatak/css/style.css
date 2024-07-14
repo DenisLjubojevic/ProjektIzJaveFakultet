@@ -1,0 +1,117 @@
+.bodybg{
+    -fx-background-color: antiquewhite;
+    -fx-font-family: "Sitka Text";
+}
+
+.loginLabel{
+    -fx-font-family: "Sitka Text";
+    -fx-text-background-color: white;
+}
+
+.label{
+    -fx-font-family: "Sitka Text";
+}
+
+.button{
+    -fx-font-family: "Sitka Text";
+    -fx-font-weight: bold;
+    -fx-background-color: burlywood;
+    -fx-border-width: 2;
+    -fx-border-color: darkgoldenrod;
+    -fx-padding: 5 10 5 10;
+    -fx-background-insets: 0, 1;
+}
+
+.button:hover {
+    -fx-background-color: darkgoldenrod;
+    -fx-border-color: burlywood;
+}
+
+.table-view .column-header {
+    -fx-background-color: burlywood;
+    -fx-border-width: 1;
+    -fx-border-color: darkgoldenrod;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-border-color: transparent;
+    -fx-padding: 2 0 2 10px;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #93f9b911;
+    -fx-text-background-color: white;
+}
+.table-row-cell:odd{
+    -fx-background-color: burlywood;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+.table-row-cell:even{
+    -fx-background-color: darkgoldenrod;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:vertical .track,
+.table-view .virtual-flow .scroll-bar:vertical .track-background,
+.table-view .virtual-flow .scroll-bar:horizontal,
+.table-view .virtual-flow .scroll-bar:horizontal .track,
+.table-view .virtual-flow .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .virtual-flow .scroll-bar .increment-button,
+.table-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding: 2;
+}
+
+.table-view .virtual-flow .scroll-bar:vertical .thumb{
+    -fx-background-color:  linear-gradient(to bottom, darkgoldenrod, burlywood);
+}
+.table-view .virtual-flow .scroll-bar:horizontal .thumb {
+    -fx-background-color:  linear-gradient(to right, burlywood, darkgoldenrod);
+}
+
+.menu-bar{
+    -fx-border-width: 2;
+    -fx-border-color: darkgoldenrod;
+    -fx-background-color: #FFB76F;
+    -fx-padding: 0;
+}
+
+.context-menu{
+    -fx-border-color: darkgoldenrod;
+    -fx-background-color: burlywood;
+}
+
+.menu-bar .menu{
+    -fx-font-family: "Sitka Text";
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.menu-bar .menu:hover{
+    -fx-background-color: darkgoldenrod;
+}
+
+.menu-item{
+    -fx-background-color: burlywood;
+    -fx-min-height: 24px;
+    -fx-max-height: 24px;
+}
+
+.menu-item:hover{
+    -fx-background-color: darkgoldenrod;
+}
+
+.menu:hover {
+    -fx-background-color: darkgoldenrod;
+}

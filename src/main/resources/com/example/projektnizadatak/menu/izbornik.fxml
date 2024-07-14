@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.MenuController.IzbornikController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <MenuBar fx:id="izbornik" prefHeight="30.0" prefWidth="600.0" styleClass="menu-bar">
+         <menus>
+            <Menu mnemonicParsing="false" text="Životinje">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showZivotinjeSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="pawsImage1" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/paws.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Zaposlenici">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showZaposleniciSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="employeeImage1" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/employee.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Staništa">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showStanistaSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="habitatImage1" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/habitat.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aktivnosti">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showAktivnostiSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="notebookImage1" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/notebook.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <MenuBar fx:id="izbornikAdmin" prefHeight="32.0" prefWidth="600.0" styleClass="menu-bar">
+         <menus>
+            <Menu mnemonicParsing="false" text="Životinje">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showZivotinjeSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="pawsImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/paws.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Zaposlenici">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showZaposleniciSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="employeeImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/employee.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Staništa">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showStanistaSearchScreen" text="Pretraga" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="habitatImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/habitat.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aktivnosti">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showAktivnostiSearchScreen" text="Pretraga" />
+                  <MenuItem mnemonicParsing="false" onAction="#showAktivnostUnosScreen" text="Unos" />
+                  <MenuItem mnemonicParsing="false" onAction="#showAktivnostIzmjenaScreen" text="Izmjena" />
+                  <MenuItem mnemonicParsing="false" onAction="#showBrisanjeAktivnostiScreen" text="Brisanje" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="notebookImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/notebook.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Promjene">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showPromjeneScreen" text="Pregled" />
+               </items>
+               <graphic>
+                  <ImageView fx:id="changeImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/changes.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <Button mnemonicParsing="false" onAction="#logOut" styleClass="button" text="Log out" GridPane.halignment="RIGHT">
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+         <graphic>
+            <ImageView fx:id="signOutImage" fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/signOut.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</GridPane>
