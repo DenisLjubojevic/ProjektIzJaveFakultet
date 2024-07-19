@@ -3,9 +3,8 @@ package com.example.projektnizadatak.Controllers.AktivnostiController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnost;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
+import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -23,47 +22,32 @@ public class AzurirajAktivnostiController {
 
     @FXML
     private TextField trajanjeTextField;
-
-    @FXML
-    private TableView<Aktivnost> aktivnostiTableView;
-
-    @FXML
-    private TableColumn<Aktivnost, String> nazivTableColumn;
-
-    @FXML
-    private TableColumn<Aktivnost, String> cijenaTableColumn;
-
-    @FXML
-    private TableColumn<Aktivnost, String> trajanjeTableColumn;
-
     private String stariNaziv;
     private String staraCijena;
     private String staroTrajanje;
 
     List<Aktivnost> aktivnosti = new ArrayList<>();
     Aktivnost trazenaAktivnost;
+    private boolean popravljenLayout = false;
 
     public void initialize(){
+        if (!popravljenLayout){
+            MainApplication.popraviLayout();
+            popravljenLayout = true;
+        }
+
         try{
             aktivnosti = BazaPodataka.dohvatiSveAktivnosti();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje aktivnosti!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje aktivnosti!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage());
         }
-
-        nazivTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNaziv()));
-        cijenaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCijena().toString()));
-        trajanjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrajanje().toString()));
-
-        aktivnostiTableView.setItems(FXCollections.observableList(aktivnosti));
     }
 
-    public void dohvatiAktivnosti(){
-        Aktivnost aktivnost = aktivnostiTableView.getSelectionModel().getSelectedItem();
+    public void dohvatiAktivnosti(Aktivnost aktivnost){
         nazivTextField.setText(aktivnost.getNaziv());
         cijenaTextField.setText(aktivnost.getCijena().toString());
         trajanjeTextField.setText(aktivnost.getTrajanje().toString());
@@ -71,6 +55,7 @@ public class AzurirajAktivnostiController {
         stariNaziv = aktivnost.getNaziv();
         staraCijena = aktivnost.getCijena().toString();
         staroTrajanje = aktivnost.getTrajanje().toString();
+
         trazenaAktivnost = aktivnost;
     }
 
@@ -84,12 +69,12 @@ public class AzurirajAktivnostiController {
         trazenaAktivnost.setTrajanje(Integer.valueOf(trajanje));
 
         try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Potvrda");
-            alert.setHeaderText("Potvrda izmjene");
-            alert.setContentText("Jeste li sigurni da želite promjeniti odabranu aktivnost");
+            Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                    Alert.AlertType.CONFIRMATION,
+                    "Potvrda",
+                    "Potvrda izmjene",
+                    "Jeste li sigurni da želite promjeniti odabranu aktivnost?");
 
-            Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == ButtonType.OK){
                 if(!naziv.equals(stariNaziv)){
                     AzurirajZivotinjuController.spremiPromjenu(stariNaziv, naziv, "admin", LocalDateTime.now());
@@ -104,12 +89,11 @@ public class AzurirajAktivnostiController {
                 }
 
                 BazaPodataka.azurirajAktivnost(trazenaAktivnost);
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                alert2.setTitle("Izmjena aktivnosti");
-                alert2.setHeaderText("Uspješna izmjena!");
-                alert2.setContentText("Aktivnost " + naziv + " je uspješno izmjenjena!");
-
-                alert2.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Izmjena aktivnosti",
+                        "Uspješna izmjena!",
+                        "Aktivnost " + naziv + " je uspješno izmjenjena!");
             }
         } catch (BazaPodatakaException e) {
             throw new RuntimeException(e);

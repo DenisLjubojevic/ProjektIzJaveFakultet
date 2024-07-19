@@ -37,12 +37,12 @@ public class UnosStanistaController {
         try{
             obroci = BazaPodataka.dohvatiSveObroke();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje zaposlenika!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje zaposlenika!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         for (Obrok o: obroci) {
@@ -62,23 +62,23 @@ public class UnosStanistaController {
         try{
             staniste = BazaPodataka.dohvatiSvaStanista();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje životinja!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje staništa!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         try{
             zivotinje = BazaPodataka.dohvatiSveZivotinje();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje životinja!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje životinja!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         String brojZivotinja = brojZivotinjaTextField.getText();
@@ -95,19 +95,19 @@ public class UnosStanistaController {
         }
 
         if(vrsta.isBlank() || brojZivotinja.isBlank()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Spremanje staništa!");
-            alert.setHeaderText("Pogreška spremanja!");
-            alert.setContentText("Potrebno je unjeti sve podatke!");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Spremanje staništa!",
+                    "Pogreška spremanja!",
+                    "Potrebno je unjeti sve podatke!"
+            );
         } else if (odabraneZivotinje.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Spremanje staništa!");
-            alert.setHeaderText("Pogreška spremanja!");
-            alert.setContentText("Potrebno je unjeti vrstu životinja koja već postoji!");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Spremanje staništa!",
+                    "Pogreška spremanja!",
+                    "Potrebno je unjeti vrstu životinja koja već postoji!"
+            );
         } else {
 
             Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), obrok);
@@ -115,19 +115,19 @@ public class UnosStanistaController {
                 BazaPodataka.spremiStaniste(novoStaniste);
                 AzurirajZivotinjuController.spremiPromjenu( "-", novoStaniste.getClass().getSimpleName(), "admin", LocalDateTime.now());
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Spremanje staništa!");
-                alert.setHeaderText("Uspješno spremljeno stanište!");
-                alert.setContentText("Stanište " + vrsta + " je uspješno spremljeno!");
-
-                alert.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Spremanje staništa!",
+                        "Uspješno spremljeno stanište!",
+                        "Stanište " + vrsta + " je uspješno spremljeno!"
+                );
             } catch (BazaPodatakaException ex){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Spremanje životinje!");
-                alert.setHeaderText("Pogreška prilikom spremanja!");
-                alert.setContentText(ex.getMessage());
-
-                alert.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Spremanje životinje!",
+                        "Pogreška prilikom spremanja!",
+                        ex.getMessage()
+                );
             }
         }
     }

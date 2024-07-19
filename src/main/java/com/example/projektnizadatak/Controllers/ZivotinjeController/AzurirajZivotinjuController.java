@@ -7,8 +7,6 @@ import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import com.example.projektnizadatak.Util.Datoteke;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -51,12 +49,12 @@ public class AzurirajZivotinjuController {
         try{
             zivotinje = BazaPodataka.dohvatiSveZivotinje();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje životinja!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje životinja!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         muskoRadioButton.setToggleGroup(spolToggleGroup);
@@ -100,12 +98,13 @@ public class AzurirajZivotinjuController {
         trazenaZivotinja.setSpol(spol);
 
         try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Potvrda");
-            alert.setHeaderText("Potvrda izmjene");
-            alert.setContentText("Jeste li sigurni da želite promjeniti odabranu životinju?");
+            Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                    Alert.AlertType.CONFIRMATION,
+                    "Potvrda",
+                    "Potvrda izmjene",
+                    "Jeste li sigurni da želite promjeniti odabranu životinju?"
+            );
 
-            Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == ButtonType.OK){
                 if(!staraVrsta.equals(vrsta)){
                     spremiPromjenu(staraVrsta, vrsta, "admin", sada);
@@ -124,12 +123,12 @@ public class AzurirajZivotinjuController {
                 }
 
                 BazaPodataka.azurirajZivotinju(trazenaZivotinja);
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                alert2.setTitle("Izmjena životinje");
-                alert2.setHeaderText("Uspješna izmjena!");
-                alert2.setContentText("Životinja razreda " + stariRazred + " je uspješno izmjenjena!");
-
-                alert2.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Izmjena životinje",
+                        "Uspješna izmjena!",
+                        "Životinja razreda " + stariRazred + " je uspješno izmjenjena!"
+                );
             }
         } catch (BazaPodatakaException e) {
             throw new RuntimeException(e);

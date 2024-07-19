@@ -35,32 +35,9 @@ public class IzbornikController {
     private ImageView changeImage;
 
     @FXML
-    private ImageView pawsImage1;
-
-    @FXML
-    private ImageView employeeImage1;
-
-    @FXML
-    private ImageView habitatImage1;
-
-    @FXML
-    private ImageView notebookImage1;
-
-    @FXML
-    private MenuBar izbornik;
-    @FXML
     private MenuBar izbornikAdmin;
 
     public void initialize(){
-        if(loginScreenController.roleKorisnika.equals("admin")){
-            izbornikAdmin.setVisible(true);
-            izbornik.setVisible(false);
-        }else{
-            izbornikAdmin.setVisible(false);
-            izbornik.setVisible(true);
-        }
-
-        izbornik.prefWidthProperty().bind(mainStage.widthProperty());
         izbornikAdmin.prefWidthProperty().bind(mainStage.widthProperty());
 
         pawsImage.setImage(loadImage("/com/example/projektniZadatak/Images/paws.png"));
@@ -68,10 +45,6 @@ public class IzbornikController {
         habitatImage.setImage(loadImage("/com/example/projektniZadatak/Images/habitat.png"));
         notebookImage.setImage(loadImage("/com/example/projektniZadatak/Images/notebook.png"));
         changeImage.setImage(loadImage("/com/example/projektniZadatak/Images/changes.png"));
-        pawsImage1.setImage(loadImage("/com/example/projektniZadatak/Images/paws.png"));
-        employeeImage1.setImage(loadImage("/com/example/projektniZadatak/Images/employee.png"));
-        habitatImage1.setImage(loadImage("/com/example/projektniZadatak/Images/habitat.png"));
-        notebookImage1.setImage(loadImage("/com/example/projektniZadatak/Images/notebook.png"));
         signOutImage.setImage(loadImage("/com/example/projektniZadatak/Images/changes.png"));
     }
 
@@ -122,18 +95,6 @@ public class IzbornikController {
 
     public void showAktivnostiSearchScreen() throws IOException {
         promjeniEkran("aktivnosti/pretragaAktivnosti.fxml", "Pretraga aktivnosti");
-    }
-
-    public void showAktivnostUnosScreen() throws IOException {
-        promjeniEkran("aktivnosti/unosAktivnosti.fxml", "Unos aktivnosti");
-    }
-
-    public void showAktivnostIzmjenaScreen() throws IOException {
-        promjeniEkran("aktivnosti/azurirajAktivnosti.fxml", "Izmjena aktivnosti");
-    }
-
-    public void showBrisanjeAktivnostiScreen()throws IOException{
-        promjeniEkran("aktivnosti/brisanjeAktivnosti.fxml", "Brisanje aktivnosti");
     }
 
     public void showPromjeneScreen() throws IOException {

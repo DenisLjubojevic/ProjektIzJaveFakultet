@@ -41,12 +41,12 @@ public class UnosZaposlenikaController {
         try{
             zaposlenici = BazaPodataka.dohvatiSveZaposlenike();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje zaposlenika!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje zaposlenika!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         for (Zaposlenici z: zaposlenici) {
@@ -68,12 +68,12 @@ public class UnosZaposlenikaController {
         Integer id = zaposlenici.size();
 
         if(ime.isBlank() || prezime.isBlank() || cijenaPoSatu.isBlank() || satnica.isBlank()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Spremanje zaposlenika!");
-            alert.setHeaderText("Pogreška spremanja!");
-            alert.setContentText("Potrebno je unjeti sve podatke!");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Spremanje zaposlenika!",
+                    "Pogreška spremanja!",
+                    "Potrebno je unjeti sve podatke!"
+            );
         } else {
 
             Zaposlenici noviZaposlenik = new Zaposlenici(id + 1, posao, Integer.valueOf(cijenaPoSatu), Integer.valueOf(satnica), ime, prezime);
@@ -82,19 +82,19 @@ public class UnosZaposlenikaController {
                 BazaPodataka.spremiZaposlenika(noviZaposlenik);
                 AzurirajZivotinjuController.spremiPromjenu( "-", noviZaposlenik.getClass().getSimpleName(), "admin", LocalDateTime.now());
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Spremanje zaposlenika!");
-                alert.setHeaderText("Uspješno spremljen zaposlenik!");
-                alert.setContentText("Zaposlenik " + ime + " " + prezime + " je uspješno spremljen!");
-
-                alert.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Spremanje zaposlenika!",
+                        "Uspješno spremljen zaposlenik!",
+                        "Zaposlenik " + ime + " " + prezime + " je uspješno spremljen!"
+                );
             } catch (BazaPodatakaException ex){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Spremanje zaposlenika!");
-                alert.setHeaderText("Pogreška prilikom spremanja!");
-                alert.setContentText(ex.getMessage());
-
-                alert.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Spremanje zaposlenika!",
+                        "Pogreška prilikom spremanja!",
+                        ex.getMessage()
+                );
             }
         }
     }

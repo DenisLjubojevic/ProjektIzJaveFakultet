@@ -44,12 +44,12 @@ public class UnosZivotinjaController {
         try{
             zivotinje = BazaPodataka.dohvatiSveZivotinje();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje životinja!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje životinja!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
         String vrsta = vrstaZivotinjeTextField.getText();
         String razred = razredZivotinjeTextField.getText();
@@ -66,13 +66,13 @@ public class UnosZivotinjaController {
         }
 
         if(vrsta.isBlank() || razred.isBlank() || starost.isBlank() || spol.equals("")){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Spremanje životinje!");
-            alert.setHeaderText("Pogreška spremanja!");
-            alert.setContentText("Potrebno je unjeti sve podatke!");
-
-            alert.showAndWait();
-        } else if (!vrsta.isBlank() && !razred.isBlank() && !spol.equals("") && !starost.isBlank()) {
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Spremanje životinje!",
+                    "Pogreška spremanja!",
+                    "Potrebno je unjeti sve podatke!"
+            );
+        } else {
 
             Zivotinja novaZivotinja = new Zivotinja(id + 1, new Sistematika(vrsta, razred), Integer.valueOf(starost), spol);
 
@@ -80,19 +80,19 @@ public class UnosZivotinjaController {
                 BazaPodataka.spremiZivotinju(novaZivotinja);
                 AzurirajZivotinjuController.spremiPromjenu( "-", novaZivotinja.getClass().getSimpleName(), "admin", LocalDateTime.now());
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Spremanje profesora!");
-                alert.setHeaderText("Uspješno spremljen životinje!");
-                alert.setContentText("Životinje razreda " + razred + " je uspješno spremljena!");
-
-                alert.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Spremanje životinje!",
+                        "Uspješno spremljen životinje!",
+                        "Životinje razreda " + razred + " je uspješno spremljena!"
+                );
             } catch (BazaPodatakaException ex){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Spremanje životinje!");
-                alert.setHeaderText("Pogreška prilikom spremanja!");
-                alert.setContentText(ex.getMessage());
-
-                alert.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Spremanje životinje!",
+                        "Pogreška prilikom spremanja!",
+                        ex.getMessage()
+                );
             }
         }
     }

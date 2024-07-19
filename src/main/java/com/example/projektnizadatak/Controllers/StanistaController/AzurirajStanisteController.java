@@ -8,8 +8,6 @@ import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -30,7 +28,6 @@ public class AzurirajStanisteController {
 
     private String stariBrojJedinki;
     private String staraVrsta;
-    private Obrok stariObrok;
     List<Staniste> stanista = new ArrayList<>();
     List<Zivotinja> zivotinje = new ArrayList<>();
     List<Obrok> obroci = new ArrayList<>();
@@ -47,34 +44,34 @@ public class AzurirajStanisteController {
         try{
             stanista = BazaPodataka.dohvatiSvaStanista();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje staništa!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje staništa!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         try{
             zivotinje = BazaPodataka.dohvatiSveZivotinje();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje životinja!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje životinja!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         try{
             obroci = BazaPodataka.dohvatiSveObroke();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje obroka!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje obroka!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         for (Obrok o: obroci) {
@@ -94,7 +91,6 @@ public class AzurirajStanisteController {
 
         stariBrojJedinki = String.valueOf(staniste.getZivotinja().size());
         staraVrsta = staniste.getZivotinja().get(0).getSistematika().vrsta();
-        stariObrok = staniste.getObrok();
         trazenoStaniste = staniste;
     }
 
@@ -118,12 +114,13 @@ public class AzurirajStanisteController {
             trazenoStaniste.setObrok(obrok);
 
             try {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Potvrda");
-                alert.setHeaderText("Potvrda izmjene");
-                alert.setContentText("Jeste li sigurni da želite urediti odabrano stanište?");
+                Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                        Alert.AlertType.CONFIRMATION,
+                        "Potvrda",
+                        "Potvrda izmjene",
+                        "Jeste li sigurni da želite urediti odabrano stanište?"
+                );
 
-                Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK){
                     if(!stariBrojJedinki.equals(brojJedinki)){
                         AzurirajZivotinjuController.spremiPromjenu(stariBrojJedinki, brojJedinki, "admin", LocalDateTime.now());
@@ -134,12 +131,12 @@ public class AzurirajStanisteController {
                     }
 
                     BazaPodataka.azurirajStaniste(trazenoStaniste);
-                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("Izmjena staništa");
-                    alert2.setHeaderText("Uspješna izmjena!");
-                    alert2.setContentText("Stanište " + vrsta + " je uspješno izmjenjeno!");
-
-                    alert2.showAndWait();
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.INFORMATION,
+                            "Izmjena staništa",
+                            "Uspješna izmjena!",
+                            "Stanište " + vrsta + " je uspješno izmjenjeno!"
+                    );
                 }
             } catch (BazaPodatakaException e) {
                 throw new RuntimeException(e);
@@ -147,12 +144,12 @@ public class AzurirajStanisteController {
 
             initialize();
         }else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Problem");
-            alert.setHeaderText("Neuspješna izmjena!");
-            alert.setContentText(vrsta + " ne postoji u bazi podataka!");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Problem",
+                    "Neuspješna izmjena!",
+                    vrsta + " ne postoji u bazi podataka!"
+            );
         }
 
 

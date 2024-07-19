@@ -4,7 +4,6 @@ import com.example.projektnizadatak.Controllers.LoginController.loginScreenContr
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Zaposlenici;
-import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
@@ -87,12 +86,12 @@ public class PretragaZaposlenikaController {
         try{
             zaposlenici = BazaPodataka.dohvatiSveZaposlenike();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje zaposlenika!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje zaposlenika!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         posaoZaposlenikaChoiceBox.getItems().add("Odabir");
@@ -194,12 +193,12 @@ public class PretragaZaposlenikaController {
                 e.printStackTrace();
             }
         }else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pogreška");
-            alert.setHeaderText("Potreban odabir");
-            alert.setContentText("Trebate odabrati jednog zaposlenika iz tablice.");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednog zaposlenika iz tablice."
+            );
         }
     }
 
@@ -207,32 +206,34 @@ public class PretragaZaposlenikaController {
         Zaposlenici zaposlenik = zaposleniciTableView.getSelectionModel().getSelectedItem();
         if (zaposlenik != null){
             try {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Potvrda");
-                alert.setHeaderText("Potvrda brisanja");
-                alert.setContentText("Jeste li sigurni da želite obrisati odabranog zaposlenika?");
+                Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                        Alert.AlertType.CONFIRMATION,
+                        "Potvrda",
+                        "Potvrda brisanja",
+                        "Jeste li sigurni da želite obrisati odabranog zaposlenika?"
+                );
 
-                Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK){
                     BazaPodataka.obrisiZaposlenika(zaposlenik);
                     AzurirajZivotinjuController.spremiPromjenu(zaposlenik.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
-                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("Brisanje zaposlenika");
-                    alert2.setHeaderText("Uspješno brisanje!");
-                    alert2.setContentText("Zaposlenik" + zaposlenik.getIme() + " " + zaposlenik.getPrezime() + " je uspješno obrisan!");
 
-                    alert2.showAndWait();
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.INFORMATION,
+                            "Brisanje zaposlenika",
+                            "Uspješno brisanje!",
+                            "Zaposlenik" + zaposlenik.getIme() + " " + zaposlenik.getPrezime() + " je uspješno obrisan!"
+                    );
                 }
             } catch (BazaPodatakaException e) {
                 throw new RuntimeException(e);
             }
         }else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pogreška");
-            alert.setHeaderText("Potreban odabir");
-            alert.setContentText("Trebate odabrati jednog zaposlenika iz tablice.");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednog zaposlenika iz tablice."
+            );
         }
 
         initialize();

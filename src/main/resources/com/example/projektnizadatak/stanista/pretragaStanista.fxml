@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -58,11 +59,11 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="obrokTextField" promptText="obrok">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </TextField>
+                  <ChoiceBox fx:id="obrokChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
                </children>
             </HBox>
          </children>

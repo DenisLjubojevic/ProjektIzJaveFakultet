@@ -5,33 +5,21 @@ import com.example.projektnizadatak.Entiteti.Korisnik;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import com.example.projektnizadatak.Util.Datoteke;
 import com.example.projektnizadatak.Util.Hashiranje;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.stage.Screen;
 
 import java.io.*;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class loginScreenController {
     @FXML
     private AnchorPane anchorPane;
+
     @FXML
     private TextField korisnickoImeTextField;
 
@@ -49,8 +37,12 @@ public class loginScreenController {
 
     public static String roleKorisnika;
 
+    private boolean popravljenLayout = false;
     public void initialize(){
-        MainApplication.popraviLayout();
+        if (!popravljenLayout){
+            MainApplication.popraviLayout();
+            popravljenLayout = true;
+        }
 
         changeVisibility(new ActionEvent());
 
@@ -87,38 +79,10 @@ public class loginScreenController {
         }
     }
 
-    public void napraviAccount(ActionEvent event) throws BazaPodatakaException {
-        String korisnickoIme = korisnickoImeTextField.getText();
-        String lozinka = getLozinka();
-        boolean zauzetoKorisnickoIme = false;
-
-        korisnici = BazaPodataka.dohvatiKorisnike();
-
-        for (Korisnik k: korisnici) {
-            if(k.getKorisnickoIme().equals(korisnickoIme)){
-                zauzetoKorisnickoIme = true;
-            }
-        }
-
-        if(!korisnickoIme.isBlank() && !lozinka.isBlank()){
-            if(zauzetoKorisnickoIme){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Stvaranje računa!");
-                alert.setHeaderText("Pogreška stvaranja!");
-                alert.setContentText("Korisničko ime je već zauzeto!");
-
-                alert.showAndWait();
-            }else{
-                BazaPodataka.stovoriKorisnika(new Korisnik(korisnickoIme, lozinka, 0));
-            }
-        }else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Stvaranje računa!");
-            alert.setHeaderText("Pogreška stvaranja!");
-            alert.setContentText("Potrebno je unjeti sve podatke!");
-
-            alert.showAndWait();
-        }
+    public void napraviAccount() throws IOException {
+        IzbornikController.promjeniEkran(
+                "login/signin.fxml",
+                "Stvaranje računa");
     }
     public void ucitajKorisnika(ActionEvent event) throws IOException, NoSuchAlgorithmException, BazaPodatakaException {
         try{
@@ -127,12 +91,12 @@ public class loginScreenController {
             String korisnickoIme = korisnickoImeTextField.getText();
             String lozinka = getLozinka();
             String hashiranaLozinka = hashiranje.hashiranaLozinka(lozinka);
-            boolean uspješnaPrijava = false;
+            boolean uspjesnaPrijava = false;
 
             for (Korisnik korisnik : korisnici) {
                 if (korisnik.getKorisnickoIme().equals(korisnickoIme) &&
                         korisnik.getLozinka().equals(hashiranaLozinka)) {
-                    uspješnaPrijava = true;
+                    uspjesnaPrijava = true;
 
                     if (korisnik.getRole().equals(1)){
                         roleKorisnika = "admin";
@@ -140,12 +104,11 @@ public class loginScreenController {
                         roleKorisnika = "user";
                     }
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Spajanje korisnika!");
-                    alert.setHeaderText("Uspjenšno spajanje!");
-                    alert.setContentText("Prijavljeni ste kao " + roleKorisnika);
-
-                    alert.showAndWait();
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.INFORMATION,
+                            "Spajanje korisnika!",
+                            "Uspjenšno spajanje!",
+                            "Prijavljeni ste kao " + roleKorisnika);
 
                     IzbornikController.promjeniEkran(
                             "zivotinje/pretragaZivotinja.fxml",
@@ -153,13 +116,12 @@ public class loginScreenController {
                 }
             }
 
-            if (!uspješnaPrijava){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Spajanje korisnika!");
-                alert.setHeaderText("Neuspješno spajanje!");
-                alert.setContentText("Pogrešno korisničko ime ili lozinka!");
-
-                alert.showAndWait();
+            if (!uspjesnaPrijava){
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Spajanje korisnika!",
+                        "Neuspješno spajanje!",
+                        "Pogrešno korisničko ime ili lozinka!");
             }
         }catch (BazaPodatakaException e) {
             e.printStackTrace();

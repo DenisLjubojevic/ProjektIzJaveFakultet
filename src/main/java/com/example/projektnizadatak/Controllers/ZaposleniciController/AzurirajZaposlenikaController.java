@@ -5,8 +5,6 @@ import com.example.projektnizadatak.Entiteti.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -50,12 +48,12 @@ public class AzurirajZaposlenikaController {
         try{
             zaposlenici = BazaPodataka.dohvatiSveZaposlenike();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje zaposlenika!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje zaposlenika!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         for (Zaposlenici z: zaposlenici) {
@@ -98,12 +96,13 @@ public class AzurirajZaposlenikaController {
         trazeniZaposlenik.setZanimanje(posao);
 
         try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Potvrda");
-            alert.setHeaderText("Potvrda izmjene");
-            alert.setContentText("Jeste li sigurni da želite promjeniti odabranog zaposlenika?");
+            Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                    Alert.AlertType.CONFIRMATION,
+                    "Potvrda",
+                    "Potvrda izmjene",
+                    "Jeste li sigurni da želite promjeniti odabranog zaposlenika?"
+            );
 
-            Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == ButtonType.OK){
                 if(!staroIme.equals(ime)){
                     AzurirajZivotinjuController.spremiPromjenu(staroIme, ime, "admin", LocalDateTime.now());
@@ -126,12 +125,12 @@ public class AzurirajZaposlenikaController {
                 }
 
                 BazaPodataka.azurirajZaposlenika(trazeniZaposlenik);
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                alert2.setTitle("Izmjena zaposlenika");
-                alert2.setHeaderText("Uspješna izmjena!");
-                alert2.setContentText("Zaposlenik " + ime + " " + prezime + " je uspješno izmjenjen!");
-
-                alert2.showAndWait();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Izmjena zaposlenika",
+                        "Uspješna izmjena!",
+                        "Zaposlenik " + ime + " " + prezime + " je uspješno izmjenjen!"
+                );
             }
         } catch (BazaPodatakaException e) {
             throw new RuntimeException(e);

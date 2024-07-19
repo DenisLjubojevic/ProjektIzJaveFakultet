@@ -3,8 +3,8 @@ package com.example.projektnizadatak.Controllers.StanistaController;
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Stanista.Obrok;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
-import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class PretragaStanistaController {
     private TextField vrstaZivotinjaTextField;
 
     @FXML
-    private TextField obrokTextField;
+    private ChoiceBox<Obrok> obrokChoiceBox;
 
     @FXML
     private TableView<Staniste> stanisteTableView;
@@ -48,6 +49,7 @@ public class PretragaStanistaController {
     private TableColumn<Staniste, String> obrokTableColumn;
 
     List<Staniste> stanista = new ArrayList<>();
+    List<Obrok> obroci = new ArrayList<>();
 
     @FXML
     private Button dodajButton;
@@ -74,13 +76,31 @@ public class PretragaStanistaController {
         try{
             stanista = BazaPodataka.dohvatiSvaStanista();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje staništa!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje staništa!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
+
+        try{
+            obroci = BazaPodataka.dohvatiSveObroke();
+        } catch (BazaPodatakaException ex){
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje obroka!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
+        }
+
+        obrokChoiceBox.getItems().add(new Obrok(0, "Odabir", 0, LocalTime.now(), "Prazno"));
+        for (Obrok o: obroci) {
+            obrokChoiceBox.getItems().add(o);
+        }
+
+        obrokChoiceBox.getSelectionModel().selectFirst();
 
         brojZivotinjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getBrojJedinki())));
         vrstaZivotinjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSistematika().vrsta()));
@@ -105,42 +125,66 @@ public class PretragaStanistaController {
     }
 
     private void prikaziDetaljeStanista(Staniste staniste) throws IOException {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiStanista.fxml"));
-            Parent root = loader.load();
+        if (loginScreenController.roleKorisnika.equals("admin")){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiStanista.fxml"));
+                Parent root = loader.load();
 
-            DetaljiStanista detaljiStanista = loader.getController();
-            detaljiStanista.prikaziDetalje(staniste);
+                DetaljiStanista detaljiStanista = loader.getController();
+                detaljiStanista.prikaziDetalje(staniste);
 
-            Stage stage = MainApplication.getMainStage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Detalji staništa");
-            stage.show();
-        }catch (IOException e) {
-            e.printStackTrace();
+                Stage stage = MainApplication.getMainStage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Detalji staništa");
+                stage.show();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.WARNING,
+                    "Odbijeno",
+                    "Pristup odbijen",
+                    "Nemate pravo pristupa tim podacima!"
+            );
         }
+
+
     }
 
     public synchronized void dohvatiStanista(){
-        String brojZivotinja = brojZivotinjaTextField.getText();
         String vrsta = vrstaZivotinjaTextField.getText();
-        String obrok = obrokTextField.getText();
+        String brojZivotinja = brojZivotinjaTextField.getText();
+        Obrok obrok = obrokChoiceBox.getValue();
 
         stanisteTableView.setItems(FXCollections.observableList(stanista));
         List<Staniste> filtriranaStanista = new ArrayList<>();
-        if(!brojZivotinja.isEmpty()){
-            filtriranaStanista = stanista.stream().filter(s -> Integer.parseInt(brojZivotinja) == s.getZivotinja().size()).toList();
+
+        if (!vrsta.isEmpty() && obrok.getVrstaHrane().equals("Odabir")) {
+            filtriranaStanista = stanista.stream().filter(s -> s.getSistematika().vrsta().contains(vrsta)).toList();
             stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
         }
 
-        if (!vrsta.isEmpty()) {
-            filtriranaStanista = filtriranaStanista.stream().filter(s -> s.getZivotinja().get(0).getSistematika().vrsta().contains(vrsta)).toList();
-            stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+        if(!brojZivotinja.isEmpty() && obrok.getVrstaHrane().equals("Odabir")){
+            if (!vrsta.isEmpty()){
+                filtriranaStanista = filtriranaStanista.stream().filter(s -> Integer.parseInt(brojZivotinja) == s.getBrojJedinki()).toList();
+                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+            }else{
+                filtriranaStanista = stanista.stream().filter(s -> Integer.parseInt(brojZivotinja) == s.getBrojJedinki()).toList();
+                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+            }
+
         }
 
-        if (!obrok.isEmpty()){
-            filtriranaStanista = filtriranaStanista.stream().filter(s -> s.getObrok().getVrstaHrane().contains(obrok)).toList();
-            stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+        if (!obrok.getVrstaHrane().equals("Odabir")){
+            if (!vrsta.isEmpty() || !brojZivotinja.isEmpty()){
+                filtriranaStanista = filtriranaStanista.stream().filter(s -> s.getObrok().equals(obrok)).toList();
+                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+            }else{
+                filtriranaStanista = stanista.stream().filter(s -> s.getObrok().equals(obrok)).toList();
+                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+            }
+
         }
     }
 
@@ -168,12 +212,12 @@ public class PretragaStanistaController {
                 e.printStackTrace();
             }
         }else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pogreška");
-            alert.setHeaderText("Potreban odabir");
-            alert.setContentText("Trebate odabrati jedno stanište iz tablice.");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jedno stanište iz tablice."
+            );
         }
     }
 
@@ -181,32 +225,33 @@ public class PretragaStanistaController {
         Staniste staniste = stanisteTableView.getSelectionModel().getSelectedItem();
         if (staniste != null){
             try {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Potvrda");
-                alert.setHeaderText("Potvrda brisanja");
-                alert.setContentText("Jeste li sigurni da želite obrisati odabrano stanište?");
+                Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                        Alert.AlertType.CONFIRMATION,
+                        "Potvrda",
+                        "Potvrda brisanja",
+                        "Jeste li sigurni da želite obrisati odabrano stanište?"
+                );
 
-                Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK){
                     BazaPodataka.obrisiStaniste(staniste);
                     AzurirajZivotinjuController.spremiPromjenu(staniste.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
-                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("Brisanje staništa");
-                    alert2.setHeaderText("Uspješno brisanje!");
-                    alert2.setContentText("Stanište vrste " + staniste.getZivotinja().get(0).getSistematika().vrsta() + " je uspješno obrisano!");
-
-                    alert2.showAndWait();
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.INFORMATION,
+                            "Brisanje staništa",
+                            "Uspješno brisanje!",
+                            "Stanište vrste " + staniste.getZivotinja().get(0).getSistematika().vrsta() + " je uspješno obrisano!"
+                    );
                 }
             } catch (BazaPodatakaException e) {
                 throw new RuntimeException(e);
             }
         }else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pogreška");
-            alert.setHeaderText("Potreban odabir");
-            alert.setContentText("Trebate odabrati jedno stanište iz tablice.");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jedno stanište iz tablice."
+            );
         }
 
         initialize();

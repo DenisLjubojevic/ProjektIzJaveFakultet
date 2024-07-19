@@ -120,17 +120,20 @@ public class BazaPodataka {
     }
 
     public static Optional<Zivotinja> dohvatiZivotinju(Integer id) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM ZIVOTINJA WHERE ID = ?");
+            pstmt = con.prepareStatement("SELECT * FROM ZIVOTINJA WHERE ID = ?");
             pstmt.setInt(1, id);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             while (rs.next()){
                 Integer id2 = rs.getInt("id");
@@ -146,6 +149,10 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return Optional.empty();
@@ -225,14 +232,17 @@ public class BazaPodataka {
     }
 
     public static void spremiZivotinju(Zivotinja zivotinja) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO ZIVOTINJA(vrsta, razred, starost, spol)"
+            pstmt = con.prepareStatement("INSERT INTO ZIVOTINJA(vrsta, razred, starost, spol)"
                     + "VALUES (?, ?, ?, ?)");
             pstmt.setString(1, zivotinja.getSistematika().vrsta());
             pstmt.setString(2, zivotinja.getSistematika().razred());
@@ -243,18 +253,24 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void azurirajZivotinju(Zivotinja zivotinja) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("UPDATE ZIVOTINJA SET " +
+            pstmt = con.prepareStatement("UPDATE ZIVOTINJA SET " +
                     "VRSTA = ?,"+
                     "RAZRED = ?,"+
                     "STAROST = ?,"+
@@ -270,35 +286,48 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void obrisiZivotinju(Zivotinja zivotinja) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("DELETE FROM ZIVOTINJA WHERE ID = ?");
+            pstmt = con.prepareStatement("DELETE FROM ZIVOTINJA WHERE ID = ?");
             pstmt.setInt(1, zivotinja.getId());
 
             pstmt.executeUpdate();
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static List<Zaposlenici> dohvatiSveZaposlenike()throws BazaPodatakaException{
         List<Zaposlenici> zaposlenici = new ArrayList<>();
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM ZAPOSLENICI");
+            rs = stmt.executeQuery("SELECT * FROM ZAPOSLENICI");
 
             while (rs.next()){
                 Integer id = rs.getInt("id");
@@ -315,23 +344,31 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (stmt != null) stmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return zaposlenici;
     }
 
     public static Optional<Zaposlenici> dohvatiZaposlenika(Integer id) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM ZAPOSLENICI WHERE ID = ?");
+            pstmt = con.prepareStatement("SELECT * FROM ZAPOSLENICI WHERE ID = ?");
             pstmt.setInt(1, id);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             while (rs.next()){
                 Integer id2 = rs.getInt("id");
@@ -348,20 +385,27 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return Optional.empty();
     }
 
     public static void spremiZaposlenika(Zaposlenici zaposlenik) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO ZAPOSLENICI(ime, prezime, zanimanje, cijena_po_satu, satnica)"
+            pstmt = con.prepareStatement("INSERT INTO ZAPOSLENICI(ime, prezime, zanimanje, cijena_po_satu, satnica)"
                     + "VALUES (?, ?, ?, ?, ?)");
             pstmt.setString(1, zaposlenik.getIme());
             pstmt.setString(2, zaposlenik.getPrezime());
@@ -373,18 +417,24 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void azurirajZaposlenika(Zaposlenici zaposlenik) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("UPDATE ZAPOSLENICI SET " +
+            pstmt = con.prepareStatement("UPDATE ZAPOSLENICI SET " +
                     "IME = ?,"+
                     "PREZIME = ?,"+
                     "ZANIMANJE = ?,"+
@@ -402,35 +452,48 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void obrisiZaposlenika(Zaposlenici zaposlenik) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("DELETE FROM ZAPOSLENICI WHERE ID = ?");
+            pstmt = con.prepareStatement("DELETE FROM ZAPOSLENICI WHERE ID = ?");
             pstmt.setInt(1, zaposlenik.getId());
 
             pstmt.executeUpdate();
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static List<Staniste> dohvatiSvaStanista()throws BazaPodatakaException{
         List<Staniste> stanista = new ArrayList<>();
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM STANISTA");
+            rs = stmt.executeQuery("SELECT * FROM STANISTA");
 
             List<Zivotinja> sveZivotinje = dohvatiSveZivotinje();
             List<Zivotinja> odabraneZivotinje = new ArrayList<>();
@@ -456,23 +519,31 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (stmt != null) stmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return stanista;
     }
 
     public static Optional<Staniste> dohvatiStaniste(Integer id) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM STANISTA WHERE ID = ?");
+            pstmt = con.prepareStatement("SELECT * FROM STANISTA WHERE ID = ?");
             pstmt.setInt(1, id);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             List<Zivotinja> sveZivotinje = dohvatiSveZivotinje();
             List<Zivotinja> odabraneZivotinje = new ArrayList<>();
@@ -496,20 +567,27 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return Optional.empty();
     }
 
     public static void spremiStaniste(Staniste staniste) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO STANISTA(vrsta, broj_jedinki, obrok_id)"
+            pstmt = con.prepareStatement("INSERT INTO STANISTA(vrsta, broj_jedinki, obrok_id)"
                     + "VALUES (?, ?, ?)");
             pstmt.setString(1, staniste.getSistematika().vrsta());
             pstmt.setInt(2, staniste.getBrojJedinki());
@@ -519,18 +597,24 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void azurirajStaniste(Staniste staniste) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("UPDATE STANISTA SET " +
+            pstmt = con.prepareStatement("UPDATE STANISTA SET " +
                     "VRSTA = ?," +
                     "BROJ_JEDINKI = ?," +
                     "OBROK_ID = ?" +
@@ -544,35 +628,48 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void obrisiStaniste(Staniste staniste) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("DELETE FROM STANISTA WHERE ID = ?");
+            pstmt = con.prepareStatement("DELETE FROM STANISTA WHERE ID = ?");
             pstmt.setInt(1, staniste.getId());
 
             pstmt.executeUpdate();
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static List<Aktivnost> dohvatiSveAktivnosti()throws BazaPodatakaException{
         List<Aktivnost> aktivnosti = new ArrayList<>();
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM AKTIVNOSTI");
+            rs = stmt.executeQuery("SELECT * FROM AKTIVNOSTI");
 
             while (rs.next()){
                 Integer id = rs.getInt("id");
@@ -586,23 +683,31 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (stmt != null) stmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return aktivnosti;
     }
 
     public static Optional<Aktivnost> dohvatiAktivnost(Integer id) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM AKTIVNOSTI WHERE ID = ?");
+            pstmt = con.prepareStatement("SELECT * FROM AKTIVNOSTI WHERE ID = ?");
             pstmt.setInt(1, id);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             while (rs.next()){
                 Integer id2 = rs.getInt("id");
@@ -616,20 +721,27 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
 
         return Optional.empty();
     }
 
     public static void spremiAktivnost(Aktivnost aktivnost) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO AKTIVNOSTI(naziv, cijena, trajanje) "
+            pstmt = con.prepareStatement("INSERT INTO AKTIVNOSTI(naziv, cijena, trajanje) "
                     + "VALUES (?, ?, ?)");
             pstmt.setString(1, aktivnost.getNaziv());
             pstmt.setInt(2, aktivnost.getCijena());
@@ -639,18 +751,24 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void azurirajAktivnost(Aktivnost aktivnost) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("UPDATE AKTIVNOSTI SET " +
+            pstmt = con.prepareStatement("UPDATE AKTIVNOSTI SET " +
                     "NAZIV = ?,"+
                     "CIJENA = ?,"+
                     "TRAJANJE = ? "+
@@ -664,24 +782,33 @@ public class BazaPodataka {
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 
     public static void obrisiAktivnost(Aktivnost aktivnost) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
         try{
-            Connection con = connectToDataBase();
+            con = connectToDataBase();
 
             if(con != null){
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            PreparedStatement pstmt = con.prepareStatement("DELETE FROM AKTIVNOSTI WHERE ID = ?");
+            pstmt = con.prepareStatement("DELETE FROM AKTIVNOSTI WHERE ID = ?");
             pstmt.setInt(1, aktivnost.getId());
 
             pstmt.executeUpdate();
 
         } catch (Exception e){
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
         }
     }
 

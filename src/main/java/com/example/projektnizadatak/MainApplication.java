@@ -1,13 +1,15 @@
 package com.example.projektnizadatak;
 
-import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Optional;
 
 public class MainApplication extends Application {
     public static Stage mainStage;
@@ -57,5 +59,29 @@ public class MainApplication extends Application {
 
     public static Stage getMainStage(){
         return mainStage;
+    }
+
+    public static void showAlertDialog(Alert.AlertType alertType, String title, String header, String context){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(context);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(Objects.requireNonNull(MainApplication.class.getResource("/com/example/projektnizadatak/css/AlertDialog.css")).toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
+
+        alert.showAndWait();
+    }
+
+    public static Optional<ButtonType> showAlertDialogConfirmation(Alert.AlertType alertType, String title, String header, String context){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(context);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(Objects.requireNonNull(MainApplication.class.getResource("/com/example/projektnizadatak/css/AlertDialog.css")).toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
+
+        return alert.showAndWait();
     }
 }

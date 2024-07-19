@@ -2,7 +2,6 @@ package com.example.projektnizadatak.Controllers.ZivotinjeController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
-import com.example.projektnizadatak.Controllers.StanistaController.DetaljiStanista;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -14,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -85,12 +83,12 @@ public class PretragaZivotinjaController {
         try{
             zivotinje = BazaPodataka.dohvatiSveZivotinje();
         } catch (BazaPodatakaException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Učitavanje životinja!");
-            alert.setHeaderText("Pogreška učitavanja!");
-            alert.setContentText(ex.getMessage());
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje životinja!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
         }
 
         muskoRadioButton.setToggleGroup(spolToggleGroup);
@@ -181,12 +179,12 @@ public class PretragaZivotinjaController {
                 e.printStackTrace();
             }
         }else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pogreška");
-            alert.setHeaderText("Potreban odabir");
-            alert.setContentText("Trebate odabrati jednu životinju iz tablice.");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednu životinju iz tablice."
+            );
         }
     }
 
@@ -194,32 +192,32 @@ public class PretragaZivotinjaController {
         Zivotinja zivotinja = zivotinjaTableView.getSelectionModel().getSelectedItem();
         if (zivotinja != null){
             try {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Potvrda");
-                alert.setHeaderText("Potvrda brisanja");
-                alert.setContentText("Jeste li sigurni da želite obrisati odabranu životinju?");
-
-                Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                        Alert.AlertType.CONFIRMATION,
+                        "Potvrda",
+                        "Potvrda brisanja",
+                        "Jeste li sigurni da želite obrisati odabranu životinju?"
+                );
                 if(result.get() == ButtonType.OK){
                     BazaPodataka.obrisiZivotinju(zivotinja);
                     AzurirajZivotinjuController.spremiPromjenu(zivotinja.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
-                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("Brisanje životinje");
-                    alert2.setHeaderText("Uspješno brisanje!");
-                    alert2.setContentText("Životinja razreda " + zivotinja.getSistematika().razred() + " je uspješno obrisana!");
-
-                    alert2.showAndWait();
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.INFORMATION,
+                            "Brisanje životinje",
+                            "Uspješno brisanje!",
+                            "Životinja razreda " + zivotinja.getSistematika().razred() + " je uspješno obrisana!"
+                    );
                 }
             } catch (BazaPodatakaException e) {
                 throw new RuntimeException(e);
             }
         }else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pogreška");
-            alert.setHeaderText("Potreban odabir");
-            alert.setContentText("Trebate odabrati jednu životinju iz tablice.");
-
-            alert.showAndWait();
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednu životinju iz tablice."
+            );
         }
 
         initialize();
