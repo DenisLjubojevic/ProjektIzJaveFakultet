@@ -1,7 +1,7 @@
 package com.example.projektnizadatak.Controllers.AktivnostiController;
 
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
-import com.example.projektnizadatak.Entiteti.Aktivnost;
+import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;

@@ -1,4 +1,4 @@
-package com.example.projektnizadatak.Entiteti;
+package com.example.projektnizadatak.Entiteti.Korisnici;
 
 public class Korisnik{
     private String korisnickoIme;

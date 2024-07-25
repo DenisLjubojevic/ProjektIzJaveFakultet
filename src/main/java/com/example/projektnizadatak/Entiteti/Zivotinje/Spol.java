@@ -1,4 +1,4 @@
-package com.example.projektnizadatak.Entiteti;
+package com.example.projektnizadatak.Entiteti.Zivotinje;
 
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 

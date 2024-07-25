@@ -1,0 +1,14 @@
+.button{
+    -fx-font-family: "Sitka Text";
+    -fx-font-weight: bold;
+    -fx-background-color:  #FFB76F;
+    -fx-border-width: 2;
+    -fx-border-color: darkgoldenrod;
+    -fx-padding: 5 10 5 10;
+    -fx-background-insets: 0, 1;
+}
+
+.button:hover {
+    -fx-background-color: darkgoldenrod;
+    -fx-border-color: burlywood;
+}

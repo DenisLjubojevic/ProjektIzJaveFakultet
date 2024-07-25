@@ -1,8 +1,10 @@
 package com.example.projektnizadatak.Util;
 
-import com.example.projektnizadatak.Entiteti.*;
+import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
+import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Entiteti.Stanista.Obrok;
+import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;

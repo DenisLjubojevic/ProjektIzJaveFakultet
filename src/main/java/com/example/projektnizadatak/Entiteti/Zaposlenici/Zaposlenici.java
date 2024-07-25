@@ -1,6 +1,6 @@
-package com.example.projektnizadatak.Entiteti;
+package com.example.projektnizadatak.Entiteti.Zaposlenici;
 
-public class Zaposlenici extends Posao{
+public class Zaposlenici extends Posao {
     private String ime;
     private String prezime;
     private Integer placa;

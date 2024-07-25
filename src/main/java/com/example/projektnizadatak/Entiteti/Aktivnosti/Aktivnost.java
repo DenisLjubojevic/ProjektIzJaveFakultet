@@ -1,4 +1,4 @@
-package com.example.projektnizadatak.Entiteti;
+package com.example.projektnizadatak.Entiteti.Aktivnosti;
 
 public class Aktivnost{
     private Integer id;

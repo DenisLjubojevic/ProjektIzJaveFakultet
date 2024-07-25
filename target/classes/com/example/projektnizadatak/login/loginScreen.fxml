@@ -41,24 +41,24 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                      <children>
-                        <Label styleClass="loginLabel" text="Korisničko ime:" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="346.0">
+                        <Label layoutX="123.0" layoutY="21.0" prefHeight="22.0" prefWidth="142.0" styleClass="loginLabel" text="Korisničko ime:" AnchorPane.bottomAnchor="23.000000000000007" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="335.0">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="19.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="korisnickoImeTextField" alignment="CENTER" promptText="korisnilko ime" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="200.4" />
+                        <TextField fx:id="korisnickoImeTextField" alignment="CENTER" layoutX="276.0" layoutY="20.0" promptText="korisnilko ime" AnchorPane.bottomAnchor="20.800000000000004" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="184.39999999999998" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                      <children>
-                        <Label styleClass="loginLabel" text="Lozinka:" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="343.2" AnchorPane.topAnchor="15.799999999999997">
+                        <Label layoutX="170.0" layoutY="15.0" prefHeight="18.0" prefWidth="90.0" styleClass="loginLabel" text="Lozinka:" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="15.0">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="19.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="lozinkaTextField" alignment="CENTER" maxHeight="5.0" prefHeight="5.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="200.4" AnchorPane.topAnchor="13.0" />
-                        <PasswordField fx:id="skrivenaLozinkaTextField" alignment="CENTER" maxHeight="5.0" prefHeight="5.0" promptText="lozinka" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="200.4" AnchorPane.topAnchor="13.0" />
-                        <CheckBox fx:id="showPasswordCheckBox" mnemonicParsing="false" onAction="#changeVisibility" AnchorPane.rightAnchor="205.4" AnchorPane.topAnchor="15.799999999999997" />
+                        <TextField fx:id="lozinkaTextField" alignment="CENTER" layoutX="277.0" layoutY="13.0" maxHeight="5.0" prefHeight="5.0" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="183.39999999999998" AnchorPane.topAnchor="13.0" />
+                        <PasswordField fx:id="skrivenaLozinkaTextField" alignment="CENTER" layoutX="277.0" layoutY="14.0" maxHeight="5.0" prefHeight="5.0" promptText="lozinka" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="183.39999999999998" AnchorPane.topAnchor="14.0" />
+                        <CheckBox fx:id="showPasswordCheckBox" layoutX="392.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeVisibility" AnchorPane.rightAnchor="191.2" AnchorPane.topAnchor="17.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane maxHeight="50.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">

@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.example.projektnizadatak.MainApplication.mainStage;
 
@@ -60,6 +61,14 @@ public class IzbornikController {
         Scene scene = new Scene(fxmlLoader.load(), sirina, visina);
         stage.setTitle(naslov);
         stage.setScene(scene);
+
+        try {
+            Image icon = new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("/com/example/projektnizadatak/Images/logo.png")));
+            stage.getIcons().add(icon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         scene.getStylesheets().add(MainApplication.class.getResource("/com/example/projektnizadatak/css/style.css").toExternalForm());
 
         Platform.runLater(() -> {

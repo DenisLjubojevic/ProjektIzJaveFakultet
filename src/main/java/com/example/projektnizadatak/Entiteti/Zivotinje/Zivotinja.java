@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Entiteti.Zivotinje;
 
 import com.example.projektnizadatak.Entiteti.Entitet;
-import com.example.projektnizadatak.Entiteti.Spol;
 
 public final class Zivotinja extends Entitet implements Spol {
     private Sistematika sistematika;

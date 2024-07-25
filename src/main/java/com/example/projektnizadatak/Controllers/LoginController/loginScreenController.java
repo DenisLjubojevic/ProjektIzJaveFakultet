@@ -1,7 +1,7 @@
 package com.example.projektnizadatak.Controllers.LoginController;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
-import com.example.projektnizadatak.Entiteti.Korisnik;
+import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;

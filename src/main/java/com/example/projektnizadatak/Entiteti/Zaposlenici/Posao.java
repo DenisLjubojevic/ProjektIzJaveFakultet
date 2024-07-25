@@ -1,6 +1,8 @@
-package com.example.projektnizadatak.Entiteti;
+package com.example.projektnizadatak.Entiteti.Zaposlenici;
 
-public abstract class Posao extends Entitet{
+import com.example.projektnizadatak.Entiteti.Entitet;
+
+public abstract class Posao extends Entitet {
     private String zanimanje;
     private Integer cijenaPoSatu;
     private Integer mjesecnaSatnica;
