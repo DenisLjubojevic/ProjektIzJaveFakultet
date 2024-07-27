@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="gridPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #000000FF;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.LoginController.signinController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="60" />
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="40" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints percentHeight="25" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="25" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="25" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="25" vgrow="ALWAYS" />
+   </rowConstraints>
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="478.0">
+               <children>
+                  <AnchorPane>
+                     <children>
+                        <ImageView fx:id="image" fitHeight="419.0" fitWidth="390.0" layoutX="-38.0" layoutY="-54.0" pickOnBounds="true" smooth="false" AnchorPane.bottomAnchor="-37.0" AnchorPane.leftAnchor="-38.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="-54.0">
+                           <image>
+                              <Image url="@../Images/traveler.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="korisnickoImeLabel" text="Korisničko ime:" textFill="DARKGOLDENROD">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="korisnickoImeTextField" promptText="korisničko ime">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="lozinkaLabel" text="Lozinka:" textFill="DARKGOLDENROD">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="lozinkaPasswordField" promptText="lozinka">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </PasswordField>
+               </children>
+            </HBox>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#napraviAccount" prefHeight="50.0" prefWidth="200.0" stylesheets="@../css/signinStyle.css" text="CREATE ACCOUNT">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="50.0" prefWidth="200.0" stylesheets="@../css/signinStyle.css" text="NAZAD">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</GridPane>

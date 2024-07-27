@@ -1,0 +1,28 @@
+.myDialog{
+    -fx-background-color: burlywood;
+}
+.myDialog > *.button-bar > *.container{
+    -fx-background-color: burlywood;
+}
+.myDialog > *.label.content{
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+}
+.myDialog *.header-panel{
+    -fx-background-color: burlywood;
+}
+.myDialog *.header-panel *.label{
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-fill: antiquewhite;
+}
+
+.myDialog .button{
+    -fx-background-color: antiquewhite;
+    -fx-border-color: darkgoldenrod;
+    -fx-border-width: 1px;
+}
+
+.myDialog .button:hover{
+    -fx-background-color: darkgoldenrod;
+}
