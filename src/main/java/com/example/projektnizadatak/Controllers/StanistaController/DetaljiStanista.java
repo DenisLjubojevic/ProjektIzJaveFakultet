@@ -7,6 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -24,6 +27,11 @@ public class DetaljiStanista {
 
     @FXML
     private Label obrokLabel;
+    @FXML
+    private ImageView slikaStanista;
+    @FXML
+    private BorderPane borderPane;
+
     private Staniste staniste;
 
     public void prikaziDetalje(Staniste staniste) {
@@ -33,7 +41,16 @@ public class DetaljiStanista {
         razredLabel.setText(staniste.getSistematika().razred());
         brojJedinkiLabel.setText(staniste.getBrojJedinki().toString());
         obrokLabel.setText(staniste.getObrok().getVrstaHrane());
+
+        Image image = MainApplication.byteArrayToImage(staniste.getSlikaStanista());
+        if (image != null){
+            slikaStanista.setImage(image);
+        }
+        slikaStanista.fitWidthProperty().bind(borderPane.widthProperty().divide(2.5));
+        slikaStanista.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
     }
+
+
 
     @FXML
     private void prikaziDetaljeObroka() {

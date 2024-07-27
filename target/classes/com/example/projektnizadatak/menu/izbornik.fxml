@@ -57,6 +57,11 @@
                      </graphic></MenuItem>
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Karta">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#showInteraktivnaMapaScreen" text="Interaktivna karta" />
+              </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Promjene">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showPromjeneScreen" text="Pregled" />

@@ -16,8 +16,8 @@
    <top>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
-            <fx:include maxWidth="1.7976931348623157E308" source="../menu/izbornik.fxml" VBox.vgrow="ALWAYS" />
-            <Label fx:id="naslovLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" stylesheets="@../css/style.css" text="Pretraga životinja" textAlignment="CENTER">
+            <fx:include source="../menu/izbornik.fxml" VBox.vgrow="ALWAYS" />
+            <Label fx:id="naslovLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" stylesheets="@../css/style.css" text="Pretraga životinja" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                <font>
                   <Font size="36.0" />
                </font>
@@ -29,11 +29,11 @@
       </VBox>
    </top>
    <center>
-      <VBox alignment="TOP_CENTER" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxHeight="400.0" prefHeight="400.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" BorderPane.alignment="TOP_CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/style.css" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Razred životinje:">
+                  <Label fx:id="razredLabel" alignment="CENTER" contentDisplay="CENTER" text="Razred životinje:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -50,7 +50,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/style.css" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Vrsta životinje:">
+                  <Label fx:id="vrstaLabel" text="Vrsta životinje:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -70,7 +70,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/style.css" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Starost životinje:">
+                  <Label fx:id="starostLabel" text="Starost životinje:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -91,34 +91,34 @@
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </RadioButton>
                   <RadioButton fx:id="zenskoRadioButton" mnemonicParsing="false" text="Žensko">
                      <HBox.margin>
                         <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </RadioButton>
                </children>
             </HBox>
-         </children>
-      </VBox>
-   </center>
-   <bottom>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" BorderPane.alignment="CENTER">
-         <children>
-            <HBox fx:id="hBox" alignment="CENTER" prefHeight="41.0" prefWidth="600.0" HBox.hgrow="ALWAYS">
+            <HBox fx:id="hBox" alignment="CENTER" prefHeight="41.0" prefWidth="600.0">
                <children>
-                  <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#dohvatiZivotinje" stylesheets="@../css/style.css" text="Pretraži" />
-                  <Button fx:id="dodajButton" mnemonicParsing="false" onAction="#dodajZivotinju" text="Dodaj">
+                  <Button fx:id="pretraziButton" alignment="CENTER" mnemonicParsing="false" onAction="#dohvatiZivotinje" stylesheets="@../css/style.css" text="Pretraži" />
+                  <Button fx:id="dodajButton" alignment="CENTER" mnemonicParsing="false" onAction="#dodajZivotinju" text="Dodaj">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="urediButton" mnemonicParsing="false" onAction="#azurirajZivotinju" text="Uredi">
+                  <Button fx:id="urediButton" alignment="CENTER" mnemonicParsing="false" onAction="#azurirajZivotinju" text="Uredi">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="obrisiButton" mnemonicParsing="false" onAction="#obrisiZivotinju" text="Izbriši">
+                  <Button fx:id="obrisiButton" alignment="CENTER" mnemonicParsing="false" onAction="#obrisiZivotinju" text="Izbriši">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -128,6 +128,12 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <VBox alignment="TOP_CENTER" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+         <children>
             <TableView fx:id="zivotinjaTableView" prefHeight="200.0" prefWidth="600.0" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="vrstaZivotinjeTableColumn" prefWidth="128.0" text="Vrsta životinje" />

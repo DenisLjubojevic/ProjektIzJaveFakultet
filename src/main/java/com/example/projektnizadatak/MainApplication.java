@@ -1,6 +1,7 @@
 package com.example.projektnizadatak;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
+import com.example.projektnizadatak.Util.DatabaseHelper;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -8,7 +9,9 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,10 +41,21 @@ public class MainApplication extends Application {
         nahrani.setCycleCount(Timeline.INDEFINITE);
         nahrani.play();*/
 
+        /*
+        * DatabaseHelper dbHelper = new DatabaseHelper();
+        try {
+            dbHelper.saveStanisteImage(70, "/com/example/projektnizadatak/Images/stanistePingvin.jpg");
+            dbHelper.saveStanisteImage(97, "/com/example/projektnizadatak/Images/stanisteZmija.png");
+            dbHelper.saveStanisteImage(98, "/com/example/projektnizadatak/Images/stanisteNilskiKonj.jpg");
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+        }*/
+
         stage.setWidth(900);
         stage.setHeight(500);
-        stage.setMinWidth(600);
-        stage.setMinHeight(400);
+        stage.setMinWidth(700);
+        stage.setMinHeight(500);
         mainStage = stage;
 
         IzbornikController.promjeniEkran(
@@ -91,5 +105,12 @@ public class MainApplication extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("/com/example/projektnizadatak/Images/logo.png"))));
 
         return alert.showAndWait();
+    }
+
+    public static Image byteArrayToImage(byte[] byteArray){
+        if (byteArray != null && byteArray.length > 0){
+            return new Image(new ByteArrayInputStream(byteArray));
+        }
+        return null;
     }
 }

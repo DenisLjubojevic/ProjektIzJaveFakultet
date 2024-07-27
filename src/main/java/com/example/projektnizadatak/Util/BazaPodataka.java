@@ -15,7 +15,7 @@ import java.sql.*;
 import java.util.*;
 
 public class BazaPodataka {
-    private static Connection connectToDataBase() throws SQLException, IOException{
+    public static Connection connectToDataBase() throws SQLException, IOException{
         Properties konfiguracijaBaze = new Properties();
         konfiguracijaBaze.load(new FileInputStream("Datoteke/bazaPodataka.properties"));
         org.h2.tools.Server.createTcpServer("-tcpAllowOthers").start();
@@ -504,6 +504,12 @@ public class BazaPodataka {
                 String vrsta = rs.getString("vrsta");
                 Integer broj_jedinki = rs.getInt("broj_jedinki");
                 Integer obrok_id = rs.getInt("obrok_id");
+                Blob stanisteSlikaBlob = rs.getBlob("slika_stanista");
+
+                byte[] slikaStanista = null;
+                if (stanisteSlikaBlob != null){
+                    slikaStanista = stanisteSlikaBlob.getBytes(1,(int) stanisteSlikaBlob.length());
+                }
 
                 odabraneZivotinje.clear();
                 for (Zivotinja z: sveZivotinje) {
@@ -514,7 +520,7 @@ public class BazaPodataka {
 
                 Optional<Obrok> obrok = dohvatiObrokById(obrok_id);
 
-                stanista.add(new Staniste(id, odabraneZivotinje, broj_jedinki, obrok.get()));
+                stanista.add(new Staniste(id, odabraneZivotinje, broj_jedinki, obrok.get(), slikaStanista));
             }
 
             con.close();
@@ -554,6 +560,12 @@ public class BazaPodataka {
                 String vrsta = rs.getString("vrsta");
                 Integer broj_jedinki = rs.getInt("broj_jedinki");
                 Integer obrok_id = rs.getInt("obrok_id");
+                Blob stanisteSlikaBlob = rs.getBlob("slika_stanista");
+
+                byte[] slikaStanista = null;
+                if (stanisteSlikaBlob != null){
+                    slikaStanista = stanisteSlikaBlob.getBytes(1,(int) stanisteSlikaBlob.length());
+                }
 
                 odabraneZivotinje.clear();
                 for (Zivotinja z: sveZivotinje) {
@@ -563,7 +575,7 @@ public class BazaPodataka {
                 }
 
                 Optional<Obrok> obrok = dohvatiObrokById(obrok_id);
-                Staniste novoStaniste = new Staniste(id2, odabraneZivotinje, broj_jedinki, obrok.get());
+                Staniste novoStaniste = new Staniste(id2, odabraneZivotinje, broj_jedinki, obrok.orElse(null), slikaStanista);
                 return Optional.of(novoStaniste);
             }
 

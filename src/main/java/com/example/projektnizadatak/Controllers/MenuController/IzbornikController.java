@@ -5,6 +5,7 @@ import com.example.projektnizadatak.Controllers.LoginController.loginScreenContr
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
@@ -104,6 +105,16 @@ public class IzbornikController {
 
     public void showAktivnostiSearchScreen() throws IOException {
         promjeniEkran("aktivnosti/pretragaAktivnosti.fxml", "Pretraga aktivnosti");
+    }
+
+    public void showInteraktivnaMapaScreen() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/karta/karta.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = MainApplication.getMainStage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("KARTA");
+        stage.show();
     }
 
     public void showPromjeneScreen() throws IOException {

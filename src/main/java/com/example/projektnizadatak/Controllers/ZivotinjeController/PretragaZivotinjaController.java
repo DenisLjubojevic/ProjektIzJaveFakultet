@@ -6,6 +6,10 @@ import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -13,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -58,6 +63,8 @@ public class PretragaZivotinjaController {
     final ToggleGroup spolToggleGroup = new ToggleGroup();
 
     @FXML
+    private Button pretraziButton;
+    @FXML
     private Button dodajButton;
     @FXML
     private Button urediButton;
@@ -66,7 +73,19 @@ public class PretragaZivotinjaController {
     @FXML
     private HBox hBox;
 
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label razredLabel;
+    @FXML
+    private Label vrstaLabel;
+    @FXML
+    private Label starostLabel;
+
     private boolean popravljenLayout = false;
+
+    private BooleanProperty muskoSelected = new SimpleBooleanProperty(false);
+    private BooleanProperty zenskoSelected = new SimpleBooleanProperty(false);
 
     public void initialize(){
         if (!popravljenLayout){
@@ -94,12 +113,51 @@ public class PretragaZivotinjaController {
         muskoRadioButton.setToggleGroup(spolToggleGroup);
         zenskoRadioButton.setToggleGroup(spolToggleGroup);
 
+        muskoRadioButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> handleRadioButtonAction(muskoRadioButton, muskoSelected));
+        zenskoRadioButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> handleRadioButtonAction(zenskoRadioButton, zenskoSelected));
+
         vrstaZivotinjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSistematika().vrsta()));
         razredZivotinjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSistematika().razred()));
         starostZivotinjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStarost().toString()));
         spolZivotinjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSpol()));
 
         zivotinjaTableView.setItems(FXCollections.observableList(zivotinje));
+
+        naslovLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(16).asString(), "px"));
+        razredLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
+        vrstaLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
+        starostLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
+
+        muskoRadioButton.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(46).asString(), "px"));
+        zenskoRadioButton.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(46).asString(), "px"));
+
+
+        pretraziButton.styleProperty().bind(
+                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
+                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
+                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
+        dodajButton.styleProperty().bind(
+                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
+                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
+                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
+        urediButton.styleProperty().bind(
+                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
+                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
+                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
+        obrisiButton.styleProperty().bind(
+                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
+                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
+                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
+    }
+    
+    private void handleRadioButtonAction(RadioButton radioButton, BooleanProperty odabraniSpol){
+        if (odabraniSpol.get()){
+            spolToggleGroup.selectToggle(null);
+            zenskoSelected.set(false);
+            muskoSelected.set(false);
+        }else{
+            odabraniSpol.set(true);
+        }
     }
 
     public void dohvatiZivotinje(){

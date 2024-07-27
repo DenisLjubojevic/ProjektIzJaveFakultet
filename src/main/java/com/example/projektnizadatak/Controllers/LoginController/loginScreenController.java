@@ -6,11 +6,15 @@ import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import com.example.projektnizadatak.Util.Hashiranje;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
@@ -19,18 +23,20 @@ import java.util.*;
 public class loginScreenController {
     @FXML
     private AnchorPane anchorPane;
-
     @FXML
     private TextField korisnickoImeTextField;
-
     @FXML
     private TextField lozinkaTextField;
-
     @FXML
     private PasswordField skrivenaLozinkaTextField;
-
     @FXML
     private CheckBox showPasswordCheckBox;
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label korisnickoImeLabel;
+    @FXML
+    private Label lozinkaLabel;
 
     List<Korisnik> korisnici = new ArrayList<>();
     Hashiranje hashiranje = new Hashiranje();
@@ -57,6 +63,11 @@ public class loginScreenController {
                 BackgroundPosition.CENTER,
                 backgroundSize);
         anchorPane.setBackground(new Background(myBgImage));
+
+        naslovLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(20).asString(), "px"));
+        korisnickoImeLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(31).asString(), "px"));
+        lozinkaLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(31).asString(), "px"));
+        korisnickoImeTextField.styleProperty().bind(Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(6).asString(), "px"));
     }
 
     public void changeVisibility(ActionEvent event){

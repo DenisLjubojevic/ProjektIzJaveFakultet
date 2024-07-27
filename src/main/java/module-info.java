@@ -4,6 +4,7 @@ module com.example.projektnizadatak {
     requires org.slf4j;
     requires java.sql;
     requires com.h2database;
+    requires javafx.web;
 
 
     opens com.example.projektnizadatak to javafx.fxml;
@@ -22,4 +23,7 @@ module com.example.projektnizadatak {
     opens com.example.projektnizadatak.Controllers.MenuController to javafx.fxml;
     exports com.example.projektnizadatak.Controllers.LoginController;
     opens com.example.projektnizadatak.Controllers.LoginController to javafx.fxml;
+
+    exports com.example.projektnizadatak.Controllers.GoogleMapController;
+    opens com.example.projektnizadatak.Controllers.GoogleMapController to javafx.fxml;
 }

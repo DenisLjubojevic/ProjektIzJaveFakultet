@@ -115,3 +115,13 @@
 .menu:hover {
     -fx-background-color: darkgoldenrod;
 }
+
+.imageBorder{
+    -fx-border-width: 2px;
+    -fx-border-color: darkgoldenrod;
+    -fx-background-color: #FFB76F;
+    -fx-background-radius: 6;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}

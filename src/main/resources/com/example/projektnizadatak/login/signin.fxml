@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="466.0" prefWidth="796.0" style="-fx-background-color: #000000FF;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.LoginController.signinController">
+<GridPane fx:id="gridPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #000000FF;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.LoginController.signinController">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" percentWidth="60" />
       <ColumnConstraints hgrow="ALWAYS" percentWidth="40" />
@@ -33,7 +33,7 @@
                <children>
                   <AnchorPane>
                      <children>
-                        <ImageView fitHeight="419.0" fitWidth="390.0" layoutX="-38.0" layoutY="-54.0" pickOnBounds="true" smooth="false" AnchorPane.bottomAnchor="-37.0" AnchorPane.leftAnchor="-38.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="-54.0">
+                        <ImageView fx:id="image" fitHeight="419.0" fitWidth="390.0" layoutX="-38.0" layoutY="-54.0" pickOnBounds="true" smooth="false" AnchorPane.bottomAnchor="-37.0" AnchorPane.leftAnchor="-38.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="-54.0">
                            <image>
                               <Image url="@../Images/traveler.jpg" />
                            </image>
@@ -48,29 +48,35 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text="Korisničko ime:" textFill="DARKGOLDENROD">
+                  <Label fx:id="korisnickoImeLabel" text="Korisničko ime:" textFill="DARKGOLDENROD">
                      <font>
-                        <Font size="19.0" />
+                        <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="korisnickoImeTextField" promptText="korisničko ime">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
                   </TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text="Lozinka:" textFill="DARKGOLDENROD">
+                  <Label fx:id="lozinkaLabel" text="Lozinka:" textFill="DARKGOLDENROD">
                      <font>
-                        <Font size="19.0" />
+                        <Font size="16.0" />
                      </font>
                   </Label>
                   <PasswordField fx:id="lozinkaPasswordField" promptText="lozinka">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
                   </PasswordField>
                </children>
             </HBox>

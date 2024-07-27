@@ -5,11 +5,17 @@ import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +26,14 @@ public class signinController {
     private TextField korisnickoImeTextField;
     @FXML
     private PasswordField lozinkaPasswordField;
-
+    @FXML
+    private Label korisnickoImeLabel;
+    @FXML
+    private Label lozinkaLabel;
+    @FXML
+    private ImageView image;
+    @FXML
+    private GridPane gridPane;
     List<Korisnik> korisnici = new ArrayList<>();
 
     private boolean popravljenLayout = false;
@@ -30,6 +43,12 @@ public class signinController {
             MainApplication.popraviLayout();
             popravljenLayout = true;
         }
+
+        image.fitWidthProperty().bind(gridPane.widthProperty().divide(2.5));
+        image.fitHeightProperty().bind(gridPane.heightProperty().divide(1.5));
+
+        korisnickoImeLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(43).asString(), "px"));
+        lozinkaLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(43).asString(), "px"));
     }
 
     public void napraviAccount(ActionEvent event) throws BazaPodatakaException {
