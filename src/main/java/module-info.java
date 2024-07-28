@@ -5,6 +5,8 @@ module com.example.projektnizadatak {
     requires java.sql;
     requires com.h2database;
     requires javafx.web;
+    requires java.desktop;
+    requires javafx.swing;
 
 
     opens com.example.projektnizadatak to javafx.fxml;

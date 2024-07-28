@@ -31,10 +31,13 @@
         {name: 'RASPELO', lat: 45.8214315405264, lng: 16.023637454125872}
     ];
 
-
     mjesta.forEach(function(mjesta) {
         var marker = L.marker([mjesta.lat, mjesta.lng]).addTo(map);
         marker.bindPopup(mjesta.name);
+
+        marker.on('click', function() {
+            marker.openPopup();
+        });
     });
 </script>
 </body>

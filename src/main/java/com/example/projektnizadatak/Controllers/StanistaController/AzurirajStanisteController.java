@@ -10,11 +10,16 @@ import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class AzurirajStanisteController {
     @FXML
@@ -25,7 +30,8 @@ public class AzurirajStanisteController {
 
     @FXML
     private ChoiceBox<Obrok> obrokChoiceBox;
-
+    @FXML
+    private ImageView odabranaSlika;
     private String stariBrojJedinki;
     private String staraVrsta;
     List<Staniste> stanista = new ArrayList<>();
@@ -34,6 +40,7 @@ public class AzurirajStanisteController {
     Staniste trazenoStaniste;
 
     private boolean popravljenLayout = false;
+    private byte[] slikaStanista;
 
     public synchronized void initialize(){
         if (!popravljenLayout){
@@ -84,10 +91,33 @@ public class AzurirajStanisteController {
         obrokChoiceBox.getSelectionModel().selectFirst();
     }
 
+    @FXML
+    private void odaberiSliku(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file != null){
+            try{
+                slikaStanista = Files.readAllBytes(Paths.get(file.toURI()));
+                Image image = new Image(file.toURI().toString());
+                odabranaSlika.setImage(image);
+            }catch (Exception ex){
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Odabir slike!",
+                        "Pogreška prilikom učitavanja slike!",
+                        ex.getMessage()
+                );
+            }
+        }
+    }
+
     public synchronized void dohvatiStaniste(Staniste staniste){
         vrstaZivotinjaTextField.setText(staniste.getZivotinja().get(0).getSistematika().vrsta());
         brojZivotinjaTextField.setText(String.valueOf(staniste.getZivotinja().size()));
         obrokChoiceBox.getSelectionModel().select(staniste.getObrok());
+        odabranaSlika.setImage(MainApplication.byteArrayToImage(staniste.getSlikaStanista()));
 
         stariBrojJedinki = String.valueOf(staniste.getZivotinja().size());
         staraVrsta = staniste.getZivotinja().get(0).getSistematika().vrsta();
@@ -98,6 +128,7 @@ public class AzurirajStanisteController {
         String vrsta = vrstaZivotinjaTextField.getText();
         String brojJedinki = brojZivotinjaTextField.getText();
         Obrok obrok = obrokChoiceBox.getValue();
+        slikaStanista = MainApplication.imageToByteArray(odabranaSlika.getImage());
 
         List<Zivotinja> odabraneZivotinje = new ArrayList<>();
         boolean imaVrste = false;
@@ -112,6 +143,7 @@ public class AzurirajStanisteController {
             trazenoStaniste.setZivotinja(odabraneZivotinje);
             trazenoStaniste.setSistematika(new Sistematika(odabraneZivotinje.get(0).getSistematika().vrsta(), odabraneZivotinje.get(0).getSistematika().razred()));
             trazenoStaniste.setObrok(obrok);
+            trazenoStaniste.setSlikaStanista(slikaStanista);
 
             try {
                 Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(

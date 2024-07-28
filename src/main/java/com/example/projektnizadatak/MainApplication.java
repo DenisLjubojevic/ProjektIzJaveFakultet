@@ -1,7 +1,6 @@
 package com.example.projektnizadatak;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
-import com.example.projektnizadatak.Util.DatabaseHelper;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -11,9 +10,16 @@ import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class MainApplication extends Application {
     public static Stage mainStage;
@@ -41,16 +47,6 @@ public class MainApplication extends Application {
         nahrani.setCycleCount(Timeline.INDEFINITE);
         nahrani.play();*/
 
-        /*
-        * DatabaseHelper dbHelper = new DatabaseHelper();
-        try {
-            dbHelper.saveStanisteImage(70, "/com/example/projektnizadatak/Images/stanistePingvin.jpg");
-            dbHelper.saveStanisteImage(97, "/com/example/projektnizadatak/Images/stanisteZmija.png");
-            dbHelper.saveStanisteImage(98, "/com/example/projektnizadatak/Images/stanisteNilskiKonj.jpg");
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-            System.err.println("Error: " + e.getMessage());
-        }*/
 
         stage.setWidth(900);
         stage.setHeight(500);
@@ -112,5 +108,17 @@ public class MainApplication extends Application {
             return new Image(new ByteArrayInputStream(byteArray));
         }
         return null;
+    }
+
+    public static  byte[] imageToByteArray(Image image){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        ByteArrayOutputStream s = new ByteArrayOutputStream();
+        try{
+            ImageIO.write(bufferedImage, "png", s);
+            return s.toByteArray();
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

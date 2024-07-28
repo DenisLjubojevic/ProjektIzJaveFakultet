@@ -27,7 +27,7 @@
                      <graphic>
                         <ImageView fx:id="pawsImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Images/paws.png" />
+                              <Image url="@../Images/Icons/paws.png" />
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
@@ -35,7 +35,7 @@
                      <graphic>
                         <ImageView fx:id="employeeImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Images/employee.png" />
+                              <Image url="@../Images/Icons/employee.png" />
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
@@ -43,7 +43,7 @@
                      <graphic>
                         <ImageView fx:id="habitatImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Images/habitat.png" />
+                              <Image url="@../Images/Icons/habitat.png" />
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
@@ -51,7 +51,7 @@
                      <graphic>
                         <ImageView fx:id="notebookImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Images/notebook.png" />
+                              <Image url="@../Images/Icons/notebook.png" />
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
@@ -60,6 +60,7 @@
             <Menu mnemonicParsing="false" text="Karta">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#showInteraktivnaMapaScreen" text="Interaktivna karta" />
+                  <MenuItem mnemonicParsing="false" onAction="#showKartaStanista" text="Karta staništa" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Promjene">
@@ -69,7 +70,7 @@
                <graphic>
                   <ImageView fx:id="changeImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/changes.png" />
+                        <Image url="@../Images/Icons/changes.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -83,7 +84,7 @@
          <graphic>
             <ImageView fx:id="signOutImage" fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/signOut.png" />
+                  <Image url="@../Images/Icons/signOut.png" />
                </image>
             </ImageView>
          </graphic>

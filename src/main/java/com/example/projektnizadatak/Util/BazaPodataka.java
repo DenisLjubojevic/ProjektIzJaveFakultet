@@ -601,11 +601,12 @@ public class BazaPodataka {
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            pstmt = con.prepareStatement("INSERT INTO STANISTA(vrsta, broj_jedinki, obrok_id)"
-                    + "VALUES (?, ?, ?)");
+            pstmt = con.prepareStatement("INSERT INTO STANISTA(vrsta, broj_jedinki, obrok_id, slika_stanista)"
+                    + "VALUES (?, ?, ?, ?)");
             pstmt.setString(1, staniste.getSistematika().vrsta());
             pstmt.setInt(2, staniste.getBrojJedinki());
             pstmt.setInt(3, staniste.getObrok().getId());
+            pstmt.setBytes(4, staniste.getSlikaStanista());
 
             pstmt.executeUpdate();
 
@@ -631,12 +632,14 @@ public class BazaPodataka {
             pstmt = con.prepareStatement("UPDATE STANISTA SET " +
                     "VRSTA = ?," +
                     "BROJ_JEDINKI = ?," +
-                    "OBROK_ID = ?" +
+                    "OBROK_ID = ?," +
+                    "SLIKA_STANISTA = ?" +
                     "WHERE ID = ?");
             pstmt.setString(1, staniste.getSistematika().vrsta());
             pstmt.setInt(2, staniste.getBrojJedinki());
             pstmt.setInt(3, staniste.getObrok().getId());
-            pstmt.setInt(4, staniste.getId());
+            pstmt.setBytes(4, staniste.getSlikaStanista());
+            pstmt.setInt(5, staniste.getId());
 
             pstmt.executeUpdate();
 

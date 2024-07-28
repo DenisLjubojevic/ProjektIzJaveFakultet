@@ -42,12 +42,12 @@ public class IzbornikController {
     public void initialize(){
         izbornikAdmin.prefWidthProperty().bind(mainStage.widthProperty());
 
-        pawsImage.setImage(loadImage("/com/example/projektniZadatak/Images/paws.png"));
-        employeeImage.setImage(loadImage("/com/example/projektniZadatak/Images/employee.png"));
-        habitatImage.setImage(loadImage("/com/example/projektniZadatak/Images/habitat.png"));
-        notebookImage.setImage(loadImage("/com/example/projektniZadatak/Images/notebook.png"));
-        changeImage.setImage(loadImage("/com/example/projektniZadatak/Images/changes.png"));
-        signOutImage.setImage(loadImage("/com/example/projektniZadatak/Images/changes.png"));
+        pawsImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/paws.png"));
+        employeeImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/employee.png"));
+        habitatImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/habitat.png"));
+        notebookImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/notebook.png"));
+        changeImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/changes.png"));
+        signOutImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/changes.png"));
     }
 
     private Image loadImage(String relativnaPutanja){
@@ -115,6 +115,10 @@ public class IzbornikController {
         stage.setScene(new Scene(root));
         stage.setTitle("KARTA");
         stage.show();
+    }
+
+    public void showKartaStanista() throws IOException {
+        promjeniEkran("karta/kartaStanista.fxml", "Karta staništa");
     }
 
     public void showPromjeneScreen() throws IOException {

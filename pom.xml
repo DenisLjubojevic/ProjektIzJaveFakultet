@@ -58,6 +58,11 @@
             <artifactId>javafx-web</artifactId>
             <version>19-ea+7</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>11-ea+24</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -11,10 +11,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UnosStanistaController {
     @FXML
@@ -25,6 +33,10 @@ public class UnosStanistaController {
 
     @FXML
     private ChoiceBox<Obrok> obrokChoiceBox;
+    @FXML
+    private ImageView odabranaSlika;
+
+    private byte[] slikaStanista;
 
     List<Obrok> obroci = new ArrayList<>();
     private boolean popravljenLayout = false;
@@ -53,6 +65,30 @@ public class UnosStanistaController {
         }
 
         obrokChoiceBox.getSelectionModel().selectFirst();
+        Image placeholder = new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("/com/example/projektnizadatak/Images/imagePlaceholder.jpg")));
+        odabranaSlika.setImage(placeholder);
+    }
+
+    @FXML
+    private void odaberiSliku(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file != null){
+            try{
+                slikaStanista = Files.readAllBytes(Paths.get(file.toURI()));
+                Image image = new Image(file.toURI().toString());
+                odabranaSlika.setImage(image);
+            }catch (Exception ex){
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Odabir slike!",
+                        "Pogreška prilikom učitavanja slike!",
+                        ex.getMessage()
+                );
+            }
+        }
     }
 
     public synchronized void dodajStaniste() {
@@ -94,7 +130,7 @@ public class UnosStanistaController {
             }
         }
 
-        if(vrsta.isBlank() || brojZivotinja.isBlank()){
+        if(vrsta.isBlank() || brojZivotinja.isBlank() || slikaStanista == null){
             MainApplication.showAlertDialog(
                     Alert.AlertType.ERROR,
                     "Spremanje staništa!",
@@ -110,7 +146,7 @@ public class UnosStanistaController {
             );
         } else {
 
-            Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), obrok);
+            Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), obrok, slikaStanista);
             try{
                 BazaPodataka.spremiStaniste(novoStaniste);
                 AzurirajZivotinjuController.spremiPromjenu( "-", novoStaniste.getClass().getSimpleName(), "admin", LocalDateTime.now());
