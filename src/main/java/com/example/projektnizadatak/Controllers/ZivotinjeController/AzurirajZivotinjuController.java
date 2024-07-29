@@ -29,7 +29,17 @@ public class AzurirajZivotinjuController {
     @FXML
     private RadioButton zenskoRadioButton;
 
-    private List<Zivotinja> zivotinje;
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label vrstaLabel;
+    @FXML
+    private Label razredLabel;
+    @FXML
+    private Label starostLabel;
+    @FXML
+    private Button izmjeniButton;
+
     final ToggleGroup spolToggleGroup = new ToggleGroup();
 
     private String staraVrsta;
@@ -46,19 +56,18 @@ public class AzurirajZivotinjuController {
             popravljenLayout = true;
         }
 
-        try{
-            zivotinje = BazaPodataka.dohvatiSveZivotinje();
-        } catch (BazaPodatakaException ex){
-            MainApplication.showAlertDialog(
-                    Alert.AlertType.ERROR,
-                    "Učitavanje životinja!",
-                    "Pogreška učitavanja!",
-                    ex.getMessage()
-            );
-        }
-
         muskoRadioButton.setToggleGroup(spolToggleGroup);
         zenskoRadioButton.setToggleGroup(spolToggleGroup);
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(vrstaLabel);
+        MainApplication.setupText(razredLabel);
+        MainApplication.setupText(starostLabel);
+
+        MainApplication.setupRadioButton(muskoRadioButton);
+        MainApplication.setupRadioButton(zenskoRadioButton);
+
+        MainApplication.setupButton(izmjeniButton);
     }
 
     public void dohvatiZivotinju(Zivotinja zivotinja){

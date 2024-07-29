@@ -7,6 +7,7 @@ import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -50,6 +51,8 @@ public class PretragaAktivnostiController {
 
     private boolean popravljenLayout = false;
     @FXML
+    private Button pretraziButton;
+    @FXML
     private Button dodajButton;
     @FXML
     private Button urediButton;
@@ -57,6 +60,15 @@ public class PretragaAktivnostiController {
     private Button obrisiButton;
     @FXML
     private HBox hBox;
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label nazivLabel;
+    @FXML
+    private Label cijenaLabel;
+    @FXML
+    private Label trajanjeLabel;
+
     public void initialize(){
         if (!popravljenLayout){
             MainApplication.popraviLayout();
@@ -85,6 +97,16 @@ public class PretragaAktivnostiController {
         trajanjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrajanje().toString()));
 
         aktivnostiTableView.setItems(FXCollections.observableList(aktivnosti));
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(nazivLabel);
+        MainApplication.setupText(cijenaLabel);
+        MainApplication.setupText(trajanjeLabel);
+
+        MainApplication.setupButton(pretraziButton);
+        MainApplication.setupButton(dodajButton);
+        MainApplication.setupButton(urediButton);
+        MainApplication.setupButton(obrisiButton);
     }
 
     public void dohvatiAktivnosti(){
@@ -92,33 +114,26 @@ public class PretragaAktivnostiController {
         String cijena = cijenaTextField.getText();
         String trajanje = trajanjeTextField.getText();
 
-        aktivnostiTableView.setItems(FXCollections.observableList(aktivnosti));
-        List<Aktivnost> filtriraneAktivnosti = new ArrayList<>();
+        List<Aktivnost> filtriraneAktivnosti = aktivnosti;
         if(!naziv.isEmpty()){
-            filtriraneAktivnosti = aktivnosti.stream().filter(a -> a.getNaziv().contains(naziv)).toList();
-            aktivnostiTableView.setItems(FXCollections.observableList(filtriraneAktivnosti));
+            filtriraneAktivnosti = filtriraneAktivnosti.stream()
+                    .filter(a -> a.getNaziv().contains(naziv))
+                    .toList();
         }
 
         if (!cijena.isEmpty()) {
-            if(!naziv.isEmpty()){
-                filtriraneAktivnosti = filtriraneAktivnosti.stream().filter(a -> a.getCijena().equals(Integer.parseInt(cijena))).toList();
-                aktivnostiTableView.setItems(FXCollections.observableList(filtriraneAktivnosti));
-            }else {
-                filtriraneAktivnosti = aktivnosti.stream().filter(a -> a.getCijena().equals(Integer.parseInt(cijena))).toList();
-                aktivnostiTableView.setItems(FXCollections.observableList(filtriraneAktivnosti));
-            }
+            filtriraneAktivnosti = filtriraneAktivnosti.stream()
+                    .filter(a -> a.getCijena().equals(Integer.parseInt(cijena)))
+                    .toList();
         }
 
         if (!trajanje.isEmpty()) {
-            if(!naziv.isEmpty() || !cijena.isEmpty()){
-                filtriraneAktivnosti = filtriraneAktivnosti.stream().filter(a -> a.getTrajanje().equals(Integer.parseInt(trajanje))).toList();
-                aktivnostiTableView.setItems(FXCollections.observableList(filtriraneAktivnosti));
-            } else {
-                filtriraneAktivnosti = aktivnosti.stream().filter(a -> a.getTrajanje().equals(Integer.parseInt(trajanje))).toList();
-                aktivnostiTableView.setItems(FXCollections.observableList(filtriraneAktivnosti));
-            }
-
+            filtriraneAktivnosti = filtriraneAktivnosti.stream()
+                    .filter(a -> a.getTrajanje().equals(Integer.parseInt(trajanje)))
+                    .toList();
         }
+
+        aktivnostiTableView.setItems(FXCollections.observableList(filtriraneAktivnosti));
     }
 
     public void dodajAktivnost() throws IOException {

@@ -103,6 +103,10 @@ public class IzbornikController {
         promjeniEkran("stanista/pretragaStanista.fxml", "Pretraga staništa");
     }
 
+    public void showHranaSearchScreen() throws IOException {
+        promjeniEkran("hrana/pretragaHrane.fxml", "Pretraga hrane");
+    }
+
     public void showAktivnostiSearchScreen() throws IOException {
         promjeniEkran("aktivnosti/pretragaAktivnosti.fxml", "Pretraga aktivnosti");
     }

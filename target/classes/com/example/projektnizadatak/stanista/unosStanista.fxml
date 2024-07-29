@@ -11,12 +11,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="339.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.StanistaController.UnosStanistaController">
+<BorderPane fx:id="borderPane" prefHeight="339.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.StanistaController.UnosStanistaController">
    <top>
       <VBox alignment="TOP_CENTER" prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <fx:include source="../menu/izbornik.fxml" />
-            <Label text="Unos staništa">
+            <Label fx:id="naslovLabel" text="Unos staništa">
                <font>
                   <Font size="36.0" />
                </font>
@@ -29,7 +29,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Vrsta životinje:">
+                  <Label fx:id="vrstaLabel" text="Vrsta životinje:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -42,7 +42,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Broj jedinki:">
+                  <Label fx:id="brojLabel" text="Broj jedinki:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -59,12 +59,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Obrok:">
+                  <Label fx:id="hranaLabel" text="Hrana:">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="obrokChoiceBox" prefWidth="150.0">
+                  <ChoiceBox fx:id="hranaChoiceBox" prefWidth="150.0">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></ChoiceBox>
@@ -72,7 +72,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Odaberi sliku:">
+                  <Label fx:id="slikaLabel" text="Odaberi sliku:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -82,21 +82,18 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button onAction="#odaberiSliku" text="Odaberi">
+                  <Button fx:id="odaberiButton" onAction="#odaberiSliku" text="Odaberi">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
+            <Button fx:id="spremiButton" mnemonicParsing="false" onAction="#dodajStaniste" text="Spremi">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Button>
          </children>
       </VBox>
    </center>
-   <bottom>
-      <VBox alignment="CENTER" prefHeight="53.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
-         <children>
-            <Button mnemonicParsing="false" onAction="#dodajStaniste" text="Spremi stanište" />
-         </children>
-      </VBox>
-   </bottom>
 </BorderPane>

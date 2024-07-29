@@ -7,6 +7,8 @@ import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.time.LocalDateTime;
@@ -23,13 +25,33 @@ public class UnosAktivnostiController {
     @FXML
     private TextField trajanjeTextField;
 
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label nazivLabel;
+    @FXML
+    private Label cijenaLabel;
+    @FXML
+    private Label trajanjeLabel;
+    @FXML
+    private Button spremiButton;
+
+
     private boolean popravljenLayout = false;
 
     public void initialize(){
         if (!popravljenLayout){
             MainApplication.popraviLayout();
             popravljenLayout = true;
-        }}
+        }
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(nazivLabel);
+        MainApplication.setupText(cijenaLabel);
+        MainApplication.setupText(trajanjeLabel);
+
+        MainApplication.setupButton(spremiButton);
+    }
 
     public void dodajAktivnost(){
         List<Aktivnost> aktivnosti = new ArrayList<>();

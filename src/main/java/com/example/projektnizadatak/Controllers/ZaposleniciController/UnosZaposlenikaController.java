@@ -6,9 +6,7 @@ import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +27,20 @@ public class UnosZaposlenikaController {
 
     @FXML
     private ChoiceBox<String> posaoZaposlenikaChoiceBox;
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label imeLabel;
+    @FXML
+    private Label prezimeLabel;
+    @FXML
+    private Label cijenaLabel;
+    @FXML
+    private Label satnicaLabel;
+    @FXML
+    private Label posaoLabel;
+    @FXML
+    private Button spremiButton;
 
     List<Zaposlenici> zaposlenici = new ArrayList<>();
     private boolean popravljenLayout = false;
@@ -57,6 +69,15 @@ public class UnosZaposlenikaController {
         }
 
         posaoZaposlenikaChoiceBox.getSelectionModel().selectFirst();
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(imeLabel);
+        MainApplication.setupText(prezimeLabel);
+        MainApplication.setupText(cijenaLabel);
+        MainApplication.setupText(satnicaLabel);
+        MainApplication.setupText(posaoLabel);
+
+        MainApplication.setupButton(spremiButton);
     }
 
     public void dodajZaposlenika(){

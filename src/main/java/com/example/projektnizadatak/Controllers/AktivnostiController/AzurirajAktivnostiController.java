@@ -22,6 +22,17 @@ public class AzurirajAktivnostiController {
 
     @FXML
     private TextField trajanjeTextField;
+
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label nazivLabel;
+    @FXML
+    private Label cijenaLabel;
+    @FXML
+    private Label trajanjeLabel;
+    @FXML
+    private Button promjeniButton;
     private String stariNaziv;
     private String staraCijena;
     private String staroTrajanje;
@@ -45,6 +56,13 @@ public class AzurirajAktivnostiController {
                     "Pogreška učitavanja!",
                     ex.getMessage());
         }
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(nazivLabel);
+        MainApplication.setupText(cijenaLabel);
+        MainApplication.setupText(trajanjeLabel);
+
+        MainApplication.setupButton(promjeniButton);
     }
 
     public void dohvatiAktivnosti(Aktivnost aktivnost){

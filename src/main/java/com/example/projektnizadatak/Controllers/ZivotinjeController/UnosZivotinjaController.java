@@ -6,9 +6,7 @@ import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +27,17 @@ public class UnosZivotinjaController {
 
     @FXML
     private RadioButton zenskoRadioButton;
+
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label vrstaLabel;
+    @FXML
+    private Label razredLabel;
+    @FXML
+    private Label starostLabel;
+    @FXML
+    private Button spremiButton;
     private boolean popravljenLayout = false;
 
     public void initialize(){
@@ -36,6 +45,16 @@ public class UnosZivotinjaController {
             MainApplication.popraviLayout();
             popravljenLayout = true;
         }
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(vrstaLabel);
+        MainApplication.setupText(razredLabel);
+        MainApplication.setupText(starostLabel);
+
+        MainApplication.setupRadioButton(muskoRadioButton);
+        MainApplication.setupRadioButton(zenskoRadioButton);
+
+        MainApplication.setupButton(spremiButton);
     }
 
     public void dodajZivotinju(){

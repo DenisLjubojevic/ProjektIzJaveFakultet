@@ -17,7 +17,7 @@
       <VBox alignment="TOP_CENTER" prefHeight="82.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <fx:include source="../menu/izbornik.fxml" />
-            <Label text="Pretraga zaposlenika">
+            <Label fx:id="naslovLabel" text="Pretraga zaposlenika">
                <font>
                   <Font size="36.0" />
                </font>
@@ -26,11 +26,11 @@
       </VBox>
    </top>
    <center>
-      <VBox alignment="CENTER" prefHeight="146.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+      <VBox alignment="CENTER" prefHeight="169.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Ime:">
+                  <Label fx:id="imeLabel" text="Ime:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -39,42 +39,54 @@
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Prezime:">
+                  <Label fx:id="prezimeLabel" text="Prezime:">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="prezimeZaposlenikaTextField" promptText="prezime" />
+                  <TextField fx:id="prezimeZaposlenikaTextField" promptText="prezime">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Cijena po satu:">
+                  <Label fx:id="cijenaLabel" text="Cijena po satu:">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="cijenaPoSatuZaposlenikaTextField" promptText="cijena po satu" />
+                  <TextField fx:id="cijenaPoSatuZaposlenikaTextField" promptText="cijena po satu">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Satnica:">
+                  <Label fx:id="satnicaLabel" text="Satnica:">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="satnicaZaposlenikaTextField" promptText="satnica" />
+                  <TextField fx:id="satnicaZaposlenikaTextField" promptText="satnica">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Posao:">
+                  <Label fx:id="posaoLabel" text="Posao:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -83,18 +95,15 @@
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </ChoiceBox>
                </children>
             </HBox>
-         </children>
-      </VBox>
-   </center>
-   <bottom>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
-         <children>
-            <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#dohvatiZaposlenike" text="Pretraži">
+                  <Button fx:id="pretraziButton" mnemonicParsing="false" onAction="#dohvatiZaposlenike" text="Pretraži">
                      <padding>
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
@@ -115,7 +124,16 @@
                      </HBox.margin>
                   </Button>
                </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
             </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <VBox alignment="CENTER" prefHeight="180.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+         <children>
             <TableView fx:id="zaposleniciTableView" prefHeight="200.0" prefWidth="601.0">
                <columns>
                   <TableColumn fx:id="imeZaposlenikaTableColumn" prefWidth="128.0" text="Ime" />

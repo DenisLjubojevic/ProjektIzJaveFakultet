@@ -12,10 +12,10 @@
 
 <BorderPane prefHeight="306.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.ZaposleniciController.UnosZaposlenikaController">
    <top>
-      <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow = "ALWAYS">
+      <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <fx:include source="../menu/izbornik.fxml" />
-            <Label text="Unos zaposlenika">
+            <Label fx:id="naslovLabel" text="Unos zaposlenika">
                <font>
                   <Font size="36.0" />
                </font>
@@ -24,11 +24,11 @@
       </VBox>
    </top>
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" VBox.vgrow = "ALWAYS">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow = "ALWAYS">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Ime:">
+                  <Label fx:id="imeLabel" text="Ime:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -43,9 +43,9 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow = "ALWAYS">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Prezime:">
+                  <Label fx:id="prezimeLabel" text="Prezime:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -56,9 +56,9 @@
                      </HBox.margin></TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow = "ALWAYS">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Cijena po satu:">
+                  <Label fx:id="cijenaLabel" text="Cijena po satu:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -69,9 +69,9 @@
                      </HBox.margin></TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow = "ALWAYS">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Mjesečna satnica:">
+                  <Label fx:id="satnicaLabel" text="Mjesečna satnica:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -82,9 +82,9 @@
                      </HBox.margin></TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow = "ALWAYS">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Posao:">
+                  <Label fx:id="posaoLabel" text="Posao:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -99,14 +99,12 @@
                   </ChoiceBox>
                </children>
             </HBox>
+            <Button fx:id="spremiButton" mnemonicParsing="false" onAction="#dodajZaposlenika" text="Spremi">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </center>
-   <bottom>
-      <VBox alignment="CENTER" prefHeight="58.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow = "ALWAYS">
-         <children>
-            <Button mnemonicParsing="false" onAction="#dodajZaposlenika" text="Spremi zaposlenika" />
-         </children>
-      </VBox>
-   </bottom>
 </BorderPane>

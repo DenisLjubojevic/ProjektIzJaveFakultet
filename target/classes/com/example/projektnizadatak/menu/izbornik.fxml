@@ -47,6 +47,15 @@
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#showHranaSearchScreen" text="Hrana">
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/Icons/food.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#showAktivnostiSearchScreen" text="Aktivnosti">
                      <graphic>
                         <ImageView fx:id="notebookImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">

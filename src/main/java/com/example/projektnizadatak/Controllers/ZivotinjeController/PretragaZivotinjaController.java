@@ -123,31 +123,18 @@ public class PretragaZivotinjaController {
 
         zivotinjaTableView.setItems(FXCollections.observableList(zivotinje));
 
-        naslovLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(16).asString(), "px"));
-        razredLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
-        vrstaLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
-        starostLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(razredLabel);
+        MainApplication.setupText(vrstaLabel);
+        MainApplication.setupText(starostLabel);
 
-        muskoRadioButton.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(46).asString(), "px"));
-        zenskoRadioButton.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(46).asString(), "px"));
+        MainApplication.setupRadioButton(zenskoRadioButton);
+        MainApplication.setupRadioButton(muskoRadioButton);
 
-
-        pretraziButton.styleProperty().bind(
-                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
-                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
-                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
-        dodajButton.styleProperty().bind(
-                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
-                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
-                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
-        urediButton.styleProperty().bind(
-                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
-                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
-                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
-        obrisiButton.styleProperty().bind(
-                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
-                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
-                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
+        MainApplication.setupButton(pretraziButton);
+        MainApplication.setupButton(dodajButton);
+        MainApplication.setupButton(urediButton);
+        MainApplication.setupButton(obrisiButton);
     }
     
     private void handleRadioButtonAction(RadioButton radioButton, BooleanProperty odabraniSpol){
@@ -174,43 +161,33 @@ public class PretragaZivotinjaController {
             spol = "";
         }
 
-        zivotinjaTableView.setItems(FXCollections.observableList(zivotinje));
-        List<Zivotinja> filtriraneZivotinje = new ArrayList<>();
+        List<Zivotinja> filtriraneZivotinje = zivotinje;
+
         if(!vrsta.isEmpty()){
-            filtriraneZivotinje = zivotinje.stream().filter(z -> z.getSistematika().vrsta().contains(vrsta)).toList();
-            zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
+            filtriraneZivotinje = filtriraneZivotinje.stream()
+                    .filter(z -> z.getSistematika().vrsta().contains(vrsta))
+                    .toList();
         }
 
         if (!razred.isEmpty()) {
-            if(!vrsta.isEmpty()){
-                filtriraneZivotinje = filtriraneZivotinje.stream().filter(z -> z.getSistematika().razred().contains(razred)).toList();
-                zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
-            }else {
-                filtriraneZivotinje = zivotinje.stream().filter(z -> z.getSistematika().razred().contains(razred)).toList();
-                zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
-            }
+            filtriraneZivotinje = filtriraneZivotinje.stream()
+                    .filter(z -> z.getSistematika().razred().contains(razred))
+                    .toList();
         }
 
         if (!starost.isEmpty()) {
-            if(!vrsta.isEmpty() || !razred.isEmpty()){
-                filtriraneZivotinje = filtriraneZivotinje.stream().filter(z -> z.getStarost().equals(Integer.parseInt(starost))).toList();
-                zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
-            } else {
-                filtriraneZivotinje = zivotinje.stream().filter(z -> z.getStarost().equals(Integer.parseInt(starost))).toList();
-                zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
-            }
-
+            filtriraneZivotinje = filtriraneZivotinje.stream()
+                    .filter(z -> z.getStarost().equals(Integer.parseInt(starost)))
+                    .toList();
         }
 
         if (!spol.isEmpty()) {
-            if(!vrsta.isEmpty() || !razred.isEmpty() || !starost.isEmpty()){
-                filtriraneZivotinje = filtriraneZivotinje.stream().filter(z -> z.getSpol().contains(spol)).toList();
-                zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
-            } else {
-                filtriraneZivotinje = zivotinje.stream().filter(z -> z.getSpol().contains(spol)).toList();
-                zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
-            }
+            filtriraneZivotinje = filtriraneZivotinje.stream()
+                    .filter(z -> z.getSpol().contains(spol))
+                    .toList();
         }
+
+        zivotinjaTableView.setItems(FXCollections.observableList(filtriraneZivotinje));
     }
 
     public void dodajZivotinju() throws IOException {

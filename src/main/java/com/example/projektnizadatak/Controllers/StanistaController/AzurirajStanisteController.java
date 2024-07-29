@@ -1,7 +1,7 @@
 package com.example.projektnizadatak.Controllers.StanistaController;
 
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
-import com.example.projektnizadatak.Entiteti.Stanista.Obrok;
+import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -29,14 +30,30 @@ public class AzurirajStanisteController {
     private TextField vrstaZivotinjaTextField;
 
     @FXML
-    private ChoiceBox<Obrok> obrokChoiceBox;
+    private ChoiceBox<Hrana> hranaChoiceBox;
     @FXML
     private ImageView odabranaSlika;
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label vrstaLabel;
+    @FXML
+    private Label brojLabel;
+    @FXML
+    private Label hranaLabel;
+    @FXML
+    private Label slikaLabel;
+    @FXML
+    private Button odaberiButton;
+    @FXML
+    private Button spremiButton;
+    @FXML
+    private BorderPane borderPane;
     private String stariBrojJedinki;
     private String staraVrsta;
     List<Staniste> stanista = new ArrayList<>();
     List<Zivotinja> zivotinje = new ArrayList<>();
-    List<Obrok> obroci = new ArrayList<>();
+    List<Hrana> hrane = new ArrayList<>();
     Staniste trazenoStaniste;
 
     private boolean popravljenLayout = false;
@@ -71,7 +88,7 @@ public class AzurirajStanisteController {
         }
 
         try{
-            obroci = BazaPodataka.dohvatiSveObroke();
+            hrane = BazaPodataka.dohvatiSvuHranu();
         } catch (BazaPodatakaException ex){
             MainApplication.showAlertDialog(
                     Alert.AlertType.ERROR,
@@ -81,14 +98,26 @@ public class AzurirajStanisteController {
             );
         }
 
-        for (Obrok o: obroci) {
-            if (obrokChoiceBox.getItems().contains(o)){
+        for (Hrana h: hrane) {
+            if (hranaChoiceBox.getItems().contains(h)){
                 continue;
             }
-            obrokChoiceBox.getItems().add(o);
+            hranaChoiceBox.getItems().add(h);
         }
 
-        obrokChoiceBox.getSelectionModel().selectFirst();
+        hranaChoiceBox.getSelectionModel().selectFirst();
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(vrstaLabel);
+        MainApplication.setupText(brojLabel);
+        MainApplication.setupText(hranaLabel);
+        MainApplication.setupText(slikaLabel);
+
+        MainApplication.setupButton(odaberiButton);
+        MainApplication.setupButton(spremiButton);
+
+        odabranaSlika.fitWidthProperty().bind(borderPane.widthProperty().divide(7.5));
+        odabranaSlika.fitHeightProperty().bind(borderPane.heightProperty().divide(6.78));
     }
 
     @FXML
@@ -116,7 +145,7 @@ public class AzurirajStanisteController {
     public synchronized void dohvatiStaniste(Staniste staniste){
         vrstaZivotinjaTextField.setText(staniste.getZivotinja().get(0).getSistematika().vrsta());
         brojZivotinjaTextField.setText(String.valueOf(staniste.getZivotinja().size()));
-        obrokChoiceBox.getSelectionModel().select(staniste.getObrok());
+        hranaChoiceBox.getSelectionModel().select(staniste.getHrana());
         odabranaSlika.setImage(MainApplication.byteArrayToImage(staniste.getSlikaStanista()));
 
         stariBrojJedinki = String.valueOf(staniste.getZivotinja().size());
@@ -127,7 +156,7 @@ public class AzurirajStanisteController {
     public synchronized void izmjeniStaniste(){
         String vrsta = vrstaZivotinjaTextField.getText();
         String brojJedinki = brojZivotinjaTextField.getText();
-        Obrok obrok = obrokChoiceBox.getValue();
+        Hrana hrana = hranaChoiceBox.getValue();
         slikaStanista = MainApplication.imageToByteArray(odabranaSlika.getImage());
 
         List<Zivotinja> odabraneZivotinje = new ArrayList<>();
@@ -142,7 +171,7 @@ public class AzurirajStanisteController {
             trazenoStaniste.setBrojJedinki(Integer.valueOf(brojJedinki));
             trazenoStaniste.setZivotinja(odabraneZivotinje);
             trazenoStaniste.setSistematika(new Sistematika(odabraneZivotinje.get(0).getSistematika().vrsta(), odabraneZivotinje.get(0).getSistematika().razred()));
-            trazenoStaniste.setObrok(obrok);
+            trazenoStaniste.setHrana(hrana);
             trazenoStaniste.setSlikaStanista(slikaStanista);
 
             try {

@@ -14,7 +14,7 @@
       <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <fx:include source="../menu/izbornik.fxml" />
-            <Label text="Izmjena aktivnosti">
+            <Label fx:id="naslovLabel" text="Izmjena aktivnosti">
                <font>
                   <Font size="36.0" />
                </font>
@@ -23,11 +23,11 @@
       </VBox>
    </top>
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Naziv:">
+                  <Label fx:id="nazivLabel" text="Naziv:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -44,7 +44,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Cijena:">
+                  <Label fx:id="cijenaLabel" text="Cijena:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -57,7 +57,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Trajanje:">
+                  <Label fx:id="trajanjeLabel" text="Trajanje:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -68,14 +68,11 @@
                      </HBox.margin></TextField>
                </children>
             </HBox>
+            <Button fx:id="promjeniButton" mnemonicParsing="false" onAction="#izmjeniAktivnost" text="Promjeni">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Button>
          </children>
       </VBox>
    </center>
-   <bottom>
-      <VBox alignment="CENTER" prefHeight="47.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
-         <children>
-            <Button mnemonicParsing="false" onAction="#izmjeniAktivnost" text="Spremi promjene" />
-         </children>
-      </VBox>
-   </bottom>
 </BorderPane>

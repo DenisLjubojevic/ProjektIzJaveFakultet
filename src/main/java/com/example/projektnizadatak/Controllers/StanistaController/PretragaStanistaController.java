@@ -3,10 +3,11 @@ package com.example.projektnizadatak.Controllers.StanistaController;
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
-import com.example.projektnizadatak.Entiteti.Stanista.Obrok;
+import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import com.example.projektnizadatak.Util.BazaPodataka;
@@ -34,7 +35,7 @@ public class PretragaStanistaController {
     private TextField vrstaZivotinjaTextField;
 
     @FXML
-    private ChoiceBox<Obrok> obrokChoiceBox;
+    private ChoiceBox<Hrana> hranaChoiceBox;
 
     @FXML
     private TableView<Staniste> stanisteTableView;
@@ -46,11 +47,13 @@ public class PretragaStanistaController {
     private TableColumn<Staniste, String> vrstaZivotinjaTableColumn;
 
     @FXML
-    private TableColumn<Staniste, String> obrokTableColumn;
+    private TableColumn<Staniste, String> hranaTableColumn;
 
     List<Staniste> stanista = new ArrayList<>();
-    List<Obrok> obroci = new ArrayList<>();
+    List<Hrana> hrane = new ArrayList<>();
 
+    @FXML
+    private Button pretraziButton;
     @FXML
     private Button dodajButton;
     @FXML
@@ -59,6 +62,14 @@ public class PretragaStanistaController {
     private Button obrisiButton;
     @FXML
     private HBox hBox;
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label vrstaLabel;
+    @FXML
+    private Label brojLabel;
+    @FXML
+    private Label hranaLabel;
 
     private boolean popravljenLayout = false;
     public synchronized void initialize(){
@@ -85,7 +96,7 @@ public class PretragaStanistaController {
         }
 
         try{
-            obroci = BazaPodataka.dohvatiSveObroke();
+            hrane = BazaPodataka.dohvatiSvuHranu();
         } catch (BazaPodatakaException ex){
             MainApplication.showAlertDialog(
                     Alert.AlertType.ERROR,
@@ -95,16 +106,16 @@ public class PretragaStanistaController {
             );
         }
 
-        obrokChoiceBox.getItems().add(new Obrok(0, "Odabir", 0, LocalTime.now(), "Prazno"));
-        for (Obrok o: obroci) {
-            obrokChoiceBox.getItems().add(o);
+        hranaChoiceBox.getItems().add(new Hrana(0, "Odabir", 0, LocalTime.now(), "Prazno"));
+        for (Hrana h: hrane) {
+            hranaChoiceBox.getItems().add(h);
         }
 
-        obrokChoiceBox.getSelectionModel().selectFirst();
+        hranaChoiceBox.getSelectionModel().selectFirst();
 
         brojZivotinjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getBrojJedinki())));
         vrstaZivotinjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSistematika().vrsta()));
-        obrokTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getObrok().getVrstaHrane()));
+        hranaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getHrana().getVrstaHrane()));
 
         stanisteTableView.setItems(FXCollections.observableList(stanista));
 
@@ -122,6 +133,17 @@ public class PretragaStanistaController {
             });
             return row;
         });
+
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(vrstaLabel);
+        MainApplication.setupText(brojLabel);
+        MainApplication.setupText(hranaLabel);
+
+        MainApplication.setupButton(pretraziButton);
+        MainApplication.setupButton(dodajButton);
+        MainApplication.setupButton(urediButton);
+        MainApplication.setupButton(obrisiButton);
     }
 
     private void prikaziDetaljeStanista(Staniste staniste) throws IOException {
@@ -148,44 +170,34 @@ public class PretragaStanistaController {
                     "Nemate pravo pristupa tim podacima!"
             );
         }
-
-
     }
 
     public synchronized void dohvatiStanista(){
         String vrsta = vrstaZivotinjaTextField.getText();
         String brojZivotinja = brojZivotinjaTextField.getText();
-        Obrok obrok = obrokChoiceBox.getValue();
+        Hrana hrana = hranaChoiceBox.getValue();
 
-        stanisteTableView.setItems(FXCollections.observableList(stanista));
-        List<Staniste> filtriranaStanista = new ArrayList<>();
+        List<Staniste> filtriranaStanista = stanista;
 
-        if (!vrsta.isEmpty() && obrok.getVrstaHrane().equals("Odabir")) {
-            filtriranaStanista = stanista.stream().filter(s -> s.getSistematika().vrsta().contains(vrsta)).toList();
-            stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
+        if (!vrsta.isEmpty()) {
+            filtriranaStanista = filtriranaStanista.stream()
+                    .filter(s -> s.getSistematika().vrsta().contains(vrsta))
+                    .toList();
         }
 
-        if(!brojZivotinja.isEmpty() && obrok.getVrstaHrane().equals("Odabir")){
-            if (!vrsta.isEmpty()){
-                filtriranaStanista = filtriranaStanista.stream().filter(s -> Integer.parseInt(brojZivotinja) == s.getBrojJedinki()).toList();
-                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
-            }else{
-                filtriranaStanista = stanista.stream().filter(s -> Integer.parseInt(brojZivotinja) == s.getBrojJedinki()).toList();
-                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
-            }
-
+        if(!brojZivotinja.isEmpty()){
+            filtriranaStanista = filtriranaStanista.stream()
+                    .filter(s -> Integer.parseInt(brojZivotinja) == s.getBrojJedinki())
+                    .toList();
         }
 
-        if (!obrok.getVrstaHrane().equals("Odabir")){
-            if (!vrsta.isEmpty() || !brojZivotinja.isEmpty()){
-                filtriranaStanista = filtriranaStanista.stream().filter(s -> s.getObrok().equals(obrok)).toList();
-                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
-            }else{
-                filtriranaStanista = stanista.stream().filter(s -> s.getObrok().equals(obrok)).toList();
-                stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
-            }
-
+        if (!hrana.getVrstaHrane().equals("Odabir")){
+            filtriranaStanista = filtriranaStanista.stream()
+                    .filter(s -> s.getHrana().getVrstaHrane().equals(hrana.getVrstaHrane()))
+                    .toList();
         }
+
+        stanisteTableView.setItems(FXCollections.observableList(filtriranaStanista));
     }
 
     public void dodajStaniste() throws IOException {

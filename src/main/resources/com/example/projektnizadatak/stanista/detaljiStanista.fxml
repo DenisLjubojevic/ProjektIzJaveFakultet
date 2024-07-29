@@ -14,7 +14,7 @@
       <VBox alignment="TOP_CENTER" prefHeight="71.0" prefWidth="766.0" styleClass="bodybg" stylesheets="@../css/style.css" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <fx:include source="../menu/izbornik.fxml" VBox.vgrow="ALWAYS" />
-            <Label text="Detalji staništa">
+            <Label fx:id="naslovLabel" text="Detalji staništa">
                <font>
                   <Font size="36.0" />
                </font>
@@ -27,9 +27,9 @@
          <children>
             <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/style.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Vrsta:">
+                  <Label fx:id="vrstaTextLabel" text="Vrsta:">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="5.0" top="20.0" />
@@ -37,7 +37,7 @@
                   </Label>
                   <Label fx:id="vrstaLabel" text="popuni vrsta">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="5.0" top="20.0" />
@@ -47,9 +47,9 @@
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Razred:">
+                  <Label fx:id="razredTextLabel" text="Razred:">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="5.0" />
@@ -57,7 +57,7 @@
                   </Label>
                   <Label fx:id="razredLabel" text="popuni razred">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="5.0" />
@@ -67,9 +67,9 @@
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Broj jedniki:">
+                  <Label fx:id="brojJedinkiTextLabel" text="Broj jedniki:">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="5.0" />
@@ -77,7 +77,7 @@
                   </Label>
                   <Label fx:id="brojJedinkiLabel" text="popuni jednike">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="5.0" />
@@ -87,17 +87,17 @@
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Obrok:">
+                  <Label fx:id="hranaTextLabel" text="Hrana:">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="obrokLabel" onMouseClicked="#prikaziDetaljeObroka" onMouseEntered="#promjeniBojuTeksta" onMouseExited="#resetirajBojuTeksta" text="popuni obrok">
+                  <Label fx:id="hranaLabel" onMouseClicked="#prikaziDetaljeObroka" onMouseEntered="#promjeniBojuTeksta" onMouseExited="#resetirajBojuTeksta" text="popuni hrana">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="5.0" />

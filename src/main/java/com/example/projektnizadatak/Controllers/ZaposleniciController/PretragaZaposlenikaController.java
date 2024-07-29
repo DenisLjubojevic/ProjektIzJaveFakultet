@@ -7,6 +7,7 @@ import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -62,6 +63,8 @@ public class PretragaZaposlenikaController {
     private List<Zaposlenici> zaposlenici;
     private boolean popravljenLayout = false;
     @FXML
+    private Button pretraziButton;
+    @FXML
     private Button dodajButton;
     @FXML
     private Button urediButton;
@@ -69,6 +72,19 @@ public class PretragaZaposlenikaController {
     private Button obrisiButton;
     @FXML
     private HBox hBox;
+
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label imeLabel;
+    @FXML
+    private Label prezimeLabel;
+    @FXML
+    private Label cijenaLabel;
+    @FXML
+    private Label satnicaLabel;
+    @FXML
+    private Label posaoLabel;
 
 
     public void initialize(){
@@ -111,6 +127,18 @@ public class PretragaZaposlenikaController {
         posaoZaposlenikaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getZanimanje()));
 
         zaposleniciTableView.setItems(FXCollections.observableList(zaposlenici));
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(imeLabel);
+        MainApplication.setupText(prezimeLabel);
+        MainApplication.setupText(cijenaLabel);
+        MainApplication.setupText(satnicaLabel);
+        MainApplication.setupText(posaoLabel);
+
+        MainApplication.setupButton(pretraziButton);
+        MainApplication.setupButton(dodajButton);
+        MainApplication.setupButton(urediButton);
+        MainApplication.setupButton(obrisiButton);
     }
 
     public void dohvatiZaposlenike(){
@@ -120,53 +148,39 @@ public class PretragaZaposlenikaController {
         String satnica = satnicaZaposlenikaTextField.getText();
         String posao = posaoZaposlenikaChoiceBox.getValue();
 
-        List<Zaposlenici> filtriraniZaposlenici = new ArrayList<>();
-        zaposleniciTableView.setItems(FXCollections.observableList(zaposlenici));
+        List<Zaposlenici> filtriraniZaposlenici = zaposlenici;
 
         if(!ime.isEmpty()){
-            filtriraniZaposlenici = zaposlenici.stream().filter(z -> z.getIme().contains(ime)).toList();
-            zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
+            filtriraniZaposlenici = filtriraniZaposlenici.stream()
+                    .filter(z -> z.getIme().contains(ime))
+                    .toList();
         }
 
-        if (!prezime.isEmpty() && posao.equals("Odabir")) {
-            if(!ime.isEmpty()){
-                filtriraniZaposlenici = filtriraniZaposlenici.stream().filter(z -> z.getPrezime().contains(prezime)).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            }else {
-                filtriraniZaposlenici = zaposlenici.stream().filter(z -> z.getPrezime().contains(prezime)).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            }
+        if (!prezime.isEmpty()) {
+            filtriraniZaposlenici = filtriraniZaposlenici.stream()
+                    .filter(z -> z.getPrezime().contains(prezime))
+                    .toList();
         }
 
-        if (!cijenapPoSatu.isEmpty() && posao.equals("Odabir")) {
-            if(!ime.isEmpty() || !prezime.isEmpty()){
-                filtriraniZaposlenici = filtriraniZaposlenici.stream().filter(z -> z.getCijenaPoSatu().equals(Integer.parseInt(cijenapPoSatu))).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            } else {
-                filtriraniZaposlenici = zaposlenici.stream().filter(z -> z.getCijenaPoSatu().equals(Integer.parseInt(cijenapPoSatu))).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            }
+        if (!cijenapPoSatu.isEmpty()) {
+            filtriraniZaposlenici = filtriraniZaposlenici.stream()
+                    .filter(z -> z.getCijenaPoSatu().equals(Integer.parseInt(cijenapPoSatu)))
+                    .toList();
         }
 
-        if (!satnica.isEmpty() && posao.equals("Odabir")) {
-            if(!ime.isEmpty() || !prezime.isEmpty() || !cijenapPoSatu.isEmpty()){
-                filtriraniZaposlenici = filtriraniZaposlenici.stream().filter(z -> z.getMjesecnaSatnica().equals(Integer.parseInt(satnica))).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            } else {
-                filtriraniZaposlenici = zaposlenici.stream().filter(z -> z.getMjesecnaSatnica().equals(Integer.parseInt(satnica))).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            }
+        if (!satnica.isEmpty()) {
+            filtriraniZaposlenici = filtriraniZaposlenici.stream()
+                    .filter(z -> z.getMjesecnaSatnica().equals(Integer.parseInt(satnica)))
+                    .toList();
         }
 
-        if (!posao.isBlank() && !posao.equals("Odabir")) {
-            if(!ime.isEmpty() || !prezime.isEmpty() || !cijenapPoSatu.isEmpty() || !satnica.isEmpty()){
-                filtriraniZaposlenici = filtriraniZaposlenici.stream().filter(z -> z.getZanimanje().contains(posao)).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            } else {
-                filtriraniZaposlenici = zaposlenici.stream().filter(z -> z.getZanimanje().contains(posao)).toList();
-                zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
-            }
+        if (!posao.equals("Odabir")) {
+            filtriraniZaposlenici = filtriraniZaposlenici.stream()
+                    .filter(z -> z.getZanimanje().contains(posao))
+                    .toList();
         }
+
+        zaposleniciTableView.setItems(FXCollections.observableList(filtriraniZaposlenici));
     }
 
     public void dodajZaposlenika() throws IOException {

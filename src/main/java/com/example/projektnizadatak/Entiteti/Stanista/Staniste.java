@@ -12,24 +12,24 @@ public class Staniste extends Entitet {
     private Sistematika sistematika;
 
     private Integer brojJedinki;
-    private Obrok obrok;
+    private Hrana hrana;
     private byte[] slikaStanista;
 
-    public Staniste(Integer id, List<Zivotinja> zivotinja, Integer brojJedniki, Obrok obrok, byte[] slikaStanista) {
+    public Staniste(Integer id, List<Zivotinja> zivotinja, Integer brojJedniki, Hrana hrana, byte[] slikaStanista) {
         super(id);
         this.zivotinja = zivotinja;
         this.brojJedinki = brojJedniki;
         this.sistematika = new Sistematika(zivotinja.get(0).getSistematika().vrsta(), zivotinja.get(0).getSistematika().razred());
-        this.obrok = obrok;
+        this.hrana = hrana;
         this.slikaStanista = slikaStanista;
     }
 
-    public Staniste(Integer id, List<Zivotinja> zivotinja, Integer brojJedniki, Obrok obrok) {
+    public Staniste(Integer id, List<Zivotinja> zivotinja, Integer brojJedniki, Hrana hrana) {
         super(id);
         this.zivotinja = zivotinja;
         this.brojJedinki = brojJedniki;
         this.sistematika = new Sistematika(zivotinja.get(0).getSistematika().vrsta(), zivotinja.get(0).getSistematika().razred());
-        this.obrok = obrok;
+        this.hrana = hrana;
     }
 
     public List<Zivotinja> getZivotinja() {
@@ -56,12 +56,12 @@ public class Staniste extends Entitet {
         this.brojJedinki = brojJedinki;
     }
 
-    public Obrok getObrok() {
-        return obrok;
+    public Hrana getHrana() {
+        return hrana;
     }
 
-    public void setObrok(Obrok obrok) {
-        this.obrok = obrok;
+    public void setHrana(Hrana hrana) {
+        this.hrana = hrana;
     }
 
     public byte[] getSlikaStanista() {

@@ -28,6 +28,21 @@ public class AzurirajZaposlenikaController {
     @FXML
     private ChoiceBox<String> posaoZaposlenikaChoiceBox;
 
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label imeLabel;
+    @FXML
+    private Label prezimeLabel;
+    @FXML
+    private Label cijenaLabel;
+    @FXML
+    private Label satnicaLabel;
+    @FXML
+    private Label posaoLabel;
+    @FXML
+    private Button promjeniButton;
+
     private String staroIme;
     private String staroPrezime;
     private String staraCijenaPoSatu;
@@ -64,6 +79,15 @@ public class AzurirajZaposlenikaController {
         }
 
         posaoZaposlenikaChoiceBox.getSelectionModel().selectFirst();
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(imeLabel);
+        MainApplication.setupText(prezimeLabel);
+        MainApplication.setupText(cijenaLabel);
+        MainApplication.setupText(satnicaLabel);
+        MainApplication.setupText(posaoLabel);
+
+        MainApplication.setupButton(promjeniButton);
     }
 
     public void dohvatiZaposlenika(Zaposlenici zaposlenik){

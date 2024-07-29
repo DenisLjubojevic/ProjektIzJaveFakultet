@@ -2,9 +2,8 @@ package com.example.projektnizadatak;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import javafx.application.Application;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -14,12 +13,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class MainApplication extends Application {
     public static Stage mainStage;
@@ -120,5 +116,27 @@ public class MainApplication extends Application {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void setupButton(Button button){
+        button.styleProperty().bind(
+                Bindings.concat("-fx-pref-width: ", MainApplication.getMainStage().widthProperty().divide(8.5).asString(), "px; ",
+                        "-fx-pref-height: ", MainApplication.getMainStage().heightProperty().divide(13).asString(), "px; ",
+                        "-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(50).asString(), "px"));
+    }
+
+    public static void setupNaslov(Label label){
+        label.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(16).asString(), "px"));
+    }
+
+    public static void setupText(Label label){
+        label.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
+    }
+
+    public static void setupRadioButton(RadioButton radioButton){
+        radioButton.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
     }
 }

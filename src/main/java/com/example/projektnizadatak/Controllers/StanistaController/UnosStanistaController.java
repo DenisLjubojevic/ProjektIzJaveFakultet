@@ -2,17 +2,17 @@ package com.example.projektnizadatak.Controllers.StanistaController;
 
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
-import com.example.projektnizadatak.Entiteti.Stanista.Obrok;
+import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -32,13 +32,30 @@ public class UnosStanistaController {
     private TextField vrstaZivotinjaTextField;
 
     @FXML
-    private ChoiceBox<Obrok> obrokChoiceBox;
+    private ChoiceBox<Hrana> hranaChoiceBox;
     @FXML
     private ImageView odabranaSlika;
 
+    @FXML
+    private Label naslovLabel;
+    @FXML
+    private Label vrstaLabel;
+    @FXML
+    private Label brojLabel;
+    @FXML
+    private Label hranaLabel;
+    @FXML
+    private Label slikaLabel;
+    @FXML
+    private Button odaberiButton;
+    @FXML
+    private Button spremiButton;
+    @FXML
+    private BorderPane borderPane;
+
     private byte[] slikaStanista;
 
-    List<Obrok> obroci = new ArrayList<>();
+    List<Hrana> hrane = new ArrayList<>();
     private boolean popravljenLayout = false;
     public void initialize(){
         if (!popravljenLayout){
@@ -47,7 +64,7 @@ public class UnosStanistaController {
         }
 
         try{
-            obroci = BazaPodataka.dohvatiSveObroke();
+            hrane = BazaPodataka.dohvatiSvuHranu();
         } catch (BazaPodatakaException ex){
             MainApplication.showAlertDialog(
                     Alert.AlertType.ERROR,
@@ -57,16 +74,28 @@ public class UnosStanistaController {
             );
         }
 
-        for (Obrok o: obroci) {
-            if (obrokChoiceBox.getItems().contains(o)){
+        for (Hrana h: hrane) {
+            if (hranaChoiceBox.getItems().contains(h)){
                 continue;
             }
-            obrokChoiceBox.getItems().add(o);
+            hranaChoiceBox.getItems().add(h);
         }
 
-        obrokChoiceBox.getSelectionModel().selectFirst();
+        hranaChoiceBox.getSelectionModel().selectFirst();
         Image placeholder = new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("/com/example/projektnizadatak/Images/imagePlaceholder.jpg")));
         odabranaSlika.setImage(placeholder);
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(vrstaLabel);
+        MainApplication.setupText(brojLabel);
+        MainApplication.setupText(hranaLabel);
+        MainApplication.setupText(slikaLabel);
+
+        MainApplication.setupButton(odaberiButton);
+        MainApplication.setupButton(spremiButton);
+
+        odabranaSlika.fitWidthProperty().bind(borderPane.widthProperty().divide(7.5));
+        odabranaSlika.fitHeightProperty().bind(borderPane.heightProperty().divide(6.78));
     }
 
     @FXML
@@ -119,7 +148,7 @@ public class UnosStanistaController {
 
         String brojZivotinja = brojZivotinjaTextField.getText();
         String vrsta = vrstaZivotinjaTextField.getText();
-        Obrok obrok = obrokChoiceBox.getValue();
+        Hrana hrana = hranaChoiceBox.getValue();
 
         List<Zivotinja> odabraneZivotinje = new ArrayList<>();
         Integer id = staniste.size();
@@ -146,7 +175,7 @@ public class UnosStanistaController {
             );
         } else {
 
-            Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), obrok, slikaStanista);
+            Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), hrana, slikaStanista);
             try{
                 BazaPodataka.spremiStaniste(novoStaniste);
                 AzurirajZivotinjuController.spremiPromjenu( "-", novoStaniste.getClass().getSimpleName(), "admin", LocalDateTime.now());
@@ -160,7 +189,7 @@ public class UnosStanistaController {
             } catch (BazaPodatakaException ex){
                 MainApplication.showAlertDialog(
                         Alert.AlertType.ERROR,
-                        "Spremanje životinje!",
+                        "Spremanje staništa!",
                         "Pogreška prilikom spremanja!",
                         ex.getMessage()
                 );

@@ -2,20 +2,19 @@ package com.example.projektnizadatak.Entiteti.Stanista;
 
 import com.example.projektnizadatak.Entiteti.Entitet;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Obrok extends Entitet {
+public class Hrana extends Entitet {
     private String vrstaHrane;
     private double kolicina;
-    private LocalTime vrijemeObroka;
+    private LocalTime vrijemeHranjenja;
     private String napomena;
 
-    public Obrok(Integer id, String vrstaHrane, double kolicina, LocalTime vrijemeObroka, String napomena) {
+    public Hrana(Integer id, String vrstaHrane, double kolicina, LocalTime vrijemeHranjenja, String napomena) {
         super(id);
         this.vrstaHrane = vrstaHrane;
         this.kolicina = kolicina;
-        this.vrijemeObroka = vrijemeObroka;
+        this.vrijemeHranjenja = vrijemeHranjenja;
         this.napomena = napomena;
     }
 
@@ -35,12 +34,12 @@ public class Obrok extends Entitet {
         this.kolicina = kolicina;
     }
 
-    public LocalTime getVrijemeObroka() {
-        return vrijemeObroka;
+    public LocalTime getVrijemeHranjenja() {
+        return vrijemeHranjenja;
     }
 
-    public void setVrijemeObroka(LocalTime vrijemeObroka) {
-        this.vrijemeObroka = vrijemeObroka;
+    public void setVrijemeHranjenja(LocalTime vrijemeHranjenja) {
+        this.vrijemeHranjenja = vrijemeHranjenja;
     }
 
     public String getNapomena() {

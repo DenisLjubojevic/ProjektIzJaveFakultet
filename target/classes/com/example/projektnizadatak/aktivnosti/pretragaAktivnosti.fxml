@@ -16,7 +16,7 @@
       <VBox alignment="TOP_CENTER" prefHeight="81.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
             <fx:include source="../menu/izbornik.fxml" />
-            <Label text="Pretraga aktivnosti">
+            <Label fx:id="naslovLabel" text="Pretraga aktivnosti">
                <font>
                   <Font size="36.0" />
                </font>
@@ -29,7 +29,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Naziv:">
+                  <Label fx:id="nazivLabel" text="Naziv:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -46,7 +46,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Cijena:">
+                  <Label fx:id="cijenaLabel" text="Cijena:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -59,7 +59,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Trajanje:">
+                  <Label fx:id="trajanjeLabel" text="Trajanje:">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -70,15 +70,9 @@
                      </HBox.margin></TextField>
                </children>
             </HBox>
-         </children>
-      </VBox>
-   </center>
-   <bottom>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
-         <children>
-            <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#dohvatiAktivnosti" text="Pretraži" />
+                  <Button fx:id="pretraziButton" mnemonicParsing="false" onAction="#dohvatiAktivnosti" text="Pretraži" />
                   <Button fx:id="dodajButton" mnemonicParsing="false" onAction="#dodajAktivnost" text="Dodaj">
                      <HBox.margin>
                         <Insets left="5.0" />
@@ -99,6 +93,12 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <VBox alignment="TOP_CENTER" prefHeight="180.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+         <children>
             <TableView fx:id="aktivnostiTableView" prefHeight="200.0" prefWidth="200.0">
                <columns>
                   <TableColumn fx:id="nazivTableColumn" prefWidth="206.40002745389938" text="Naziv" />

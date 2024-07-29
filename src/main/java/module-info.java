@@ -25,7 +25,8 @@ module com.example.projektnizadatak {
     opens com.example.projektnizadatak.Controllers.MenuController to javafx.fxml;
     exports com.example.projektnizadatak.Controllers.LoginController;
     opens com.example.projektnizadatak.Controllers.LoginController to javafx.fxml;
-
     exports com.example.projektnizadatak.Controllers.GoogleMapController;
     opens com.example.projektnizadatak.Controllers.GoogleMapController to javafx.fxml;
+    exports com.example.projektnizadatak.Controllers.HranaController;
+    opens com.example.projektnizadatak.Controllers.HranaController to javafx.fxml;
 }

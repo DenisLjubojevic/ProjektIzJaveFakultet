@@ -2,8 +2,8 @@ package com.example.projektnizadatak.Util;
 
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
 import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
+import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
-import com.example.projektnizadatak.Entiteti.Stanista.Obrok;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
@@ -160,8 +160,8 @@ public class BazaPodataka {
         return Optional.empty();
     }
 
-    public static List<Obrok> dohvatiSveObroke()throws BazaPodatakaException{
-        List<Obrok> obroci = new ArrayList<>();
+    public static List<Hrana> dohvatiSvuHranu()throws BazaPodatakaException{
+        List<Hrana> obroci = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -171,16 +171,16 @@ public class BazaPodataka {
 
             stmt = con.createStatement();
 
-            rs = stmt.executeQuery("SELECT * FROM OBROCI");
+            rs = stmt.executeQuery("SELECT * FROM HRANA");
 
             while (rs.next()){
                 Integer id = rs.getInt("id");
                 String vrstaHrane = rs.getString("vrsta_hrane");
                 Double kolicina = rs.getDouble("kolicina");
-                Time vrijemeObroka = rs.getTime("vrijeme_obroka");
+                Time vrijemeHranjenja = rs.getTime("vrijeme_hranjenja");
                 String napomena = rs.getString("napomena");
 
-                obroci.add(new Obrok(id,vrstaHrane,kolicina,vrijemeObroka.toLocalTime(),napomena));
+                obroci.add(new Hrana(id,vrstaHrane,kolicina,vrijemeHranjenja.toLocalTime(),napomena));
             }
 
             con.close();
@@ -196,7 +196,7 @@ public class BazaPodataka {
         return obroci;
     }
 
-    public static Optional<Obrok> dohvatiObrokById(Integer id)throws BazaPodatakaException{
+    public static Optional<Hrana> dohvatiHranuById(Integer id)throws BazaPodatakaException{
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -204,7 +204,7 @@ public class BazaPodataka {
         try{
             con = connectToDataBase();
 
-            pstmt = con.prepareStatement("SELECT * FROM OBROCI WHERE ID = ?");
+            pstmt = con.prepareStatement("SELECT * FROM HRANA WHERE ID = ?");
             pstmt.setInt(1, id);
 
             rs = pstmt.executeQuery();
@@ -213,11 +213,11 @@ public class BazaPodataka {
                 Integer id2 = rs.getInt("id");
                 String vrstaHrane = rs.getString("vrsta_hrane");
                 Double kolicina = rs.getDouble("kolicina");
-                Time vrijemeObroka = rs.getTime("vrijeme_obroka");
+                Time vrijemeHranjenja = rs.getTime("vrijeme_hranjenja");
                 String napomena = rs.getString("napomena");
 
-                Obrok obrok = new Obrok(id2, vrstaHrane, kolicina, vrijemeObroka.toLocalTime(), napomena);
-                return Optional.of(obrok);
+                Hrana hrana = new Hrana(id2, vrstaHrane, kolicina, vrijemeHranjenja.toLocalTime(), napomena);
+                return Optional.of(hrana);
             }
 
             con.close();
@@ -231,6 +231,34 @@ public class BazaPodataka {
         }
 
         return Optional.empty();
+    }
+
+    public static void spremiHranu(Hrana hrana) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("INSERT INTO HRANA(VRSTA_HRANE, KOLICINA, VRIJEME_HRANJENJA, NAPOMENA)"
+                    + "VALUES (?, ?, ?, ?)");
+            pstmt.setString(1, hrana.getVrstaHrane());
+            pstmt.setDouble(2, hrana.getKolicina());
+            pstmt.setTime(3, Time.valueOf(hrana.getVrijemeHranjenja()));
+            pstmt.setString(4, hrana.getNapomena());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
     }
 
     public static void spremiZivotinju(Zivotinja zivotinja) throws BazaPodatakaException{
@@ -503,7 +531,7 @@ public class BazaPodataka {
                 Integer id = rs.getInt("id");
                 String vrsta = rs.getString("vrsta");
                 Integer broj_jedinki = rs.getInt("broj_jedinki");
-                Integer obrok_id = rs.getInt("obrok_id");
+                Integer hrana_id = rs.getInt("hrana_id");
                 Blob stanisteSlikaBlob = rs.getBlob("slika_stanista");
 
                 byte[] slikaStanista = null;
@@ -518,7 +546,7 @@ public class BazaPodataka {
                     }
                 }
 
-                Optional<Obrok> obrok = dohvatiObrokById(obrok_id);
+                Optional<Hrana> obrok = dohvatiHranuById(hrana_id);
 
                 stanista.add(new Staniste(id, odabraneZivotinje, broj_jedinki, obrok.get(), slikaStanista));
             }
@@ -559,7 +587,7 @@ public class BazaPodataka {
                 Integer id2 = rs.getInt("id");
                 String vrsta = rs.getString("vrsta");
                 Integer broj_jedinki = rs.getInt("broj_jedinki");
-                Integer obrok_id = rs.getInt("obrok_id");
+                Integer hrana_id = rs.getInt("hrana_id");
                 Blob stanisteSlikaBlob = rs.getBlob("slika_stanista");
 
                 byte[] slikaStanista = null;
@@ -574,8 +602,8 @@ public class BazaPodataka {
                     }
                 }
 
-                Optional<Obrok> obrok = dohvatiObrokById(obrok_id);
-                Staniste novoStaniste = new Staniste(id2, odabraneZivotinje, broj_jedinki, obrok.orElse(null), slikaStanista);
+                Optional<Hrana> hrana = dohvatiHranuById(hrana_id);
+                Staniste novoStaniste = new Staniste(id2, odabraneZivotinje, broj_jedinki, hrana.orElse(null), slikaStanista);
                 return Optional.of(novoStaniste);
             }
 
@@ -601,11 +629,11 @@ public class BazaPodataka {
                 System.out.println("Uspješno smo se spojili na bazu!");
             }
 
-            pstmt = con.prepareStatement("INSERT INTO STANISTA(vrsta, broj_jedinki, obrok_id, slika_stanista)"
+            pstmt = con.prepareStatement("INSERT INTO STANISTA(vrsta, broj_jedinki, hrana_id, slika_stanista)"
                     + "VALUES (?, ?, ?, ?)");
             pstmt.setString(1, staniste.getSistematika().vrsta());
             pstmt.setInt(2, staniste.getBrojJedinki());
-            pstmt.setInt(3, staniste.getObrok().getId());
+            pstmt.setInt(3, staniste.getHrana().getId());
             pstmt.setBytes(4, staniste.getSlikaStanista());
 
             pstmt.executeUpdate();
@@ -632,12 +660,12 @@ public class BazaPodataka {
             pstmt = con.prepareStatement("UPDATE STANISTA SET " +
                     "VRSTA = ?," +
                     "BROJ_JEDINKI = ?," +
-                    "OBROK_ID = ?," +
+                    "HRANA_ID = ?," +
                     "SLIKA_STANISTA = ?" +
                     "WHERE ID = ?");
             pstmt.setString(1, staniste.getSistematika().vrsta());
             pstmt.setInt(2, staniste.getBrojJedinki());
-            pstmt.setInt(3, staniste.getObrok().getId());
+            pstmt.setInt(3, staniste.getHrana().getId());
             pstmt.setBytes(4, staniste.getSlikaStanista());
             pstmt.setInt(5, staniste.getId());
 
