@@ -84,7 +84,7 @@ public class DetaljiStanista {
     @FXML
     private void prikaziDetaljeObroka() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiHrane.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/hrana/detaljiHrane.fxml"));
             Parent root = loader.load();
 
             DetaljiHraneController detaljiHraneController = loader.getController();

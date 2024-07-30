@@ -6,12 +6,15 @@ import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
+import com.example.projektnizadatak.Entiteti.Zivotinje.ZdravstveniKarton;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 public class BazaPodataka {
@@ -160,6 +163,94 @@ public class BazaPodataka {
         return Optional.empty();
     }
 
+    public static void spremiZdravstveniKarton(ZdravstveniKarton karton, Integer zivotinjaId) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            pstmt = con.prepareStatement("INSERT INTO ZDRAVSTVENI_KARTON(datum_pregleda, dijagnoza, terapija, napomene, zivotinja_id)"
+                            + "VALUES (?, ?, ?, ?, ?)");
+
+            pstmt.setDate(1, Date.valueOf(karton.getDatumPregleda()));
+            pstmt.setString(2, karton.getDijagnoza());
+            pstmt.setString(3, karton.getTerapija());
+            pstmt.setString(4, karton.getNapomena());
+            pstmt.setInt(5, zivotinjaId);
+
+            pstmt.executeUpdate();
+        }catch (Exception e) {
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        } finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) { }
+            try { if (con != null) con.close(); } catch (SQLException e) { }
+        }
+    }
+
+    public static List<ZdravstveniKarton> dohvatiZdravsteveneKartoneZaZivotinju(Integer id) throws BazaPodatakaException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("SELECT * FROM ZDRAVSTVENI_KARTON WHERE ZIVOTINJA_ID = ?");
+            pstmt.setInt(1, id);
+
+            rs = pstmt.executeQuery();
+
+            List<ZdravstveniKarton> kartoniZivotinje = new ArrayList<>();
+            while (rs.next()){
+                Integer id2 = rs.getInt("id");
+                LocalDate datumPregleda = rs.getDate("datum_pregleda").toLocalDate();
+                String dijagnoza = rs.getString("dijagnoza");
+                String terapija = rs.getString("terapija");
+                String napomene = rs.getString("napomene");
+
+                ZdravstveniKarton noviKarton = new ZdravstveniKarton(id2, datumPregleda, dijagnoza, terapija, napomene);
+                kartoniZivotinje.add(noviKarton);
+            }
+
+            return kartoniZivotinje;
+        } catch (Exception e){
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {  }
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
+    }
+
+    public static void obrisiZdravstveniKarton(ZdravstveniKarton zdravstveniKarton) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("DELETE FROM ZDRAVSTVENI_KARTON WHERE ID = ?");
+            pstmt.setInt(1, zdravstveniKarton.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
+    }
+
     public static List<Hrana> dohvatiSvuHranu()throws BazaPodatakaException{
         List<Hrana> obroci = new ArrayList<>();
         Connection con = null;
@@ -250,6 +341,63 @@ public class BazaPodataka {
             pstmt.setDouble(2, hrana.getKolicina());
             pstmt.setTime(3, Time.valueOf(hrana.getVrijemeHranjenja()));
             pstmt.setString(4, hrana.getNapomena());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
+    }
+
+    public static void azurirajHranu(Hrana hrana) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("UPDATE HRANA SET " +
+                    "VRSTA_HRANE = ?,"+
+                    "KOLICINA = ?,"+
+                    "VRIJEME_HRANJENJA = ?,"+
+                    "NAPOMENA = ? " +
+                    "WHERE ID = ?");
+            pstmt.setString(1, hrana.getVrstaHrane());
+            pstmt.setDouble(2, hrana.getKolicina());
+            pstmt.setTime(3, Time.valueOf(hrana.getVrijemeHranjenja()));
+            pstmt.setString(4, hrana.getNapomena());
+            pstmt.setInt(5, hrana.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
+    }
+
+    public static void obrisiHranu(Hrana hrana) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("DELETE FROM HRANA WHERE ID = ?");
+            pstmt.setInt(1, hrana.getId());
 
             pstmt.executeUpdate();
 

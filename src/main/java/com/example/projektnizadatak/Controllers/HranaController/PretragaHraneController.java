@@ -2,6 +2,7 @@ package com.example.projektnizadatak.Controllers.HranaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
+import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -17,10 +18,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class PretragaHraneController {
     @FXML
@@ -128,7 +131,7 @@ public class PretragaHraneController {
     private void prikaziDetaljeHrane(Hrana hrana) throws IOException {
         if (loginScreenController.roleKorisnika.equals("admin")){
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiHrane.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/hrana/detaljiHrane.fxml"));
                 Parent root = loader.load();
 
                 DetaljiHraneController detaljiHrane = loader.getController();
@@ -190,11 +193,59 @@ public class PretragaHraneController {
                 "Dodaj hranu");
     }
 
-    public void azurirajHranu(){
-        System.out.println("AZURIRAJ");
+    public void azurirajHranu() throws IOException {
+        Hrana hrana = hranaTableView.getSelectionModel().getSelectedItem();
+        if (hrana != null){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/hrana/azurirajHranu.fxml"));
+            Parent root = loader.load();
+
+            AzurirajHranuController azurirajHranu = loader.getController();
+            azurirajHranu.dohvatiHranu(hrana);
+
+            Stage stage = MainApplication.getMainStage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Promijeni hranu");
+            stage.show();
+        }else{
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednu hranu iz tablice."
+            );
+        }
     }
 
-    public void obrisiHranu(){
-        System.out.println("OBRISI");
+    public synchronized void obrisiHranu() throws BazaPodatakaException {
+        Hrana hrana = hranaTableView.getSelectionModel().getSelectedItem();
+
+        if (hrana != null){
+            Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                    Alert.AlertType.CONFIRMATION,
+                    "Potvrda",
+                    "Potvrda brisanja",
+                    "Jeste li sigurni da želite obrisati odabranu hranu?"
+            );
+
+            if (result.get().equals(ButtonType.OK)){
+                BazaPodataka.obrisiHranu(hrana);
+                AzurirajZivotinjuController.spremiPromjenu(hrana.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
+
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Brisanje hrane",
+                        "Uspješno brisanje!",
+                        "Hrana " + hrana.getVrstaHrane() + " je uspješno obrisana!"
+                );
+            }
+        }else{
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednu hranu iz tablice."
+            );
+        }
+        initialize();
     }
 }

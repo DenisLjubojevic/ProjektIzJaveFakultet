@@ -81,6 +81,8 @@ public class PretragaZivotinjaController {
     private Label vrstaLabel;
     @FXML
     private Label starostLabel;
+    @FXML
+    private Button stanjeButton;
 
     private boolean popravljenLayout = false;
 
@@ -135,6 +137,7 @@ public class PretragaZivotinjaController {
         MainApplication.setupButton(dodajButton);
         MainApplication.setupButton(urediButton);
         MainApplication.setupButton(obrisiButton);
+        MainApplication.setupButton(stanjeButton);
     }
     
     private void handleRadioButtonAction(RadioButton radioButton, BooleanProperty odabraniSpol){
@@ -256,5 +259,32 @@ public class PretragaZivotinjaController {
         }
 
         initialize();
+    }
+
+    public void pregledajZdravstveneKartone(){
+        Zivotinja zivotinja = zivotinjaTableView.getSelectionModel().getSelectedItem();
+        if (zivotinja != null){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/zivotinje/pregledZdravstvenihKartona.fxml"));
+                Parent root = loader.load();
+
+                PregledZdravstvenihKartonaController pregledKartonaController = loader.getController();
+                pregledKartonaController.setOdabranaZivotinja(zivotinja);
+
+                Stage stage = MainApplication.getMainStage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Pregled zdravstvenih kartona");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednu životinju iz tablice."
+            );
+        }
     }
 }
