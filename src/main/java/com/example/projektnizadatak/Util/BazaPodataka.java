@@ -819,7 +819,7 @@ public class BazaPodataka {
                 Integer broj_jedinki = rs.getInt("broj_jedinki");
                 Integer hrana_id = rs.getInt("hrana_id");
                 Blob stanisteSlikaBlob = rs.getBlob("slika_stanista");
-                Time vrijeme_hranjenja = rs.getTime("VRIJEME_HRANJENJA");
+                Time vrijeme_hranjenja = rs.getTime("vrijeme_hranjenja");
 
                 byte[] slikaStanista = null;
                 if (stanisteSlikaBlob != null){
@@ -841,7 +841,7 @@ public class BazaPodataka {
             con.close();
 
         } catch (Exception e){
-            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu! - SVA");
         }finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) {  }
             try { if (stmt != null) stmt.close(); } catch (SQLException e) {  }
@@ -896,7 +896,7 @@ public class BazaPodataka {
             }
 
         } catch (Exception e){
-            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu! - JEDNO");
         }finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) {  }
             try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
@@ -951,7 +951,7 @@ public class BazaPodataka {
                     "BROJ_JEDINKI = ?," +
                     "HRANA_ID = ?," +
                     "SLIKA_STANISTA = ?," +
-                    "VRIJEME_HRANJENJA" +
+                    "VRIJEME_HRANJENJA = ?" +
                     "WHERE ID = ?");
             pstmt.setString(1, staniste.getSistematika().vrsta());
             pstmt.setInt(2, staniste.getBrojJedinki());

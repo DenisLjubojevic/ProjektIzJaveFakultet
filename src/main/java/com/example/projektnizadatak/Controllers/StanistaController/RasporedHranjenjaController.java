@@ -50,7 +50,7 @@ public class RasporedHranjenjaController {
         }
 
         for (Staniste s: stanista){
-            rasporedHranjenja.dodajHranjenje(s, LocalTime.NOON);
+            rasporedHranjenja.dodajHranjenje(s, s.getVrijemeHranjenja());
         }
 
         ispisiRaspored();

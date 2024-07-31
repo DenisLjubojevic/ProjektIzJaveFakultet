@@ -131,6 +131,7 @@ public class PretragaStanistaController {
         brojZivotinjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getBrojJedinki())));
         vrstaZivotinjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSistematika().vrsta()));
         hranaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getHrana().getVrstaHrane()));
+        hranjenjeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVrijemeHranjenja().toString()));
 
         stanisteTableView.setItems(FXCollections.observableList(stanista));
 
