@@ -1,6 +1,8 @@
 package com.example.projektnizadatak.Controllers.ZaposleniciController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -8,6 +10,7 @@ import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,9 +103,18 @@ public class UnosZaposlenikaController {
             Zaposlenici noviZaposlenik = new Zaposlenici(id + 1, posao, Integer.valueOf(cijenaPoSatu), Integer.valueOf(satnica), ime, prezime);
 
             try{
-                BazaPodataka.spremiZaposlenika(noviZaposlenik);
-                AzurirajZivotinjuController.spremiPromjenu( "-", noviZaposlenik.getClass().getSimpleName(), "admin", LocalDateTime.now());
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Dodan zaposlenik",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
+                }
+
+                BazaPodataka.spremiZaposlenika(noviZaposlenik);
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Spremanje zaposlenika!",

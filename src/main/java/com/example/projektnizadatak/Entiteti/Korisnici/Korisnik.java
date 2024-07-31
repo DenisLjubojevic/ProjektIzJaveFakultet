@@ -1,11 +1,14 @@
 package com.example.projektnizadatak.Entiteti.Korisnici;
 
-public class Korisnik{
+import com.example.projektnizadatak.Entiteti.Entitet;
+
+public class Korisnik extends Entitet {
     private String korisnickoIme;
     private String lozinka;
     private Integer role;
 
-    public Korisnik(String korisnickoIme, String lozinka, Integer role) {
+    public Korisnik(Integer id, String korisnickoIme, String lozinka, Integer role) {
+        super(id);
         this.korisnickoIme = korisnickoIme;
         this.lozinka = lozinka;
         this.role = role;

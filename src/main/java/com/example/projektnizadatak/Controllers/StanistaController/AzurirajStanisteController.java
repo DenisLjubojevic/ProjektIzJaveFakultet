@@ -1,6 +1,8 @@
 package com.example.projektnizadatak.Controllers.StanistaController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
@@ -19,7 +21,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class AzurirajStanisteController {
@@ -31,6 +35,11 @@ public class AzurirajStanisteController {
 
     @FXML
     private ChoiceBox<Hrana> hranaChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> hranjenjeChoiceBox;
+
+
     @FXML
     private ImageView odabranaSlika;
     @FXML
@@ -42,6 +51,8 @@ public class AzurirajStanisteController {
     @FXML
     private Label hranaLabel;
     @FXML
+    private Label hranjenjeLabel;
+    @FXML
     private Label slikaLabel;
     @FXML
     private Button odaberiButton;
@@ -49,8 +60,6 @@ public class AzurirajStanisteController {
     private Button spremiButton;
     @FXML
     private BorderPane borderPane;
-    private String stariBrojJedinki;
-    private String staraVrsta;
     List<Staniste> stanista = new ArrayList<>();
     List<Zivotinja> zivotinje = new ArrayList<>();
     List<Hrana> hrane = new ArrayList<>();
@@ -107,10 +116,18 @@ public class AzurirajStanisteController {
 
         hranaChoiceBox.getSelectionModel().selectFirst();
 
+        hranjenjeChoiceBox.getItems().add("10:00");
+        hranjenjeChoiceBox.getItems().add("11:00");
+        hranjenjeChoiceBox.getItems().add("12:00");
+        hranjenjeChoiceBox.getItems().add("13:00");
+
+        hranjenjeChoiceBox.getSelectionModel().selectFirst();
+
         MainApplication.setupNaslov(naslovLabel);
         MainApplication.setupText(vrstaLabel);
         MainApplication.setupText(brojLabel);
         MainApplication.setupText(hranaLabel);
+        MainApplication.setupText(hranjenjeLabel);
         MainApplication.setupText(slikaLabel);
 
         MainApplication.setupButton(odaberiButton);
@@ -146,10 +163,16 @@ public class AzurirajStanisteController {
         vrstaZivotinjaTextField.setText(staniste.getZivotinja().get(0).getSistematika().vrsta());
         brojZivotinjaTextField.setText(String.valueOf(staniste.getZivotinja().size()));
         hranaChoiceBox.getSelectionModel().select(staniste.getHrana());
+
+        if (staniste.getVrijemeHranjenja() != null){
+            hranjenjeChoiceBox.getSelectionModel().select(staniste.getVrijemeHranjenja().toString());
+        }else{
+            hranjenjeChoiceBox.getSelectionModel().selectFirst();
+        }
+
+
         odabranaSlika.setImage(MainApplication.byteArrayToImage(staniste.getSlikaStanista()));
 
-        stariBrojJedinki = String.valueOf(staniste.getZivotinja().size());
-        staraVrsta = staniste.getZivotinja().get(0).getSistematika().vrsta();
         trazenoStaniste = staniste;
     }
 
@@ -157,6 +180,7 @@ public class AzurirajStanisteController {
         String vrsta = vrstaZivotinjaTextField.getText();
         String brojJedinki = brojZivotinjaTextField.getText();
         Hrana hrana = hranaChoiceBox.getValue();
+        String hranjenje = hranjenjeChoiceBox.getValue();
         slikaStanista = MainApplication.imageToByteArray(odabranaSlika.getImage());
 
         List<Zivotinja> odabraneZivotinje = new ArrayList<>();
@@ -172,6 +196,7 @@ public class AzurirajStanisteController {
             trazenoStaniste.setZivotinja(odabraneZivotinje);
             trazenoStaniste.setSistematika(new Sistematika(odabraneZivotinje.get(0).getSistematika().vrsta(), odabraneZivotinje.get(0).getSistematika().razred()));
             trazenoStaniste.setHrana(hrana);
+            trazenoStaniste.setVrijemeHranjenja(LocalTime.parse(hranjenje));
             trazenoStaniste.setSlikaStanista(slikaStanista);
 
             try {
@@ -183,12 +208,15 @@ public class AzurirajStanisteController {
                 );
 
                 if(result.get() == ButtonType.OK){
-                    if(!stariBrojJedinki.equals(brojJedinki)){
-                        AzurirajZivotinjuController.spremiPromjenu(stariBrojJedinki, brojJedinki, "admin", LocalDateTime.now());
-                    }
+                    Promjene promjena = new Promjene(
+                            1,
+                            loginScreenController.prijavljeniKorisnik.getId(),
+                            "Ažurirano stanište",
+                            new Timestamp(System.currentTimeMillis()));
+                    try{
+                        BazaPodataka.spremiPromjenu(promjena);
+                    }catch (BazaPodatakaException ex){
 
-                    if(!staraVrsta.equals(vrsta)){
-                        AzurirajZivotinjuController.spremiPromjenu(staraVrsta, vrsta, "admin", LocalDateTime.now());
                     }
 
                     BazaPodataka.azurirajStaniste(trazenoStaniste);

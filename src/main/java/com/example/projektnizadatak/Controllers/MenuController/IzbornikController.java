@@ -125,6 +125,10 @@ public class IzbornikController {
         promjeniEkran("karta/kartaStanista.fxml", "Karta staništa");
     }
 
+    public void showRasporedHranjenjaScreen() throws IOException{
+        promjeniEkran("stanista/rasporedHranjenja.fxml", "Raspored Hranjenja");
+    }
+
     public void showPromjeneScreen() throws IOException {
         promjeniEkran("promjene/promjene.fxml", "Promjene");
     }

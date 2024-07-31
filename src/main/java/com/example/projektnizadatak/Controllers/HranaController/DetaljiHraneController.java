@@ -17,9 +17,6 @@ public class DetaljiHraneController {
     private Label kolicinaLabel;
 
     @FXML
-    private Label vrijemeObrokaLabel;
-
-    @FXML
     private Label napomenaLabel;
 
     @FXML
@@ -29,9 +26,6 @@ public class DetaljiHraneController {
     private Label kolicinaTextLabel;
 
     @FXML
-    private Label vrijemeObrokaTextLabel;
-
-    @FXML
     private Label napomenaTextLabel;
 
     public void prikaziDetalje(Hrana hrana) {
@@ -39,7 +33,6 @@ public class DetaljiHraneController {
 
         vrstaHraneLabel.setText(hrana.getVrstaHrane());
         kolicinaLabel.setText(String.valueOf(hrana.getKolicina()) + "kg");
-        vrijemeObrokaLabel.setText(hrana.getVrijemeHranjenja().toString() + "h");
         napomenaLabel.setText(hrana.getNapomena());
 
         MainApplication.setupNaslov(naslovLabel);
@@ -47,8 +40,6 @@ public class DetaljiHraneController {
         setupLabel(vrstaHraneTextLabel);
         setupLabel(kolicinaLabel);
         setupLabel(kolicinaTextLabel);
-        setupLabel(vrijemeObrokaLabel);
-        setupLabel(vrijemeObrokaTextLabel);
         setupLabel(napomenaLabel);
         setupLabel(napomenaTextLabel);
     }

@@ -1,6 +1,8 @@
 package com.example.projektnizadatak.Controllers.HranaController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -9,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -21,8 +24,6 @@ public class UnosHraneController {
     @FXML
     private TextField kolicinaTextField;
     @FXML
-    private ChoiceBox<String> vrijemeHranjenjaChoiceBox;
-    @FXML
     private TextField napomenaTextField;
 
     @FXML
@@ -31,8 +32,6 @@ public class UnosHraneController {
     private Label vrstaHraneLabel;
     @FXML
     private Label kolicinaLabel;
-    @FXML
-    private Label vrijemeHranjenjaLabel;
     @FXML
     private Label napomenaLabel;
     @FXML
@@ -47,17 +46,9 @@ public class UnosHraneController {
             popravljenLayout = true;
         }
 
-        vrijemeHranjenjaChoiceBox.getItems().add("10:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("11:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("12:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("13:00");
-
-        vrijemeHranjenjaChoiceBox.getSelectionModel().selectFirst();
-
         MainApplication.setupNaslov(naslovLabel);
         MainApplication.setupText(vrstaHraneLabel);
         MainApplication.setupText(kolicinaLabel);
-        MainApplication.setupText(vrijemeHranjenjaLabel);
         MainApplication.setupText(napomenaLabel);
 
         MainApplication.setupButton(spremiButton);
@@ -79,10 +70,9 @@ public class UnosHraneController {
         Integer id = hrane.size();
         String vrstaHrane = vrstaHraneTextField.getText();
         String kolicina = kolicinaTextField.getText();
-        String vrijemeHranjenja = vrijemeHranjenjaChoiceBox.getValue();
         String napomena = napomenaTextField.getText();
 
-        if (vrstaHrane.isEmpty() || kolicina.isEmpty() || vrijemeHranjenja.isEmpty() || napomena.isEmpty()){
+        if (vrstaHrane.isEmpty() || kolicina.isEmpty() || napomena.isEmpty()){
             MainApplication.showAlertDialog(
                     Alert.AlertType.ERROR,
                     "Spremanje hrane!",
@@ -90,14 +80,28 @@ public class UnosHraneController {
                     "Potrebno je unjeti sve apodatke!"
             );
         }else{
-            LocalTime localTime = LocalTime.parse(vrijemeHranjenja, DateTimeFormatter.ofPattern("HH:mm"));
-            Time sqlTime = Time.valueOf(localTime);
 
-            Hrana novaHrana = new Hrana(id + 1, vrstaHrane, Double.parseDouble(kolicina), localTime, napomena);
+            Hrana novaHrana = new Hrana(id + 1, vrstaHrane, Double.parseDouble(kolicina), napomena);
 
             try{
-                BazaPodataka.spremiHranu(novaHrana);
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Dodana hrana",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
+                    System.out.println("Greška: " + ex);
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Spremanje promjene!",
+                            "Pogreška spremanja!",
+                            ex.getMessage()
+                    );
+                }
 
+                BazaPodataka.spremiHranu(novaHrana);
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Spremanje hrane!",

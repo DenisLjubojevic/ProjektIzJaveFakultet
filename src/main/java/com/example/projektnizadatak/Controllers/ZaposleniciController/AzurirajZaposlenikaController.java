@@ -1,6 +1,8 @@
 package com.example.projektnizadatak.Controllers.ZaposleniciController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -8,6 +10,7 @@ import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,13 +45,6 @@ public class AzurirajZaposlenikaController {
     private Label posaoLabel;
     @FXML
     private Button promjeniButton;
-
-    private String staroIme;
-    private String staroPrezime;
-    private String staraCijenaPoSatu;
-    private String staraSatnica;
-    private String stariPosao;
-
 
     private List<Zaposlenici> zaposlenici;
     private Zaposlenici trazeniZaposlenik;
@@ -97,12 +93,6 @@ public class AzurirajZaposlenikaController {
         satnicaZaposlenikaTextField.setText(zaposlenik.getMjesecnaSatnica().toString());
         posaoZaposlenikaChoiceBox.getSelectionModel().select(zaposlenik.getZanimanje());
 
-        staroIme = zaposlenik.getIme();
-        staroPrezime = zaposlenik.getPrezime();
-        staraCijenaPoSatu = zaposlenik.getCijenaPoSatu().toString();
-        staraSatnica = zaposlenik.getMjesecnaSatnica().toString();
-        stariPosao = posaoZaposlenikaChoiceBox.getValue();
-
         trazeniZaposlenik = zaposlenik;
     }
 
@@ -128,24 +118,15 @@ public class AzurirajZaposlenikaController {
             );
 
             if(result.get() == ButtonType.OK){
-                if(!staroIme.equals(ime)){
-                    AzurirajZivotinjuController.spremiPromjenu(staroIme, ime, "admin", LocalDateTime.now());
-                }
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Ažuriran zaposlenik",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
-                if(!staroPrezime.equals(prezime)){
-                    AzurirajZivotinjuController.spremiPromjenu(staroPrezime, prezime, "admin", LocalDateTime.now());
-                }
-
-                if(!staraCijenaPoSatu.equals(cijenaPoSatu)){
-                    AzurirajZivotinjuController.spremiPromjenu(staraCijenaPoSatu, cijenaPoSatu, "admin", LocalDateTime.now());
-                }
-
-                if(!staraSatnica.equals(satnica)){
-                    AzurirajZivotinjuController.spremiPromjenu(staraSatnica, satnica, "admin", LocalDateTime.now());
-                }
-
-                if(!stariPosao.equals(posao)){
-                    AzurirajZivotinjuController.spremiPromjenu(stariPosao, posao, "admin", LocalDateTime.now());
                 }
 
                 BazaPodataka.azurirajZaposlenika(trazeniZaposlenik);

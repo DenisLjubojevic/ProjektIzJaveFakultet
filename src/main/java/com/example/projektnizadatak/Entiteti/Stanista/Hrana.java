@@ -7,14 +7,12 @@ import java.time.LocalTime;
 public class Hrana extends Entitet {
     private String vrstaHrane;
     private double kolicina;
-    private LocalTime vrijemeHranjenja;
     private String napomena;
 
-    public Hrana(Integer id, String vrstaHrane, double kolicina, LocalTime vrijemeHranjenja, String napomena) {
+    public Hrana(Integer id, String vrstaHrane, double kolicina, String napomena) {
         super(id);
         this.vrstaHrane = vrstaHrane;
         this.kolicina = kolicina;
-        this.vrijemeHranjenja = vrijemeHranjenja;
         this.napomena = napomena;
     }
 
@@ -32,14 +30,6 @@ public class Hrana extends Entitet {
 
     public void setKolicina(double kolicina) {
         this.kolicina = kolicina;
-    }
-
-    public LocalTime getVrijemeHranjenja() {
-        return vrijemeHranjenja;
-    }
-
-    public void setVrijemeHranjenja(LocalTime vrijemeHranjenja) {
-        this.vrijemeHranjenja = vrijemeHranjenja;
     }
 
     public String getNapomena() {

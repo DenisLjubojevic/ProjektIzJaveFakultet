@@ -1,5 +1,7 @@
 package com.example.projektnizadatak.Controllers.ZivotinjeController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -8,6 +10,7 @@ import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,9 +99,18 @@ public class UnosZivotinjaController {
             Zivotinja novaZivotinja = new Zivotinja(id + 1, new Sistematika(vrsta, razred), Integer.valueOf(starost), spol);
 
             try{
-                BazaPodataka.spremiZivotinju(novaZivotinja);
-                AzurirajZivotinjuController.spremiPromjenu( "-", novaZivotinja.getClass().getSimpleName(), "admin", LocalDateTime.now());
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Dodana životinja",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
+                }
+
+                BazaPodataka.spremiZivotinju(novaZivotinja);
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Spremanje životinje!",

@@ -1,5 +1,7 @@
 package com.example.projektnizadatak.Controllers.HranaController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -8,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +22,6 @@ public class AzurirajHranuController {
     @FXML
     private TextField kolicinaTextField;
     @FXML
-    private ChoiceBox<String> vrijemeHranjenjaChoiceBox;
-    @FXML
     private TextField napomenaTextField;
 
     @FXML
@@ -30,13 +31,9 @@ public class AzurirajHranuController {
     @FXML
     private Label kolicinaLabel;
     @FXML
-    private Label vrijemeHranjenjaLabel;
-    @FXML
     private Label napomenaLabel;
     @FXML
     private Button promjeniButton;
-    @FXML
-    private BorderPane borderPane;
 
     List<Hrana> hrane = new ArrayList<>();
     Hrana trazenaHrana;
@@ -60,17 +57,9 @@ public class AzurirajHranuController {
             );
         }
 
-        vrijemeHranjenjaChoiceBox.getItems().add("10:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("11:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("12:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("13:00");
-
-        vrijemeHranjenjaChoiceBox.getSelectionModel().selectFirst();
-
         MainApplication.setupNaslov(naslovLabel);
         MainApplication.setupText(vrstaHraneLabel);
         MainApplication.setupText(kolicinaLabel);
-        MainApplication.setupText(vrijemeHranjenjaLabel);
         MainApplication.setupText(napomenaLabel);
 
         MainApplication.setupButton(promjeniButton);
@@ -79,7 +68,6 @@ public class AzurirajHranuController {
     public synchronized void dohvatiHranu(Hrana hrana){
         vrstaHraneTextField.setText(hrana.getVrstaHrane());
         kolicinaTextField.setText(String.valueOf(hrana.getKolicina()));
-        vrijemeHranjenjaChoiceBox.getSelectionModel().select(hrana.getVrijemeHranjenja().toString());
         napomenaTextField.setText(hrana.getNapomena());
 
         trazenaHrana = hrana;
@@ -88,12 +76,10 @@ public class AzurirajHranuController {
     public synchronized void izmjeniHranu(){
         String vrstaHrane = vrstaHraneTextField.getText();
         String kolicina = kolicinaTextField.getText();
-        String vrijemeHranjenja = vrijemeHranjenjaChoiceBox.getValue();
         String napomena = napomenaTextField.getText();
 
         trazenaHrana.setVrstaHrane(vrstaHrane);
         trazenaHrana.setKolicina(Double.parseDouble(kolicina));
-        trazenaHrana.setVrijemeHranjenja(LocalTime.parse(vrijemeHranjenja));
         trazenaHrana.setNapomena(napomena);
 
         try{
@@ -105,6 +91,17 @@ public class AzurirajHranuController {
             );
 
             if (result.get() == ButtonType.OK){
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Ažurirana hrana",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
+
+                }
+
                 BazaPodataka.azurirajHranu(trazenaHrana);
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,

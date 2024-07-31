@@ -1,5 +1,6 @@
 package com.example.projektnizadatak.Controllers.ZivotinjeController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
@@ -10,6 +11,7 @@ import com.example.projektnizadatak.Util.Datoteke;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -42,10 +44,7 @@ public class AzurirajZivotinjuController {
 
     final ToggleGroup spolToggleGroup = new ToggleGroup();
 
-    private String staraVrsta;
     private String stariRazred;
-    private String staraStarost;
-    private String stariSpol;
 
     private Zivotinja trazenaZivotinja;
     private boolean popravljenLayout = false;
@@ -77,15 +76,11 @@ public class AzurirajZivotinjuController {
 
         if(zivotinja.getSpol().equals("Muško")){
             spolToggleGroup.selectToggle(muskoRadioButton);
-            stariSpol = "Muško";
         }else if (zivotinja.getSpol().equals("Žensko")){
             spolToggleGroup.selectToggle(zenskoRadioButton);
-            stariSpol = "Žensko";
         }
 
-        staraVrsta = vrstaZivotinjeTextField.getText();
         stariRazred = razredZivotinjeTextField.getText();
-        staraStarost = starostZivotinjeTextField.getText();
         trazenaZivotinja = zivotinja;
     }
 
@@ -93,7 +88,6 @@ public class AzurirajZivotinjuController {
         String vrsta = vrstaZivotinjeTextField.getText();
         String razred = razredZivotinjeTextField.getText();
         String starost = starostZivotinjeTextField.getText();
-        LocalDateTime sada = LocalDateTime.now();
 
         String spol = "";
         if(muskoRadioButton.isSelected()){
@@ -115,20 +109,15 @@ public class AzurirajZivotinjuController {
             );
 
             if(result.get() == ButtonType.OK){
-                if(!staraVrsta.equals(vrsta)){
-                    spremiPromjenu(staraVrsta, vrsta, "admin", sada);
-                }
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Ažurirana životinja",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
-                if(!stariRazred.equals(razred)){
-                    spremiPromjenu(stariRazred, razred, "admin", sada);
-                }
-
-                if(!staraStarost.equals(starost)){
-                    spremiPromjenu(staraStarost, starost, "admin", sada);
-                }
-
-                if(!stariSpol.equals(spol)){
-                    spremiPromjenu(stariSpol, spol, "admin", sada);
                 }
 
                 BazaPodataka.azurirajZivotinju(trazenaZivotinja);
@@ -143,14 +132,5 @@ public class AzurirajZivotinjuController {
             throw new RuntimeException(e);
         }
         initialize();
-    }
-
-    public static void spremiPromjenu(String staraVrijednost, String novaVrijednost, String role, LocalDateTime vrijeme){
-        Optional<Promjene> promjena = Datoteke.deserijalizirajPromjene();
-        promjena.get().setStaraVrijednost(staraVrijednost);
-        promjena.get().setNovaVrijednost(novaVrijednost);
-        promjena.get().setRole(role);
-        promjena.get().setDatumIVrijeme(vrijeme);
-        Datoteke.serijalizirajPromjene(promjena.get());
     }
 }

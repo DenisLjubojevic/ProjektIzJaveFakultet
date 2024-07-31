@@ -31,6 +31,8 @@
     -fx-background-color: burlywood;
     -fx-border-width: 1;
     -fx-border-color: darkgoldenrod;
+    -fx-font-size: 18px;
+    -fx-alignment: center;
 }
 
 .table-view .corner {
@@ -77,6 +79,33 @@
 }
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color:  linear-gradient(to right, burlywood, darkgoldenrod);
+}
+
+.table-cell{
+    -fx-font-size: 16px;
+    -fx-alignment: center;
+}
+
+.list-view{
+    -fx-padding: 0;
+    -fx-border-width: 2px;
+    -fx-border-color: darkgoldenrod;
+}
+
+.list-cell:odd{
+    -fx-background-color: #aad5e3;
+}
+
+.list-cell:even{
+    -fx-background-color: #72a8ba;
+}
+
+.list-cell{
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-font-size: 18px;
+    -fx-alignment: center;
+    -fx-text-fill: #333333;
 }
 
 .menu-bar{

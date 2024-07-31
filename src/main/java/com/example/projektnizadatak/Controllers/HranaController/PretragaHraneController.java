@@ -3,6 +3,7 @@ package com.example.projektnizadatak.Controllers.HranaController;
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -18,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,15 +33,11 @@ public class PretragaHraneController {
     @FXML
     private TextField kolicinaTextField;
     @FXML
-    private ChoiceBox<String> vrijemeHranjenjaChoiceBox;
-    @FXML
     private TableView<Hrana> hranaTableView;
     @FXML
     private TableColumn<Hrana, String> vrstaHraneTableColumn;
     @FXML
     private TableColumn<Hrana, String> kolicinaTableColumn;
-    @FXML
-    private TableColumn<Hrana, String> vrijemeHranjenjaTableColumn;
     @FXML
     private TableColumn<Hrana, String> napomenaTableColumn;
     @FXML
@@ -58,8 +56,6 @@ public class PretragaHraneController {
     private Label vrstaLabel;
     @FXML
     private Label kolicinaLabel;
-    @FXML
-    private Label vrijemeLabel;
 
     List<Hrana> hrane = new ArrayList<>();
     private boolean popravljenLayout = false;
@@ -87,17 +83,8 @@ public class PretragaHraneController {
             );
         }
 
-        vrijemeHranjenjaChoiceBox.getItems().add("Odabir");
-        vrijemeHranjenjaChoiceBox.getItems().add("10:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("11:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("12:00");
-        vrijemeHranjenjaChoiceBox.getItems().add("13:00");
-
-        vrijemeHranjenjaChoiceBox.getSelectionModel().selectFirst();
-
         vrstaHraneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getVrstaHrane())));
         kolicinaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getKolicina())));
-        vrijemeHranjenjaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getVrijemeHranjenja())));
         napomenaTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getNapomena())));
 
         hranaTableView.setItems(FXCollections.observableList(hrane));
@@ -120,7 +107,6 @@ public class PretragaHraneController {
         MainApplication.setupNaslov(naslovLabel);
         MainApplication.setupText(vrstaLabel);
         MainApplication.setupText(kolicinaLabel);
-        MainApplication.setupText(vrijemeLabel);
 
         MainApplication.setupButton(pretraziButton);
         MainApplication.setupButton(dodajButton);
@@ -157,7 +143,6 @@ public class PretragaHraneController {
     public void dohvatiHranu(){
         String vrstaHrane = vrstaHraneTextField.getText();
         String kolicina = kolicinaTextField.getText();
-        String vrijemeHranjenja = vrijemeHranjenjaChoiceBox.getValue();
 
         List<Hrana> filtriranaHrana = hrane;
 
@@ -176,12 +161,6 @@ public class PretragaHraneController {
             } catch (NumberFormatException e) {
                 return;
             }
-        }
-
-        if (!vrijemeHranjenja.equals("Odabir")){
-            filtriranaHrana = filtriranaHrana.stream()
-                    .filter(h -> h.getVrijemeHranjenja().format(DateTimeFormatter.ofPattern("HH:mm")).equals(vrijemeHranjenja))
-                    .toList();
         }
 
         hranaTableView.setItems(FXCollections.observableList(filtriranaHrana));
@@ -228,9 +207,24 @@ public class PretragaHraneController {
             );
 
             if (result.get().equals(ButtonType.OK)){
-                BazaPodataka.obrisiHranu(hrana);
-                AzurirajZivotinjuController.spremiPromjenu(hrana.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Obrisana hrana",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
+                    System.out.println("Greška: " + ex);
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Spremanje promjene!",
+                            "Pogreška spremanja!",
+                            ex.getMessage()
+                    );
+                }
 
+                BazaPodataka.obrisiHranu(hrana);
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Brisanje hrane",

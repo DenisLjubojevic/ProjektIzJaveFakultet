@@ -1,5 +1,7 @@
 package com.example.projektnizadatak.Controllers.ZivotinjeController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zivotinje.ZdravstveniKarton;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -8,6 +10,7 @@ import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,8 +78,18 @@ public class UnosZdravstvenogKartonaController {
             odabranaZivotinja.dodajZdravstveniKarton(zdravstveniKarton);
 
             try{
-                BazaPodataka.spremiZdravstveniKarton(zdravstveniKarton, odabranaZivotinja.getId());
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Pregledana životinja",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
+                }
+
+                BazaPodataka.spremiZdravstveniKarton(zdravstveniKarton, odabranaZivotinja.getId());
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Spremanje zdravstvenog kartona!",

@@ -38,6 +38,7 @@ public class loginScreenController {
     List<Korisnik> korisnici = new ArrayList<>();
     Hashiranje hashiranje = new Hashiranje();
 
+    public static Korisnik prijavljeniKorisnik;
     public static String roleKorisnika;
 
     private boolean popravljenLayout = false;
@@ -105,6 +106,7 @@ public class loginScreenController {
                 if (korisnik.getKorisnickoIme().equals(korisnickoIme) &&
                         korisnik.getLozinka().equals(hashiranaLozinka)) {
                     uspjesnaPrijava = true;
+                    prijavljeniKorisnik = korisnik;
 
                     if (korisnik.getRole().equals(1)){
                         roleKorisnika = "admin";

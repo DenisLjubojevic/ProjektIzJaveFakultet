@@ -1,13 +1,16 @@
 package com.example.projektnizadatak.Controllers.AktivnostiController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,16 +97,15 @@ public class AzurirajAktivnostiController {
                     "Jeste li sigurni da želite promjeniti odabranu aktivnost?");
 
             if(result.get() == ButtonType.OK){
-                if(!naziv.equals(stariNaziv)){
-                    AzurirajZivotinjuController.spremiPromjenu(stariNaziv, naziv, "admin", LocalDateTime.now());
-                }
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Ažurirana aktivnost",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
-                if(!cijena.equals(staraCijena)){
-                    AzurirajZivotinjuController.spremiPromjenu(staraCijena, cijena, "admin", LocalDateTime.now());
-                }
-
-                if(!trajanje.equals(staroTrajanje)){
-                    AzurirajZivotinjuController.spremiPromjenu(staroTrajanje, trajanje, "admin", LocalDateTime.now());
                 }
 
                 BazaPodataka.azurirajAktivnost(trazenaAktivnost);

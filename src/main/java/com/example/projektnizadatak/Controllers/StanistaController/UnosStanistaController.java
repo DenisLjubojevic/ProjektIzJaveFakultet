@@ -1,6 +1,8 @@
 package com.example.projektnizadatak.Controllers.StanistaController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
@@ -19,7 +21,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +39,8 @@ public class UnosStanistaController {
     @FXML
     private ChoiceBox<Hrana> hranaChoiceBox;
     @FXML
+    private ChoiceBox<String> vrijemeHranjenjaChoiceBox;
+    @FXML
     private ImageView odabranaSlika;
 
     @FXML
@@ -44,6 +51,8 @@ public class UnosStanistaController {
     private Label brojLabel;
     @FXML
     private Label hranaLabel;
+    @FXML
+    private Label vrijemeHranjenjaLabel;
     @FXML
     private Label slikaLabel;
     @FXML
@@ -82,6 +91,14 @@ public class UnosStanistaController {
         }
 
         hranaChoiceBox.getSelectionModel().selectFirst();
+
+        vrijemeHranjenjaChoiceBox.getItems().add("10:00");
+        vrijemeHranjenjaChoiceBox.getItems().add("11:00");
+        vrijemeHranjenjaChoiceBox.getItems().add("12:00");
+        vrijemeHranjenjaChoiceBox.getItems().add("13:00");
+
+        vrijemeHranjenjaChoiceBox.getSelectionModel().selectFirst();
+
         Image placeholder = new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("/com/example/projektnizadatak/Images/imagePlaceholder.jpg")));
         odabranaSlika.setImage(placeholder);
 
@@ -89,6 +106,7 @@ public class UnosStanistaController {
         MainApplication.setupText(vrstaLabel);
         MainApplication.setupText(brojLabel);
         MainApplication.setupText(hranaLabel);
+        MainApplication.setupText(vrijemeHranjenjaLabel);
         MainApplication.setupText(slikaLabel);
 
         MainApplication.setupButton(odaberiButton);
@@ -149,6 +167,7 @@ public class UnosStanistaController {
         String brojZivotinja = brojZivotinjaTextField.getText();
         String vrsta = vrstaZivotinjaTextField.getText();
         Hrana hrana = hranaChoiceBox.getValue();
+        String vrijemeHranjenja = vrijemeHranjenjaChoiceBox.getValue();
 
         List<Zivotinja> odabraneZivotinje = new ArrayList<>();
         Integer id = staniste.size();
@@ -174,12 +193,20 @@ public class UnosStanistaController {
                     "Potrebno je unjeti vrstu životinja koja već postoji!"
             );
         } else {
-
-            Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), hrana, slikaStanista);
+            Staniste novoStaniste = new Staniste(id + 1, odabraneZivotinje, Integer.valueOf(brojZivotinja), hrana, LocalTime.parse(vrijemeHranjenja), slikaStanista);
             try{
-                BazaPodataka.spremiStaniste(novoStaniste);
-                AzurirajZivotinjuController.spremiPromjenu( "-", novoStaniste.getClass().getSimpleName(), "admin", LocalDateTime.now());
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Dodano stanište",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
 
+                }
+
+                BazaPodataka.spremiStaniste(novoStaniste);
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Spremanje staništa!",

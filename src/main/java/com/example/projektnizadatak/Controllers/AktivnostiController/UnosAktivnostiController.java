@@ -1,7 +1,9 @@
 package com.example.projektnizadatak.Controllers.AktivnostiController;
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
@@ -11,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,8 +85,18 @@ public class UnosAktivnostiController {
         } else {
             Aktivnost novaAktivnost = new Aktivnost.Builder(id + 1, naziv, Integer.valueOf(cijena)).saTrajanjem(Integer.valueOf(trajanje)).build();
             try{
+                Promjene promjena = new Promjene(
+                        1,
+                        loginScreenController.prijavljeniKorisnik.getId(),
+                        "Dodana aktivnost",
+                        new Timestamp(System.currentTimeMillis()));
+                try{
+                    BazaPodataka.spremiPromjenu(promjena);
+                }catch (BazaPodatakaException ex){
+
+                }
+
                 BazaPodataka.spremiAktivnost(novaAktivnost);
-                AzurirajZivotinjuController.spremiPromjenu( "-", novaAktivnost.getClass().getSimpleName(), "admin", LocalDateTime.now());
                 MainApplication.showAlertDialog(
                         Alert.AlertType.INFORMATION,
                         "Spremanje aktivnosti!",

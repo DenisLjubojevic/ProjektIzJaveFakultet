@@ -4,6 +4,8 @@ import com.example.projektnizadatak.Entiteti.Entitet;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 
+import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Staniste extends Entitet {
@@ -13,14 +15,16 @@ public class Staniste extends Entitet {
 
     private Integer brojJedinki;
     private Hrana hrana;
+    private LocalTime vrijemeHranjenja;
     private byte[] slikaStanista;
 
-    public Staniste(Integer id, List<Zivotinja> zivotinja, Integer brojJedniki, Hrana hrana, byte[] slikaStanista) {
+    public Staniste(Integer id, List<Zivotinja> zivotinja, Integer brojJedniki, Hrana hrana, LocalTime vrijemeHranjenja, byte[] slikaStanista) {
         super(id);
         this.zivotinja = zivotinja;
         this.brojJedinki = brojJedniki;
         this.sistematika = new Sistematika(zivotinja.get(0).getSistematika().vrsta(), zivotinja.get(0).getSistematika().razred());
         this.hrana = hrana;
+        this.vrijemeHranjenja = vrijemeHranjenja;
         this.slikaStanista = slikaStanista;
     }
 
@@ -62,6 +66,14 @@ public class Staniste extends Entitet {
 
     public void setHrana(Hrana hrana) {
         this.hrana = hrana;
+    }
+
+    public LocalTime getVrijemeHranjenja() {
+        return vrijemeHranjenja;
+    }
+
+    public void setVrijemeHranjenja(LocalTime vrijemeHranjenja) {
+        this.vrijemeHranjenja = vrijemeHranjenja;
     }
 
     public byte[] getSlikaStanista() {

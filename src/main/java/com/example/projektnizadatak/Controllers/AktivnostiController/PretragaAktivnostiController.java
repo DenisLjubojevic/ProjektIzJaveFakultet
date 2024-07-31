@@ -4,6 +4,7 @@ import com.example.projektnizadatak.Controllers.LoginController.loginScreenContr
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
@@ -19,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -181,9 +183,18 @@ public class PretragaAktivnostiController {
                 );
 
                 if(result.get() == ButtonType.OK){
-                    BazaPodataka.obrisiAktivnost(aktivnost);
-                    AzurirajZivotinjuController.spremiPromjenu(aktivnost.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
+                    Promjene promjena = new Promjene(
+                            1,
+                            loginScreenController.prijavljeniKorisnik.getId(),
+                            "Obrisana aktivnost",
+                            new Timestamp(System.currentTimeMillis()));
+                    try{
+                        BazaPodataka.spremiPromjenu(promjena);
+                    }catch (BazaPodatakaException ex){
 
+                    }
+
+                    BazaPodataka.obrisiAktivnost(aktivnost);
                     MainApplication.showAlertDialog(
                             Alert.AlertType.INFORMATION,
                             "Brisanje aktivnosti",

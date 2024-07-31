@@ -1,106 +1,146 @@
 package com.example.projektnizadatak.Controllers;
 
 import com.example.projektnizadatak.Entiteti.Promjene;
+import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
+import com.example.projektnizadatak.MainApplication;
+import com.example.projektnizadatak.Util.BazaPodataka;
 import com.example.projektnizadatak.Util.Datoteke;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class PromjeneController {
     @FXML
-    private TableView<Map.Entry<Integer, String>> staraVrijednostTableView;
+    private Label naslovLabel;
+    @FXML
+    private Label brisanjeLabel;
+    @FXML
+    private Button obrisiButton;
+    @FXML
+    private Button obrisiSveButton;
 
     @FXML
-    private TableView<Map.Entry<Integer, String>> novaVrijednostTableView;
+    private TableView<Promjene> promjeneTableView;
 
     @FXML
-    private TableView<Map.Entry<Integer, String>> roleTableView;
+    private TableColumn<Promjene, String> korisnikTableColumn;
 
     @FXML
-    private TableView<Map.Entry<Integer, String>> vrijemeTableView;
+    private TableColumn<Promjene, String> opisPromjeneTableColumn;
 
     @FXML
-    private TableColumn<Map.Entry<Integer, String>, String> staraVrijednostTableColumn = new TableColumn<>("Key");
+    private TableColumn<Promjene, String> vrijemePromjeneTableColumn;
 
-    @FXML
-    private TableColumn<Map.Entry<Integer, String>, String> novaVrijednostTableColumn = new TableColumn<>("Key");
+    List<Promjene> promjene;
 
-    @FXML
-    private TableColumn<Map.Entry<Integer, String>, String> roleTableColumn = new TableColumn<>("Key");
-
-    @FXML
-    private TableColumn<Map.Entry<Integer, String>, String> datumIVrijemeTableColumn;
+    private boolean popravljenLayout = false;
 
     public void initialize(){
-        Optional<Promjene> promjena = Datoteke.deserijalizirajPromjene();
-
-        if(promjena.isPresent()){
-            staraVrijednostTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String>, ObservableValue<String>>() {
-
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String> p) {
-                    // this callback returns property for just one cell, you can't use a loop here
-                    // for first column we use key
-                    return new SimpleStringProperty(p.getValue().getValue());
-                }
-            });
-
-            novaVrijednostTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String>, ObservableValue<String>>() {
-
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String> p) {
-                    // this callback returns property for just one cell, you can't use a loop here
-                    // for first column we use key
-                    return new SimpleStringProperty(p.getValue().getValue());
-                }
-            });
-
-            roleTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String>, ObservableValue<String>>() {
-
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String> p) {
-                    // this callback returns property for just one cell, you can't use a loop here
-                    // for first column we use key
-                    return new SimpleStringProperty(p.getValue().getValue());
-                }
-            });
-
-            datumIVrijemeTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String>, ObservableValue<String>>() {
-
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<Integer, String>, String> p) {
-                    // this callback returns property for just one cell, you can't use a loop here
-                    // for first column we use key
-                    return new SimpleStringProperty(p.getValue().getValue());
-                }
-            });
-
-            ObservableList<Map.Entry<Integer, String>> items1 = FXCollections.observableArrayList(promjena.get().getStaraVrijednost().entrySet());
-            staraVrijednostTableView.setItems(items1);
-
-            ObservableList<Map.Entry<Integer, String>> items2 = FXCollections.observableArrayList(promjena.get().getNovaVrijednost().entrySet());
-            novaVrijednostTableView.setItems(items2);
-
-            ObservableList<Map.Entry<Integer, String>> items3 = FXCollections.observableArrayList(promjena.get().getRole().entrySet());
-            roleTableView.setItems(items3);
-
-            ObservableList<Map.Entry<Integer, String>> items4 = FXCollections.observableArrayList(promjena.get().getDatumIVrijeme().entrySet());
-            vrijemeTableView.setItems(items4);
+        if (!popravljenLayout){
+            MainApplication.popraviLayout();
+            popravljenLayout = true;
         }
+
+        try{
+            promjene = BazaPodataka.dohvatiPromjene();
+        }catch (BazaPodatakaException ex){
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Učitavanje promjena!",
+                    "Pogreška učitavanja!",
+                    ex.getMessage()
+            );
+        }
+
+        korisnikTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsernameById()));
+        opisPromjeneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOpisPromjene()));
+        vrijemePromjeneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVrijemePromjene().toString()));
+
+        promjeneTableView.setItems(FXCollections.observableList(promjene));
+
+        MainApplication.setupNaslov(naslovLabel);
+        MainApplication.setupText(brisanjeLabel);
+        MainApplication.setupButton(obrisiButton);
+        MainApplication.setupButton(obrisiSveButton);
     }
 
-    public void izbrisiPromjene() {
-        Promjene promejena = new Promjene(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
-        Datoteke.serijalizirajPromjene(promejena);
+    public void obrisiSvePromjene() {
+        Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                Alert.AlertType.CONFIRMATION,
+                "Potvrda",
+                "Potvrda brisanja",
+                "Jeste li sigurni da želite obrisati sve promjene?"
+        );
+
+        if (result.get().equals(ButtonType.OK)){
+            try{
+                BazaPodataka.obrisiSvePromjene();
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.INFORMATION,
+                        "Brisanje promjena",
+                        "Uspješno brisanje!",
+                        "Sve promjene su uspješno obrisane!"
+                );
+            }catch (BazaPodatakaException ex){
+                MainApplication.showAlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Brisanje promjena!",
+                        "Pogreška brisanja!",
+                        ex.getMessage()
+                );
+            }
+        }
+
+        initialize();
+    }
+
+    public void obrisiPromjenu() {
+        Promjene promjena = promjeneTableView.getSelectionModel().getSelectedItem();
+
+        if (promjena != null){
+            Optional<ButtonType> result = MainApplication.showAlertDialogConfirmation(
+                    Alert.AlertType.CONFIRMATION,
+                    "Potvrda",
+                    "Potvrda brisanja",
+                    "Jeste li sigurni da želite obrisati odabranu promjenu?"
+            );
+
+            if (result.get().equals(ButtonType.OK)){
+                try{
+                    BazaPodataka.obrisiPromjenu(promjena);
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.INFORMATION,
+                            "Brisanje promjena",
+                            "Uspješno brisanje!",
+                            "Promjena '" + promjena.getOpisPromjene() + "' je uspješno obrisana!"
+                    );
+                }catch (BazaPodatakaException ex){
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Brisanje promjena!",
+                            "Pogreška brisanja!",
+                            ex.getMessage()
+                    );
+                }
+            }
+        }else{
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.INFORMATION,
+                    "Pogreška",
+                    "Potreban odabir",
+                    "Trebate odabrati jednu promjenu iz tablice."
+            );
+        }
+
         initialize();
     }
 }

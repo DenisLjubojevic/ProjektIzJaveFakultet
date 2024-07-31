@@ -3,6 +3,7 @@ package com.example.projektnizadatak.Controllers.ZaposleniciController;
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -19,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -228,9 +230,18 @@ public class PretragaZaposlenikaController {
                 );
 
                 if(result.get() == ButtonType.OK){
-                    BazaPodataka.obrisiZaposlenika(zaposlenik);
-                    AzurirajZivotinjuController.spremiPromjenu(zaposlenik.getClass().getSimpleName(), "-", "admin", LocalDateTime.now());
+                    Promjene promjena = new Promjene(
+                            1,
+                            loginScreenController.prijavljeniKorisnik.getId(),
+                            "Obrisan zaposlenik",
+                            new Timestamp(System.currentTimeMillis()));
+                    try{
+                        BazaPodataka.spremiPromjenu(promjena);
+                    }catch (BazaPodatakaException ex){
 
+                    }
+
+                    BazaPodataka.obrisiZaposlenika(zaposlenik);
                     MainApplication.showAlertDialog(
                             Alert.AlertType.INFORMATION,
                             "Brisanje zaposlenika",

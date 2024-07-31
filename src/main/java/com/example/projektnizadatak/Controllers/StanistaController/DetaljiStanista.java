@@ -32,6 +32,8 @@ public class DetaljiStanista {
 
     @FXML
     private Label hranaLabel;
+    @FXML
+    private Label vrijemeLabel;
 
     @FXML
     private Label vrstaTextLabel;
@@ -44,6 +46,8 @@ public class DetaljiStanista {
 
     @FXML
     private Label hranaTextLabel;
+    @FXML
+    private Label vrijemeTextLabel;
 
     @FXML
     private ImageView slikaStanista;
@@ -59,6 +63,11 @@ public class DetaljiStanista {
         razredLabel.setText(staniste.getSistematika().razred());
         brojJedinkiLabel.setText(staniste.getBrojJedinki().toString());
         hranaLabel.setText(staniste.getHrana().getVrstaHrane());
+        if (staniste.getVrijemeHranjenja() != null){
+            vrijemeLabel.setText(staniste.getVrijemeHranjenja().toString());
+        }else{
+            vrijemeLabel.setText("NULL");
+        }
 
         Image image = MainApplication.byteArrayToImage(staniste.getSlikaStanista());
         if (image != null){
@@ -77,6 +86,8 @@ public class DetaljiStanista {
         setupLabel(brojJedinkiTextLabel);
         setupLabel(hranaLabel);
         setupLabel(hranaTextLabel);
+        setupLabel(vrijemeLabel);
+        setupLabel(vrijemeTextLabel);
     }
 
 
@@ -92,7 +103,7 @@ public class DetaljiStanista {
 
             Stage stage = MainApplication.getMainStage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Detalji obroka");
+            stage.setTitle("Detalji Hrane");
             stage.show();
         }catch (IOException e) {
             e.printStackTrace();
@@ -111,6 +122,6 @@ public class DetaljiStanista {
 
     private void setupLabel(Label label){
         label.styleProperty().bind(
-                Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(35).asString(), "px"));
+                Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(40).asString(), "px"));
     }
 }

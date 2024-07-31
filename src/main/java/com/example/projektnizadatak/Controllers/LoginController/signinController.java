@@ -72,7 +72,7 @@ public class signinController {
                         "Pogreška stvaranja!",
                         "Korisničko ime je već zauzeto!");
             }else{
-                BazaPodataka.stovoriKorisnika(new Korisnik(korisnickoIme, lozinka, 0));
+                BazaPodataka.stovoriKorisnika(new Korisnik(1, korisnickoIme, lozinka, 0));
                 MainApplication.showAlertDialog(
                         Alert.AlertType.ERROR,
                         "Stvaranje računa!",
