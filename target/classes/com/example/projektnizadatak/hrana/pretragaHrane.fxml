@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -58,20 +57,6 @@
                         </TextField>
                     </children>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label fx:id="vrijemeLabel" text="Vrijeme hranjenja:">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <ChoiceBox fx:id="vrijemeHranjenjaChoiceBox" prefWidth="150.0">
-                            <HBox.margin>
-                                <Insets left="5.0" />
-                            </HBox.margin>
-                        </ChoiceBox>
-                    </children>
-                </HBox>
                 <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                     <children>
                         <Button fx:id="pretraziButton" mnemonicParsing="false" onAction="#dohvatiHranu" text="Pretraži" />
@@ -105,7 +90,6 @@
                     <columns>
                         <TableColumn fx:id="vrstaHraneTableColumn" prefWidth="190.4000244140625" text="Vrsta hrane" />
                         <TableColumn fx:id="kolicinaTableColumn" prefWidth="204.0" text="Količina" />
-                        <TableColumn fx:id="vrijemeHranjenjaTableColumn" prefWidth="205.60009765625" text="Vrijeme hranjenja" />
                   <TableColumn fx:id="napomenaTableColumn" prefWidth="205.60009765625" text="Napomena" />
                     </columns>
                <columnResizePolicy>

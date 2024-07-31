@@ -72,6 +72,20 @@
                   </ChoiceBox>
                </children>
             </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="hranjenjeLabel" text="Hranjenje:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="hranjenjeChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
             <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="pretraziButton" mnemonicParsing="false" onAction="#dohvatiStanista" text="Pretraži" />
@@ -106,6 +120,7 @@
                   <TableColumn fx:id="vrstaZivotinjaTableColumn" prefWidth="204.0" text="Vrsta životinje" />
                   <TableColumn fx:id="brojZivotinjaTableColumn" prefWidth="190.4000244140625" text="Broj životinja" />
                   <TableColumn fx:id="hranaTableColumn" prefWidth="205.60009765625" text="Hrana" />
+                  <TableColumn fx:id="hranjenjeTableColumn" prefWidth="205.60009765625" text="Hranjenje" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

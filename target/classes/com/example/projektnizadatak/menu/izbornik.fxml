@@ -72,6 +72,11 @@
                   <MenuItem mnemonicParsing="false" onAction="#showKartaStanista" text="Karta staništa" />
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Raspored">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showRasporedHranjenjaScreen" text="Hranjenje" />
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Promjene">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showPromjeneScreen" text="Pregled" />
