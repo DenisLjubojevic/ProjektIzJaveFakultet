@@ -4,18 +4,12 @@ import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import com.example.projektnizadatak.Util.Datoteke;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class PromjeneController {

@@ -40,4 +40,9 @@ public class Zaposlenici extends Posao {
     void izracunajPlacu() {
         this.placa = getCijenaPoSatu() * getMjesecnaSatnica();
     }
+
+    @Override
+    public String toString() {
+        return ime + " " + prezime;
+    }
 }

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="397.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projektnizadatak.Controllers.RasporedRadaController.DodajRasporedController">
+    <top>
+        <VBox alignment="TOP_CENTER" prefHeight="88.0" prefWidth="600.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+            <children>
+                <fx:include source="../menu/izbornik.fxml" />
+                <Label fx:id="naslovLabel" text="Raspored rada">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+    </top>
+    <center>
+
+    </center>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="zaposlenikLabel" text="Zaposlenik:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="zaposlenikChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="ponLabel" text="PON:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="ponChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="utoLabel" text="UTO:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="utoChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="sriLabel" text="SRI:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="sriChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="cetLabel" text="ČET:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="cetChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="petLabel" text="PET:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="petChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="spremiButton" mnemonicParsing="false" onAction="#dodajRaspored" text="Spremi" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

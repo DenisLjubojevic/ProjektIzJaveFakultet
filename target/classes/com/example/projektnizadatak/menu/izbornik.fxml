@@ -75,6 +75,7 @@
             <Menu mnemonicParsing="false" text="Raspored">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showRasporedHranjenjaScreen" text="Hranjenje" />
+                  <MenuItem mnemonicParsing="false" onAction="#showRasporedRadaScreen" text="Rada" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Promjene">

@@ -7,12 +7,10 @@ import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import com.example.projektnizadatak.Util.Datoteke;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class AzurirajZivotinjuController {
