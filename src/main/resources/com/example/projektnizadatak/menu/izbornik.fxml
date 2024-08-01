@@ -65,18 +65,39 @@
                         </ImageView>
                      </graphic></MenuItem>
               </items>
+                <graphic>
+                    <ImageView fx:id="searchImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Images/Icons/changes.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
             </Menu>
             <Menu mnemonicParsing="false" text="Karta">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#showInteraktivnaMapaScreen" text="Interaktivna karta" />
                   <MenuItem mnemonicParsing="false" onAction="#showKartaStanista" text="Karta staništa" />
               </items>
+                <graphic>
+                    <ImageView fx:id="mapImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Images/Icons/changes.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
             </Menu>
             <Menu mnemonicParsing="false" text="Raspored">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showRasporedHranjenjaScreen" text="Hranjenje" />
                   <MenuItem mnemonicParsing="false" onAction="#showRasporedRadaScreen" text="Rada" />
                </items>
+                <graphic>
+                    <ImageView fx:id="scheduleImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Images/Icons/changes.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
             </Menu>
             <Menu mnemonicParsing="false" text="Promjene">
                <items>

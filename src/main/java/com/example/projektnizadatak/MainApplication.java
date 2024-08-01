@@ -2,6 +2,7 @@ package com.example.projektnizadatak;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -9,19 +10,25 @@ import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 
 import javafx.embed.swing.SwingFXUtils;
+import org.h2.tools.Server;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
 public class MainApplication extends Application {
     public static Stage mainStage;
+    private static Server server;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, SQLException {
+        server = Server.createTcpServer("-tcpAllowOthers").start();
+
         /*
         * Timeline simulacijaJedenja = new Timeline(
                 new KeyFrame(Duration.seconds(60), new EventHandler<ActionEvent>() {
@@ -138,5 +145,12 @@ public class MainApplication extends Application {
     public static void setupRadioButton(RadioButton radioButton){
         radioButton.styleProperty().bind(
                 Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(42).asString(), "px"));
+    }
+
+    @Override
+    public void stop() {
+        if (server != null && server.isRunning(true)) {
+            server.stop();
+        }
     }
 }

@@ -20,22 +20,22 @@ import static com.example.projektnizadatak.MainApplication.mainStage;
 public class IzbornikController {
     @FXML
     private ImageView signOutImage;
-
     @FXML
     private ImageView pawsImage;
-
     @FXML
     private ImageView employeeImage;
-
     @FXML
     private ImageView habitatImage;
-
     @FXML
     private ImageView notebookImage;
-
     @FXML
     private ImageView changeImage;
-
+    @FXML
+    private ImageView searchImage;
+    @FXML
+    private ImageView mapImage;
+    @FXML
+    private ImageView scheduleImage;
     @FXML
     private MenuBar izbornikAdmin;
 
@@ -48,6 +48,9 @@ public class IzbornikController {
         notebookImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/notebook.png"));
         changeImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/changes.png"));
         signOutImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/changes.png"));
+        searchImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/searchIcon.png"));
+        mapImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/mapIcon.png"));
+        scheduleImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/scheduleIcon.png"));
     }
 
     private Image loadImage(String relativnaPutanja){

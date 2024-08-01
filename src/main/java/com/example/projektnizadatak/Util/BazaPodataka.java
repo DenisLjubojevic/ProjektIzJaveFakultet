@@ -26,7 +26,6 @@ public class BazaPodataka {
     public static Connection connectToDataBase() throws SQLException, IOException{
         Properties konfiguracijaBaze = new Properties();
         konfiguracijaBaze.load(new FileInputStream("Datoteke/bazaPodataka.properties"));
-        org.h2.tools.Server.createTcpServer("-tcpAllowOthers").start();
 
         return DriverManager.getConnection(
                 konfiguracijaBaze.getProperty("bazaPodatakaURL"),
