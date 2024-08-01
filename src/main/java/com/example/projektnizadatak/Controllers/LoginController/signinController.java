@@ -5,6 +5,7 @@ import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
+import com.example.projektnizadatak.Util.Hashiranje;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class signinController {
     @FXML
     private GridPane gridPane;
     List<Korisnik> korisnici = new ArrayList<>();
+    Hashiranje hashiranje = new Hashiranje();
 
     private boolean popravljenLayout = false;
 
@@ -51,9 +54,11 @@ public class signinController {
         lozinkaLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", MainApplication.getMainStage().widthProperty().divide(43).asString(), "px"));
     }
 
-    public void napraviAccount(ActionEvent event) throws BazaPodatakaException {
+    public void napraviAccount(ActionEvent event) throws BazaPodatakaException, NoSuchAlgorithmException, IOException {
         String korisnickoIme = korisnickoImeTextField.getText();
         String lozinka = lozinkaPasswordField.getText();
+        String hashiranaLozinka = hashiranje.hashiranaLozinka(lozinka);
+
         boolean zauzetoKorisnickoIme = false;
 
         korisnici = BazaPodataka.dohvatiKorisnike();
@@ -72,12 +77,14 @@ public class signinController {
                         "Pogreška stvaranja!",
                         "Korisničko ime je već zauzeto!");
             }else{
-                BazaPodataka.stovoriKorisnika(new Korisnik(1, korisnickoIme, lozinka, 0));
+                BazaPodataka.stovoriKorisnika(new Korisnik(1, korisnickoIme, hashiranaLozinka, "Korisnik"));
                 MainApplication.showAlertDialog(
                         Alert.AlertType.ERROR,
                         "Stvaranje računa!",
                         "Uspješno stvaranja!",
                         "Korisnik " + korisnickoIme + " je uspješno stvoren!");
+
+                goBack();
             }
         }else{
             MainApplication.showAlertDialog(

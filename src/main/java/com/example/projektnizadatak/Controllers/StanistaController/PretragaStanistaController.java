@@ -85,7 +85,7 @@ public class PretragaStanistaController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "admin")){
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin")){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);
@@ -164,7 +164,7 @@ public class PretragaStanistaController {
     }
 
     private void prikaziDetaljeStanista(Staniste staniste) throws IOException {
-        if (loginScreenController.roleKorisnika.equals("admin")){
+        if (!loginScreenController.roleKorisnika.equals("Korisnik")){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiStanista.fxml"));
                 Parent root = loader.load();

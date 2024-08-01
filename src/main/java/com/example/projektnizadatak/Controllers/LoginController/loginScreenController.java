@@ -108,11 +108,7 @@ public class loginScreenController {
                     uspjesnaPrijava = true;
                     prijavljeniKorisnik = korisnik;
 
-                    if (korisnik.getRole().equals(1)){
-                        roleKorisnika = "admin";
-                    }else{
-                        roleKorisnika = "user";
-                    }
+                    roleKorisnika = korisnik.getRole();
 
                     MainApplication.showAlertDialog(
                             Alert.AlertType.INFORMATION,

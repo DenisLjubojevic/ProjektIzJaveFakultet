@@ -74,6 +74,8 @@ public class PretragaZivotinjaController {
     @FXML
     private Button obrisiButton;
     @FXML
+    private Button stanjeButton;
+    @FXML
     private HBox hBox;
 
     @FXML
@@ -84,8 +86,6 @@ public class PretragaZivotinjaController {
     private Label vrstaLabel;
     @FXML
     private Label starostLabel;
-    @FXML
-    private Button stanjeButton;
 
     private boolean popravljenLayout = false;
 
@@ -98,10 +98,16 @@ public class PretragaZivotinjaController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "admin")){
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin")){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);
+        }
+
+
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
+                !Objects.equals(loginScreenController.roleKorisnika, "Veterinar")){
+            hBox.getChildren().remove(stanjeButton);
         }
 
         try{

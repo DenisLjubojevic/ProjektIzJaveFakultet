@@ -66,7 +66,8 @@ public class PretragaHraneController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "admin")){
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
+                !Objects.equals(loginScreenController.roleKorisnika, "Veterinar")){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);

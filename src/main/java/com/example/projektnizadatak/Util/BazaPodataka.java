@@ -49,7 +49,7 @@ public class BazaPodataka {
                 Integer id = rs.getInt("idusers");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                Integer role = rs.getInt("role");
+                String role = rs.getString("role");
 
                 korisnici.add(new Korisnik(id, username, password, role));
             }
@@ -85,7 +85,7 @@ public class BazaPodataka {
                 Integer id2 = rs.getInt("idusers");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                Integer role = rs.getInt("role");;
+                String role = rs.getString("role");;
 
                 return new Korisnik(id2, username, password, role);
             }
@@ -116,11 +116,12 @@ public class BazaPodataka {
                     + "VALUES (?, ?, ?)");
             pstmt.setString(1, korisnik.getKorisnickoIme());
             pstmt.setString(2, korisnik.getLozinka());
-            pstmt.setInt(3, korisnik.getRole());
+            pstmt.setString(3, korisnik.getRole());
 
             pstmt.executeUpdate();
 
         } catch (Exception e){
+            e.printStackTrace();
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
         }finally {
             try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }

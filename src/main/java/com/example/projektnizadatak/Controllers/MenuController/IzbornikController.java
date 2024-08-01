@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -38,8 +40,36 @@ public class IzbornikController {
     private ImageView scheduleImage;
     @FXML
     private MenuBar izbornikAdmin;
+    @FXML
+    private Menu rasporedMenu;
+    @FXML
+    private Menu promjeneMenu;
+
+    @FXML
+    private MenuItem zaposleniciMenuItem;
+    @FXML
+    private MenuItem hranaMenuItem;
 
     public void initialize(){
+        if (Objects.equals(loginScreenController.roleKorisnika, "Korisnik")){
+            rasporedMenu.setVisible(false);
+            zaposleniciMenuItem.setVisible(false);
+        }
+
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin")){
+            promjeneMenu.setVisible(false);
+        }
+
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
+                !Objects.equals(loginScreenController.roleKorisnika, "Voditelj")){
+            zaposleniciMenuItem.setVisible(false);
+        }
+
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
+                !Objects.equals(loginScreenController.roleKorisnika, "Veterinar")){
+            hranaMenuItem.setVisible(false);
+        }
+
         izbornikAdmin.prefWidthProperty().bind(mainStage.widthProperty());
 
         pawsImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/paws.png"));

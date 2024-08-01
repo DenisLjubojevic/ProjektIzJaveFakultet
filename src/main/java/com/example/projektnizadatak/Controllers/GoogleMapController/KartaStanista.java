@@ -1,6 +1,7 @@
 package com.example.projektnizadatak.Controllers.GoogleMapController;
 
 
+import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.StanistaController.DetaljiStanista;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -90,24 +91,33 @@ public class KartaStanista {
     }
 
     public void showHabitatDetails(javafx.event.ActionEvent actionEvent) {
-        Button stisnutiGumb = (Button) actionEvent.getSource();
-        Optional<Staniste> odabranoStaniste = pronadjiStaniste(stisnutiGumb);
+        if (!loginScreenController.roleKorisnika.equals("Korisnik")){
+            Button stisnutiGumb = (Button) actionEvent.getSource();
+            Optional<Staniste> odabranoStaniste = pronadjiStaniste(stisnutiGumb);
 
-        if (odabranoStaniste.isPresent()){
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiStanista.fxml"));
-                Parent root = loader.load();
+            if (odabranoStaniste.isPresent()){
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiStanista.fxml"));
+                    Parent root = loader.load();
 
-                DetaljiStanista detaljiStanista = loader.getController();
-                detaljiStanista.prikaziDetalje(odabranoStaniste.get());
+                    DetaljiStanista detaljiStanista = loader.getController();
+                    detaljiStanista.prikaziDetalje(odabranoStaniste.get());
 
-                Stage stage = MainApplication.getMainStage();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Detalji staništa");
-                stage.show();
-            }catch (IOException e) {
-                e.printStackTrace();
+                    Stage stage = MainApplication.getMainStage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Detalji staništa");
+                    stage.show();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }else{
+            MainApplication.showAlertDialog(
+                    Alert.AlertType.WARNING,
+                    "Odbijeno",
+                    "Pristup odbijen",
+                    "Nemate pravo pristupa tim podacima!"
+            );
         }
     }
 

@@ -13,11 +13,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -43,6 +45,8 @@ public class RasporedRadaController {
     private TableColumn<RasporedRada, String> cetTableColumn;
     @FXML
     private TableColumn<RasporedRada, String> petTableColumn;
+    @FXML
+    private HBox hBox;
 
     List<Zaposlenici> zaposlenici = new ArrayList<>();
     List<RasporedRada> rasporedi = new ArrayList<>();
@@ -52,6 +56,12 @@ public class RasporedRadaController {
         if (!popravljenLayout){
             MainApplication.popraviLayout();
             popravljenLayout = true;
+        }
+
+        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
+                !Objects.equals(loginScreenController.roleKorisnika, "Voditelj")){
+            hBox.getChildren().remove(dodajButton);
+            hBox.getChildren().remove(obrisiButton);
         }
 
         try{

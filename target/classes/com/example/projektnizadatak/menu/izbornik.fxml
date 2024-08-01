@@ -31,7 +31,7 @@
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#showZaposleniciSearchScreen" text="Zaposlenici">
+                  <MenuItem fx:id="zaposleniciMenuItem" mnemonicParsing="false" onAction="#showZaposleniciSearchScreen" text="Zaposlenici">
                      <graphic>
                         <ImageView fx:id="employeeImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -47,7 +47,7 @@
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#showHranaSearchScreen" text="Hrana">
+                  <MenuItem fx:id="hranaMenuItem" mnemonicParsing="false" onAction="#showHranaSearchScreen" text="Hrana">
                      <graphic>
                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -86,7 +86,7 @@
                     </ImageView>
                 </graphic>
             </Menu>
-            <Menu mnemonicParsing="false" text="Raspored">
+            <Menu fx:id="rasporedMenu" mnemonicParsing="false" text="Raspored">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showRasporedHranjenjaScreen" text="Hranjenje" />
                   <MenuItem mnemonicParsing="false" onAction="#showRasporedRadaScreen" text="Rada" />
@@ -99,7 +99,7 @@
                     </ImageView>
                 </graphic>
             </Menu>
-            <Menu mnemonicParsing="false" text="Promjene">
+            <Menu fx:id="promjeneMenu" mnemonicParsing="false" text="Promjene">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showPromjeneScreen" text="Pregled" />
                </items>
