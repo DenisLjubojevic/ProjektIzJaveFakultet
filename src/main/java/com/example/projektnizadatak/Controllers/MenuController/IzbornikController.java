@@ -1,5 +1,6 @@
 package com.example.projektnizadatak.Controllers.MenuController;
 
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import javafx.application.Platform;
@@ -21,29 +22,13 @@ import static com.example.projektnizadatak.MainApplication.mainStage;
 
 public class IzbornikController {
     @FXML
-    private ImageView signOutImage;
-    @FXML
-    private ImageView pawsImage;
-    @FXML
-    private ImageView employeeImage;
-    @FXML
-    private ImageView habitatImage;
-    @FXML
-    private ImageView notebookImage;
-    @FXML
-    private ImageView changeImage;
-    @FXML
-    private ImageView searchImage;
-    @FXML
-    private ImageView mapImage;
-    @FXML
-    private ImageView scheduleImage;
-    @FXML
     private MenuBar izbornikAdmin;
     @FXML
     private Menu rasporedMenu;
     @FXML
     private Menu promjeneMenu;
+    @FXML
+    private Menu korisniciMenu;
 
     @FXML
     private MenuItem zaposleniciMenuItem;
@@ -51,36 +36,27 @@ public class IzbornikController {
     private MenuItem hranaMenuItem;
 
     public void initialize(){
-        if (Objects.equals(loginScreenController.roleKorisnika, "Korisnik")){
+        if (loginScreenController.roleKorisnika.equals(Role.KORISNIK)){
             rasporedMenu.setVisible(false);
             zaposleniciMenuItem.setVisible(false);
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN)){
             promjeneMenu.setVisible(false);
+            korisniciMenu.setVisible(false);
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
-                !Objects.equals(loginScreenController.roleKorisnika, "Voditelj")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+                !loginScreenController.roleKorisnika.equals(Role.VODITELJ)){
             zaposleniciMenuItem.setVisible(false);
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
-                !Objects.equals(loginScreenController.roleKorisnika, "Veterinar")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+                !loginScreenController.roleKorisnika.equals(Role.VETERINAR)){
             hranaMenuItem.setVisible(false);
         }
 
         izbornikAdmin.prefWidthProperty().bind(mainStage.widthProperty());
-
-        pawsImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/paws.png"));
-        employeeImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/employee.png"));
-        habitatImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/habitat.png"));
-        notebookImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/notebook.png"));
-        changeImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/changes.png"));
-        signOutImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/changes.png"));
-        searchImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/searchIcon.png"));
-        mapImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/mapIcon.png"));
-        scheduleImage.setImage(loadImage("/com/example/projektniZadatak/Images/Icons/scheduleIcon.png"));
     }
 
     private Image loadImage(String relativnaPutanja){
@@ -168,5 +144,9 @@ public class IzbornikController {
 
     public void showPromjeneScreen() throws IOException {
         promjeniEkran("promjene/promjene.fxml", "Promjene");
+    }
+
+    public void showKorisniciScreen() throws IOException {
+        promjeniEkran("login/pregledKorisnika.fxml", "Korisnici");
     }
 }

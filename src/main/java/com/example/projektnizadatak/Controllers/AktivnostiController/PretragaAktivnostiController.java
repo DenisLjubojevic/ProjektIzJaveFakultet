@@ -2,13 +2,12 @@ package com.example.projektnizadatak.Controllers.AktivnostiController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -21,7 +20,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -77,8 +75,8 @@ public class PretragaAktivnostiController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
-                !Objects.equals(loginScreenController.roleKorisnika, "Voditelj")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+                !loginScreenController.roleKorisnika.equals(Role.VODITELJ)){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);
@@ -192,7 +190,12 @@ public class PretragaAktivnostiController {
                     try{
                         BazaPodataka.spremiPromjenu(promjena);
                     }catch (BazaPodatakaException ex){
-
+                        MainApplication.showAlertDialog(
+                                Alert.AlertType.ERROR,
+                                "Pogreška!",
+                                "Pogreška spremanja promjene!",
+                                ex.getMessage()
+                        );
                     }
 
                     BazaPodataka.obrisiAktivnost(aktivnost);

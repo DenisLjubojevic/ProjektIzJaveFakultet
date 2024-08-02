@@ -1,6 +1,8 @@
 package com.example.projektnizadatak;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
+import com.example.projektnizadatak.Controllers.StanistaController.RasporedHranjenjaController;
+import com.example.projektnizadatak.Niti.MOTDThread;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -25,31 +27,13 @@ public class MainApplication extends Application {
     public static Stage mainStage;
     private static Server server;
 
+    private static final Thread motdThread = new Thread(new MOTDThread());
+
     @Override
     public void start(Stage stage) throws IOException, SQLException {
         server = Server.createTcpServer("-tcpAllowOthers").start();
 
-        /*
-        * Timeline simulacijaJedenja = new Timeline(
-                new KeyFrame(Duration.seconds(60), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        Platform.runLater(new simulacijaJedenjaNit());
-                    }
-                }));
-        simulacijaJedenja.setCycleCount(3);
-        simulacijaJedenja.play();
-
-        Timeline nahrani = new Timeline(
-                new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        Platform.runLater(new nahraniNit());
-                    }
-                }));
-        nahrani.setCycleCount(Timeline.INDEFINITE);
-        nahrani.play();*/
-
+        motdThread.start();
 
         stage.setWidth(900);
         stage.setHeight(500);
@@ -60,6 +44,18 @@ public class MainApplication extends Application {
         IzbornikController.promjeniEkran(
                 "login/loginScreen.fxml",
                 "Zoološki vrt");
+
+        mainStage.setOnCloseRequest(event -> {
+            RasporedHranjenjaController.scheduler.shutdownNow();
+            if (motdThread != null && motdThread.isAlive()) {
+                motdThread.interrupt();
+                try {
+                    motdThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void popraviLayout(){

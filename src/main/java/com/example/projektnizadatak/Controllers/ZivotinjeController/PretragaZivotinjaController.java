@@ -2,14 +2,12 @@ package com.example.projektnizadatak.Controllers.ZivotinjeController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,8 +23,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -98,15 +94,15 @@ public class PretragaZivotinjaController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN)){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);
         }
 
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
-                !Objects.equals(loginScreenController.roleKorisnika, "Veterinar")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+                !loginScreenController.roleKorisnika.equals(Role.VETERINAR)){
             hBox.getChildren().remove(stanjeButton);
         }
 
@@ -254,7 +250,12 @@ public class PretragaZivotinjaController {
                     try{
                         BazaPodataka.spremiPromjenu(promjena);
                     }catch (BazaPodatakaException ex){
-
+                        MainApplication.showAlertDialog(
+                                Alert.AlertType.ERROR,
+                                "Pogreška!",
+                                "Pogreška spremanja promjene!",
+                                ex.getMessage()
+                        );
                     }
 
                     BazaPodataka.obrisiZivotinju(zivotinja);

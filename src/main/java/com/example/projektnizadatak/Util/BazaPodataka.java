@@ -2,6 +2,7 @@ package com.example.projektnizadatak.Util;
 
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
 import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
@@ -51,10 +52,11 @@ public class BazaPodataka {
                 String password = rs.getString("password");
                 String role = rs.getString("role");
 
-                korisnici.add(new Korisnik(id, username, password, role));
+                korisnici.add(new Korisnik(id, username, password, Role.valueOf(role)));
             }
 
         }catch (Exception e){
+            e.printStackTrace();
             throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
         }finally {
             try { if (rs != null) rs.close(); } catch (SQLException e) {  }
@@ -87,7 +89,7 @@ public class BazaPodataka {
                 String password = rs.getString("password");
                 String role = rs.getString("role");;
 
-                return new Korisnik(id2, username, password, role);
+                return new Korisnik(id2, username, password, Role.valueOf(role));
             }
 
         } catch (Exception e){
@@ -116,7 +118,63 @@ public class BazaPodataka {
                     + "VALUES (?, ?, ?)");
             pstmt.setString(1, korisnik.getKorisnickoIme());
             pstmt.setString(2, korisnik.getLozinka());
-            pstmt.setString(3, korisnik.getRole());
+            pstmt.setString(3, korisnik.getRole().getRolaKorisnika());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
+    }
+
+    public static void azurirajKorisnika(Korisnik korisnik) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("UPDATE USERS SET " +
+                    "USERNAME = ?,"+
+                    "PASSWORD = ?,"+
+                    "ROLE = ? " +
+                    "WHERE IDUSERS = ?");
+            pstmt.setString(1, korisnik.getKorisnickoIme());
+            pstmt.setString(2, korisnik.getLozinka());
+            pstmt.setString(3, korisnik.getRole().getRolaKorisnika());
+            pstmt.setInt(4, korisnik.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            throw new BazaPodatakaException("Pogreška prilikom povezivanja na mrežu!");
+        }finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {  }
+            try { if (con != null) con.close(); } catch (SQLException e) {  }
+        }
+    }
+
+    public static void obrisiKorisnika(Korisnik korisnik) throws BazaPodatakaException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = connectToDataBase();
+
+            if(con != null){
+                System.out.println("Uspješno smo se spojili na bazu!");
+            }
+
+            pstmt = con.prepareStatement("DELETE FROM USERS WHERE IDUSERS = ?");
+            pstmt.setInt(1, korisnik.getId());
 
             pstmt.executeUpdate();
 

@@ -25,7 +25,7 @@
               <items>
                   <MenuItem mnemonicParsing="false" onAction="#showZivotinjeSearchScreen" text="Životinje">
                      <graphic>
-                        <ImageView fx:id="pawsImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/Icons/paws.png" />
                            </image>
@@ -33,7 +33,7 @@
                      </graphic></MenuItem>
                   <MenuItem fx:id="zaposleniciMenuItem" mnemonicParsing="false" onAction="#showZaposleniciSearchScreen" text="Zaposlenici">
                      <graphic>
-                        <ImageView fx:id="employeeImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/Icons/employee.png" />
                            </image>
@@ -41,7 +41,7 @@
                      </graphic></MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#showStanistaSearchScreen" text="Staništa">
                      <graphic>
-                        <ImageView fx:id="habitatImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/Icons/habitat.png" />
                            </image>
@@ -58,7 +58,7 @@
                   </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#showAktivnostiSearchScreen" text="Aktivnosti">
                      <graphic>
-                        <ImageView fx:id="notebookImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/Icons/notebook.png" />
                            </image>
@@ -66,9 +66,9 @@
                      </graphic></MenuItem>
               </items>
                 <graphic>
-                    <ImageView fx:id="searchImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../Images/Icons/changes.png" />
+                            <Image url="@../Images/Icons/searchIcon.png" />
                         </image>
                     </ImageView>
                 </graphic>
@@ -79,9 +79,9 @@
                   <MenuItem mnemonicParsing="false" onAction="#showKartaStanista" text="Karta staništa" />
               </items>
                 <graphic>
-                    <ImageView fx:id="mapImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../Images/Icons/changes.png" />
+                            <Image url="@../Images/Icons/mapIcon.png" />
                         </image>
                     </ImageView>
                 </graphic>
@@ -94,11 +94,23 @@
                 <graphic>
                     <ImageView fx:id="scheduleImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../Images/Icons/changes.png" />
+                            <Image url="@../Images/Icons/scheduleIcon.png" />
                         </image>
                     </ImageView>
                 </graphic>
             </Menu>
+             <Menu fx:id="korisniciMenu" mnemonicParsing="false" text="Korisnici">
+                 <items>
+                     <MenuItem mnemonicParsing="false" onAction="#showKorisniciScreen" text="Pregled" />
+                 </items>
+                 <graphic>
+                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                         <image>
+                             <Image url="@../Images/Icons/teamworkIcon.png" />
+                         </image>
+                     </ImageView>
+                 </graphic>
+             </Menu>
             <Menu fx:id="promjeneMenu" mnemonicParsing="false" text="Promjene">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showPromjeneScreen" text="Pregled" />

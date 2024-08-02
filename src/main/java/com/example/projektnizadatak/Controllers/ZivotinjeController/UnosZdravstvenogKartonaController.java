@@ -12,8 +12,6 @@ import javafx.scene.control.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UnosZdravstvenogKartonaController {
     @FXML
@@ -86,7 +84,12 @@ public class UnosZdravstvenogKartonaController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.spremiZdravstveniKarton(zdravstveniKarton, odabranaZivotinja.getId());

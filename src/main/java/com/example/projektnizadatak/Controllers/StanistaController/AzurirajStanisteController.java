@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Controllers.StanistaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Zivotinje.Sistematika;
@@ -22,7 +21,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -160,7 +158,7 @@ public class AzurirajStanisteController {
     }
 
     public synchronized void dohvatiStaniste(Staniste staniste){
-        vrstaZivotinjaTextField.setText(staniste.getZivotinja().get(0).getSistematika().vrsta());
+        vrstaZivotinjaTextField.setText(staniste.getSistematika().vrsta());
         brojZivotinjaTextField.setText(String.valueOf(staniste.getZivotinja().size()));
         hranaChoiceBox.getSelectionModel().select(staniste.getHrana());
 
@@ -216,7 +214,12 @@ public class AzurirajStanisteController {
                     try{
                         BazaPodataka.spremiPromjenu(promjena);
                     }catch (BazaPodatakaException ex){
-
+                        MainApplication.showAlertDialog(
+                                Alert.AlertType.ERROR,
+                                "Pogreška!",
+                                "Pogreška spremanja promjene!",
+                                ex.getMessage()
+                        );
                     }
 
                     BazaPodataka.azurirajStaniste(trazenoStaniste);

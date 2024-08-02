@@ -1,6 +1,5 @@
 package com.example.projektnizadatak.Controllers;
 
-import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -9,10 +8,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class PromjeneController {

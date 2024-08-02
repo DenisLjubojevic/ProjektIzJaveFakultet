@@ -115,7 +115,12 @@ public class AzurirajZivotinjuController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.azurirajZivotinju(trazenaZivotinja);

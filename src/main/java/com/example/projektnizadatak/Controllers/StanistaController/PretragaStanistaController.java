@@ -2,13 +2,12 @@ package com.example.projektnizadatak.Controllers.StanistaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import com.example.projektnizadatak.Util.BazaPodataka;
@@ -22,11 +21,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class PretragaStanistaController {
@@ -85,7 +81,8 @@ public class PretragaStanistaController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+        !loginScreenController.roleKorisnika.equals(Role.VETERINAR)){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);
@@ -164,7 +161,7 @@ public class PretragaStanistaController {
     }
 
     private void prikaziDetaljeStanista(Staniste staniste) throws IOException {
-        if (!loginScreenController.roleKorisnika.equals("Korisnik")){
+        if (!loginScreenController.roleKorisnika.equals(Role.KORISNIK)){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/stanista/detaljiStanista.fxml"));
                 Parent root = loader.load();
@@ -277,7 +274,12 @@ public class PretragaStanistaController {
                     try{
                         BazaPodataka.spremiPromjenu(promjena);
                     }catch (BazaPodatakaException ex){
-
+                        MainApplication.showAlertDialog(
+                                Alert.AlertType.ERROR,
+                                "Pogreška!",
+                                "Pogreška spremanja promjene!",
+                                ex.getMessage()
+                        );
                     }
 
                     BazaPodataka.obrisiStaniste(staniste);

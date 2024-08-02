@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Controllers.AktivnostiController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -14,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +91,12 @@ public class UnosAktivnostiController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.spremiAktivnost(novaAktivnost);

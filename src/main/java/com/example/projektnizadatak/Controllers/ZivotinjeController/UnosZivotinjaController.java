@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +106,12 @@ public class UnosZivotinjaController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.spremiZivotinju(novaZivotinja);

@@ -2,9 +2,9 @@ package com.example.projektnizadatak.Controllers.RasporedRadaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.RasporedRada;
-import com.example.projektnizadatak.Entiteti.Zaposlenici.Smjena;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -58,8 +58,8 @@ public class RasporedRadaController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
-                !Objects.equals(loginScreenController.roleKorisnika, "Voditelj")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+                !loginScreenController.roleKorisnika.equals(Role.VODITELJ)){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(obrisiButton);
         }
@@ -136,7 +136,12 @@ public class RasporedRadaController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.obrisiSveRasporede();

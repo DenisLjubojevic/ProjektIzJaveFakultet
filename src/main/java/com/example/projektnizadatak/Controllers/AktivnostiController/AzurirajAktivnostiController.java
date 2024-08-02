@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Controllers.AktivnostiController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Aktivnosti.Aktivnost;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -11,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,9 +34,6 @@ public class AzurirajAktivnostiController {
     private Label trajanjeLabel;
     @FXML
     private Button promjeniButton;
-    private String stariNaziv;
-    private String staraCijena;
-    private String staroTrajanje;
 
     List<Aktivnost> aktivnosti = new ArrayList<>();
     Aktivnost trazenaAktivnost;
@@ -73,10 +68,6 @@ public class AzurirajAktivnostiController {
         cijenaTextField.setText(aktivnost.getCijena().toString());
         trajanjeTextField.setText(aktivnost.getTrajanje().toString());
 
-        stariNaziv = aktivnost.getNaziv();
-        staraCijena = aktivnost.getCijena().toString();
-        staroTrajanje = aktivnost.getTrajanje().toString();
-
         trazenaAktivnost = aktivnost;
     }
 
@@ -105,7 +96,12 @@ public class AzurirajAktivnostiController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.azurirajAktivnost(trazenaAktivnost);

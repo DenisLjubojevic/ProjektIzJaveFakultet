@@ -2,7 +2,7 @@ package com.example.projektnizadatak.Controllers.HranaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -66,8 +64,8 @@ public class PretragaHraneController {
             popravljenLayout = true;
         }
 
-        if (!Objects.equals(loginScreenController.roleKorisnika, "Admin") &&
-                !Objects.equals(loginScreenController.roleKorisnika, "Veterinar")){
+        if (!loginScreenController.roleKorisnika.equals(Role.ADMIN) &&
+                !loginScreenController.roleKorisnika.equals(Role.VETERINAR)){
             hBox.getChildren().remove(dodajButton);
             hBox.getChildren().remove(urediButton);
             hBox.getChildren().remove(obrisiButton);
@@ -116,7 +114,7 @@ public class PretragaHraneController {
     }
 
     private void prikaziDetaljeHrane(Hrana hrana) throws IOException {
-        if (loginScreenController.roleKorisnika.equals("admin")){
+        if (!loginScreenController.roleKorisnika.equals(Role.KORISNIK)){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projektnizadatak/hrana/detaljiHrane.fxml"));
                 Parent root = loader.load();
@@ -216,11 +214,10 @@ public class PretragaHraneController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-                    System.out.println("Greška: " + ex);
                     MainApplication.showAlertDialog(
                             Alert.AlertType.ERROR,
-                            "Spremanje promjene!",
-                            "Pogreška spremanja!",
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
                             ex.getMessage()
                     );
                 }

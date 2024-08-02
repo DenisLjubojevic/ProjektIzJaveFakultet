@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Controllers.HranaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -10,11 +9,7 @@ import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,11 +87,10 @@ public class UnosHraneController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-                    System.out.println("Greška: " + ex);
                     MainApplication.showAlertDialog(
                             Alert.AlertType.ERROR,
-                            "Spremanje promjene!",
-                            "Pogreška spremanja!",
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
                             ex.getMessage()
                     );
                 }

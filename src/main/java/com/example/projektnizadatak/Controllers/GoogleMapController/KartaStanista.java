@@ -3,6 +3,7 @@ package com.example.projektnizadatak.Controllers.GoogleMapController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
 import com.example.projektnizadatak.Controllers.StanistaController.DetaljiStanista;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
@@ -91,7 +92,7 @@ public class KartaStanista {
     }
 
     public void showHabitatDetails(javafx.event.ActionEvent actionEvent) {
-        if (!loginScreenController.roleKorisnika.equals("Korisnik")){
+        if (!loginScreenController.roleKorisnika.equals(Role.KORISNIK)){
             Button stisnutiGumb = (Button) actionEvent.getSource();
             Optional<Staniste> odabranoStaniste = pronadjiStaniste(stisnutiGumb);
 

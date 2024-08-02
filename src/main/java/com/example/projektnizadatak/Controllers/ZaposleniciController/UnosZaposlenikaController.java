@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Controllers.ZaposleniciController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Zaposlenici.Zaposlenici;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
@@ -11,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +109,12 @@ public class UnosZaposlenikaController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.spremiZaposlenika(noviZaposlenik);

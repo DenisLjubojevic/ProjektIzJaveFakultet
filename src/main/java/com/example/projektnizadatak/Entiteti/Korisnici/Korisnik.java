@@ -5,9 +5,9 @@ import com.example.projektnizadatak.Entiteti.Entitet;
 public class Korisnik extends Entitet {
     private String korisnickoIme;
     private String lozinka;
-    private String role;
+    private Role role;
 
-    public Korisnik(Integer id, String korisnickoIme, String lozinka, String role) {
+    public Korisnik(Integer id, String korisnickoIme, String lozinka, Role role) {
         super(id);
         this.korisnickoIme = korisnickoIme;
         this.lozinka = lozinka;
@@ -22,5 +22,5 @@ public class Korisnik extends Entitet {
         return lozinka;
     }
 
-    public String getRole(){ return role; }
+    public Role getRole(){ return role; }
 }

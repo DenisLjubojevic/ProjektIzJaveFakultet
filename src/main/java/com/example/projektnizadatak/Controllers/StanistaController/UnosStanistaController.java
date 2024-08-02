@@ -1,7 +1,6 @@
 package com.example.projektnizadatak.Controllers.StanistaController;
 
 import com.example.projektnizadatak.Controllers.LoginController.loginScreenController;
-import com.example.projektnizadatak.Controllers.ZivotinjeController.AzurirajZivotinjuController;
 import com.example.projektnizadatak.Entiteti.Promjene;
 import com.example.projektnizadatak.Entiteti.Stanista.Staniste;
 import com.example.projektnizadatak.Entiteti.Stanista.Hrana;
@@ -9,7 +8,6 @@ import com.example.projektnizadatak.Entiteti.Zivotinje.Zivotinja;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -21,9 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +199,12 @@ public class UnosStanistaController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.spremiStaniste(novoStaniste);

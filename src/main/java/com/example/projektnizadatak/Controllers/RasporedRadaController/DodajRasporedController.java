@@ -127,8 +127,8 @@ public class DodajRasporedController {
             }catch (BazaPodatakaException ex){
                 MainApplication.showAlertDialog(
                         Alert.AlertType.ERROR,
-                        "Spremanje promjene!",
-                        "Pogreška prilikom spremanja!",
+                        "Pogreška!",
+                        "Pogreška spremanja promjene!",
                         ex.getMessage()
                 );
             }

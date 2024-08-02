@@ -8,10 +8,8 @@ import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 
 import java.sql.Timestamp;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +97,12 @@ public class AzurirajHranuController {
                 try{
                     BazaPodataka.spremiPromjenu(promjena);
                 }catch (BazaPodatakaException ex){
-
+                    MainApplication.showAlertDialog(
+                            Alert.AlertType.ERROR,
+                            "Pogreška!",
+                            "Pogreška spremanja promjene!",
+                            ex.getMessage()
+                    );
                 }
 
                 BazaPodataka.azurirajHranu(trazenaHrana);

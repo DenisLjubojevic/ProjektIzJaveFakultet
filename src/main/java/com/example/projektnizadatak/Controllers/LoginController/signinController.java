@@ -2,13 +2,12 @@ package com.example.projektnizadatak.Controllers.LoginController;
 
 import com.example.projektnizadatak.Controllers.MenuController.IzbornikController;
 import com.example.projektnizadatak.Entiteti.Korisnici.Korisnik;
+import com.example.projektnizadatak.Entiteti.Korisnici.Role;
 import com.example.projektnizadatak.Iznimke.BazaPodatakaException;
 import com.example.projektnizadatak.MainApplication;
 import com.example.projektnizadatak.Util.BazaPodataka;
 import com.example.projektnizadatak.Util.Hashiranje;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -64,8 +63,9 @@ public class signinController {
         korisnici = BazaPodataka.dohvatiKorisnike();
 
         for (Korisnik k: korisnici) {
-            if(k.getKorisnickoIme().equals(korisnickoIme)){
+            if (k.getKorisnickoIme().equals(korisnickoIme)) {
                 zauzetoKorisnickoIme = true;
+                break;
             }
         }
 
@@ -77,9 +77,9 @@ public class signinController {
                         "Pogreška stvaranja!",
                         "Korisničko ime je već zauzeto!");
             }else{
-                BazaPodataka.stovoriKorisnika(new Korisnik(1, korisnickoIme, hashiranaLozinka, "Korisnik"));
+                BazaPodataka.stovoriKorisnika(new Korisnik(1, korisnickoIme, hashiranaLozinka, Role.KORISNIK));
                 MainApplication.showAlertDialog(
-                        Alert.AlertType.ERROR,
+                        Alert.AlertType.INFORMATION,
                         "Stvaranje računa!",
                         "Uspješno stvaranja!",
                         "Korisnik " + korisnickoIme + " je uspješno stvoren!");
